@@ -69,12 +69,7 @@ export const skills = [
                 name: "Tailwind UI",
                 image:
                     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB6klEQVR4Ae3WAUQrcRwH8GvtNqFQanq8FuABIYQQAEHBIwJQAy8FopAAEHgAgBAMoAIWECIttZCZAEAQ2Grd++CiV2t3NMB+fIybu//37n6/uwv6lbb61a/cyW3AAEV+s8ff2F68bZoMvVs4f1p7W3yUHe55JvrgmTr7TBKEJ7Wenfk4R7SJErxyxgz2rX178SwHRLRp8UqU4IrZTlcib1sORrovDgs8cMgqi5Q4pZkQosocAR+PW2QzKUCGbVYICXLH+GWYXZ4SQtRZZ4oRCixRYSMpwBC/yNDp/5CtFCFaNLjgjiYVJpICAHF9FeIPj0QpNZinZ1MyyDKXCZPywjkLuXi8/yvd+r7zx/gZGyMkyNI5RI3bH5QoU6URu6bMGgUCOl7uAmuUuaYRq1KmhEVuOt6WMD4OYYcTyBLY93P68PjmbdzOeSH6QptLlhns5T2cp0GU0iMarxYmNCjQLcAEFZrccUGDVkKIJ7YI+XQryMQjPJQUYIMKSxQYYYp16ilC7DKMY92974EVtskkBdik+MXjco5qQogmp5RYZJVDHlhIfCHFZxzkP3RnPh5JZrlK+RZs0SbigOx3GvV9iBnOUr4F2xwx3rspgUn2qXf5ILlnh1GCPL3+JMsw3eWTrMgAQdrqV7/69Q/G00kqrtmg8wAAAABJRU5ErkJggg==",
-            },
-            {
-                name: "Zod",
-                image:
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAASFBMVEVHcEwlUI0uZLAxarsvZ7YuZbInVZUNFycZMFIkSHohQW4UJkIRHzQtYq4nTYInT4YcOGASIzwtY64lUY8sYKgZOWQpWp4pWp/6Uw5bAAAAGHRSTlMAJ1r//cr5/f//////p////f+YPv4TaIY/MUrbAAAA10lEQVR4AcSPWQKDMAgFY0ENWUjc73/TErB7+91xdxJ4uP/RXV55cQBonM/+2Q3j6EkIcUxpHAPkZ+e5MHOdYoxTZS5qzSUSVUI0V7jZubkFhtoUmYrUHNeqdgZiwZsKha1GWtEJPZI2s25njbRC5xq4TrrNa2etkQZYnLJJoltFq5GKOctEyTKegQl2M40dVJE/W8PhnpiBmXyS3t77CvlJWWRF5++fjUUmNvDDSeSVisCI24eUyCwN44rdh9LIdZLhzX2QIdrwX+nRhv8OHu43m7uOSgAAx2kOlfxiltwAAAAASUVORK5CYII=",
-            },
+            }
         ],
     },
     {
@@ -110,31 +105,6 @@ export const skills = [
 
         ],
     },
-    // {
-    //   title: "Android",
-    //   skills: [
-    //     {
-    //       name: "Java",
-    //       image:
-    //         "https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg",
-    //     },
-    //     {
-    //       name: "Kotlin",
-    //       image:
-    //         "https://www.vectorlogo.zone/logos/kotlinlang/kotlinlang-icon.svg",
-    //     },
-    //     {
-    //       name: "XML",
-    //       image:
-    //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBMw6_RdwKQ9bDFfnKDX1iwMl4bVJEvd9PP53XuIw&s",
-    //     },
-    //     {
-    //       name: "Android Studio",
-    //       image:
-    //         "https://developer.android.com/static/studio/images/new-studio-logo-1_1920.png",
-    //     },
-    //   ],
-    // },
     {
         title: "Others",
         skills: [
@@ -477,9 +447,8 @@ export const blogs = [
 ]
 
 export const TimeLineData = [
-    { year: 2017, text: "Started my journey" },
-    { year: 2018, text: "Worked as a freelance developer" },
-    { year: 2019, text: "Founded JavaScript Mastery" },
-    { year: 2020, text: "Shared my projects with the world" },
-    { year: 2021, text: "Started my own platform" },
+    { year: 2022, text: "Started my journey" },
+    { year: 2023, text: "worked on my technical skills " },
+    { year: 2023, text: "Shared my projects with the world" },
+    { year: 2024, text: "Intern as developer in Recursive Zero" },
 ];
