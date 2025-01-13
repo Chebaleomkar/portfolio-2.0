@@ -1,4 +1,4 @@
-import { TimeLineData } from "@/utils/constants";
+import { TimeLineData } from "@/utils/data";
 import React from "react";
 
 export const TimeLine = () => {

@@ -1,4 +1,4 @@
-import { Bio } from "@/utils/constants";
+import { Bio } from "@/utils/data";
 export const Footer = () => {
     return (
         <footer className="bg-card py-8">

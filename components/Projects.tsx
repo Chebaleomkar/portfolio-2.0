@@ -1,11 +1,12 @@
-import { projects } from '@/utils/constants'
+import { projects } from '@/utils/data'
 import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'
+import { Button } from './ui/button'
 
 export const Projects = () => {
     return (
-        <section className="container mx-auto px-4 py-20">
+        <section id='projects' className="container mx-auto px-4 py-20">
             <h2 className="text-3xl font-bold mb-10 text-center">Projects</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {projects.map((project , i) => (
@@ -40,7 +41,9 @@ export const Projects = () => {
                                         target="_blank"
                                         className="text-primary hover:underline"
                                     >
+                                        <Button variant="outline">
                                         GitHub
+                                        </Button>
                                     </Link>
                                 )}
                                 {project.webapp && (
@@ -49,7 +52,9 @@ export const Projects = () => {
                                         target="_blank"
                                         className="text-primary hover:underline"
                                     >
+                                        <Button>
                                         Live Demo
+                                        </Button>
                                     </Link>
                                 )}
                             </div>

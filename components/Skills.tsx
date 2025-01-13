@@ -1,9 +1,9 @@
-import { skills } from '@/utils/constants'
+import { skills } from '@/utils/data'
 import Image from 'next/image'
 
 export const Skills = () => {
     return (
-        <section className="container mx-auto px-4 py-20 bg-muted/50">
+        <section id='skills' className="container mx-auto px-4 py-20 bg-muted/50">
             <h2 className="text-3xl font-bold mb-10 text-center">Skills</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {skills.map((category, index) => (
