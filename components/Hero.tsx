@@ -18,7 +18,7 @@ export const Hero = () => {
                     className="lg:w-1/2 text-center lg:text-left mb-8 lg:mb-0"
                 >
                     <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 dark:text-white mb-4">
-                        Hi, I'm{' '}
+                        Hi, I'm {' '}
                         <TypeAnimation
                             sequence={[Bio.name, 1000]}
                             wrapper="span"

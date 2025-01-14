@@ -25,44 +25,49 @@ export const skills = [
         title: "Frontend",
         skills: [
             {
-                name: "React Js",
-                image:
-                    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMS41IC0xMC4yMzE3NCAyMyAyMC40NjM0OCI+CiAgPHRpdGxlPlJlYWN0IExvZ288L3RpdGxlPgogIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIyLjA1IiBmaWxsPSIjNjFkYWZiIi8+CiAgPGcgc3Ryb2tlPSIjNjFkYWZiIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIi8+CiAgICA8ZWxsaXBzZSByeD0iMTEiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDYwKSIvPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjApIi8+CiAgPC9nPgo8L3N2Zz4K",
-            },
-            {
-                name: "Next Js",
-                image:
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACTklEQVR4Ab1XAaQqURB9DyohSykREpRIQSAlBCoECKUFCSRCBBEAaSEABQEoCIEASCwAUICALgCo83do0//9v819XX845O7VnDkzOzP7JWGaBd3C3IJpQVjAHeJ+Rs9a97vKLGrBsB1KgMhEP3FMUUwt4ENMfxr1yQIU4SSjRkbeOZtERmHk6pXQVDlnkHh9S+QLTm1hkiz4n/gzFQuny9FoFLquE+i34x+n02k0m00UCoV3BIzn3MMJrVYLtp1OJ0cS/X4f5/MZhmG8IyDsWtDfEaDIn2232/3zbrvdxuFwwGg04qRBt+VnETBNE0IIkE2n07/erdfrWK/X6Ha73Hb9ZXII3G43ivy3dNRqtZe7lUoFs9mM6oBDwCQCgquALT1FT3a5XF7qIZ/PYzgcolqtcggIIgBZAgRKB6lCRalp2uM8k8mAVMrlchwC+DEBipycE4n5fP44j8ViKJVKSCaTbAJCpgaez4vFIsjoWa/XA50FAgEkEgmEw2F2CkxZBZ5Br5tt1ITcbjd8Ph88Hg+7CBefECCsVitS4aVJcV9D/VMCVITk/Hq9YrPZyBBo2a1YMGvAcQYcj0cCtWMugcdYNhjDiBrP25mx3++x3W6RzWZZ8isfxzQLlsslJpMJpYY5jhkqcOH1ejEYDDAej9FoNOByuZxGsfqVzC7KTqcDSkkqleKsZOqX0mAwiHK5DGrJfr+fs5SqX8sjkQji8ThCoRC+v78Za7l6JagrUh3YkUuZpqgwDaecc9VYSDoV5Fg+at7n+eLN57kuE/EvzHr/Kvs31aYAAAAASUVORK5CYII=",
-            },
-            {
-                name: "Astro Js",
-                image:
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAA3lBMVEX////x8fHPz8/S0tLZ2dkAAADLy8ttbW38/PyysrJERETr6+uYmJh9fX0SEhJBQUEpKSmlpaXh4eE0NDS+vr4aGhqenp5bW1uRkZHn5+ctLS2IiIheXl4MDAy5ubnxtdj1yuP53vfuocfiCZLoabH43Oz78fjzsuPrWtHoNdDuqsThK4XjM47jKpHjJJXjIZrlLKXlIabnLrPpVcT0ztneIW7gMHrkOpnlO6TvntDbIVrleJX22ODpj6zhOILfN3DjWZDaKE/dNV3sprfaQ1LZIT7rrLPooqLUAADZSUlbOaPbAAAA/klEQVR4AWzRAwKFUBRF0Z3dt6v5z/LrhKeVrjKGKE4kJSxbxYTk2aogpMg2Jb4yM1T4qsxQ46szU4OrySwtrlaNLtexx9Uvl94pSLClKu/hoKjD1qncbg+DLZMjcFJ4xnRW8QJwVXzDdFPxDvDIJGITZaL/vFdyYHPIxPokTzZPlV7KjsYTG5VT0S2VVzeMmke67BXjiKZbxuJM0OOB5VOoPBwwEAVQAHy5bRVr20aM/guKvR9zHknGiwISVdMlwxRMw7IdkLieH4RRnCRpmoEkL8rS8/2qquMGRG3XD+U4Xg/I8luapmJpgm61bjdg2e72YDocBbCdTHAs8OMC5fIVlkxQkTEAAAAASUVORK5CYII=",
-            },
-            {
                 name: "HTML",
-                image: "https://www.w3.org/html/logo/badge/html5-badge-h-solo.png",
+                image: "/html.jpg",
             },
             {
                 name: "CSS",
                 image:
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/CSS3_logo_and_wordmark.svg/1452px-CSS3_logo_and_wordmark.svg.png",
-            },
-            {
-                name: "JavaScript",
-                image:
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/JavaScript-logo.png/800px-JavaScript-logo.png",
-            },
-            {
-                name: "TypeScript",
-                image:
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADqUlEQVR4Ae1XA7dkPRC8/+Kz7afPtu21bdu2bdv27rNt27ZubepMes7D7Ky9fU6fZIKuSqeSuTEcxkUajkPdJykvUg6HYR6mKk3HYR64ke5giWmqEhprkvMkH8NwUBUNDAJb6zfBLeCKhK4TmwSKdGc9O5Qrpjc6A3TGJbg7iKUxi0gABGQpqb+ZTgySYCaIaci+aIa4RW7FNLQ4bikBB73FxGYGcDv9AYEHBO5cAjyn13TVNpnrRB/O0nZsw1aQBoGuymWOswZ8c4g7XhvkhlcHurHk74Y4NycDXO3LA1zxykBXfDjGCz/N8McfcwLx/VQ/vDfKC28MbkTWNgEGYYD5R5MQnVEGv4RiBCYWIyipBMHJFmedbX7xxYjJLMO0/QkE5mrRdkkIToXmIae4GhXVdaiqqUdZVR3ySqqx/FQKSdjXAFP4Yj9XnAjOxZXaXt9sPNztLIZtjYY9I/GGW2E7A8OYATfMPJjIVcI1qgAXIguQWVgFsdT8SpyPKGAfM4Jxu+KYORSU1UAsMacCcw4nYvSOWMxSsXziitScfLw1xLoN9kX4lirf1IOf73cBe32yILb2XBqe7nXeOufF/q7otDwMNNM0UV9v4o/ZgXi8xzm8pLbmmd7n8fpgN3yrtMAMX5UIOeElBbBPpVls3fk0PNfnAlxGWPvReYWFAMFpE/fE4fm+F/C6OgHvjPTkONbtiNAegQGXJiBH7pNx3tYtEBKHAnLQcmEwxUlhc7xk+UpuQvsZeFYTaDhm5PYYiNVpEjQ3pZX/FwRzDLVy4wmIeHkUe62JQFxWOcQkG6YqBm2KYizGvLEEZEX8LQADNkRS+aDV1pmglVTU4qtJvnhDCdLpRhEQcAZ9TQvOSc/h3vNCa0hi2JZoipNxb1wG5Ij9rK5eHjmO53knEG++YrVysXG7YvFcX8tc+Si1+0nuZIvAOSGgCep7gKdg9dk0Hkn8NiuAwsMur6xGomyzJMRUWmFc09BPMbC81gywnwHbLwtFQ6usqRMBivF6510gWKYh4CyZjWvJAMXEvWf6YzLLZaViVvFtcs2gPkzeGfI2aPI00x02ssFJBGi3NBTtlX8/zU/+1ThXxihCnvh3fhCPG8bujMUodS90WxWOzyf6mOq6JjgJ13MOseVxqp9NBHe/5H8DV8lU0ym6huAN/z94473Q7wKFRhEyezwh+uzLq0g/Tp0mBxuskI1yGWDa/NjQeqA7CaiNq9tJjxF9CLCAa6xJzpNDjIuEJY0NJaLCJgAAAABJRU5ErkJggg==",
+                "/css.jpg",
             },
             {
                 name: "Tailwind UI",
                 image:
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB6klEQVR4Ae3WAUQrcRwH8GvtNqFQanq8FuABIYQQAEHBIwJQAy8FopAAEHgAgBAMoAIWECIttZCZAEAQ2Grd++CiV2t3NMB+fIybu//37n6/uwv6lbb61a/cyW3AAEV+s8ff2F68bZoMvVs4f1p7W3yUHe55JvrgmTr7TBKEJ7Wenfk4R7SJErxyxgz2rX178SwHRLRp8UqU4IrZTlcib1sORrovDgs8cMgqi5Q4pZkQosocAR+PW2QzKUCGbVYICXLH+GWYXZ4SQtRZZ4oRCixRYSMpwBC/yNDp/5CtFCFaNLjgjiYVJpICAHF9FeIPj0QpNZinZ1MyyDKXCZPywjkLuXi8/yvd+r7zx/gZGyMkyNI5RI3bH5QoU6URu6bMGgUCOl7uAmuUuaYRq1KmhEVuOt6WMD4OYYcTyBLY93P68PjmbdzOeSH6QptLlhns5T2cp0GU0iMarxYmNCjQLcAEFZrccUGDVkKIJ7YI+XQryMQjPJQUYIMKSxQYYYp16ilC7DKMY92974EVtskkBdik+MXjco5qQogmp5RYZJVDHlhIfCHFZxzkP3RnPh5JZrlK+RZs0SbigOx3GvV9iBnOUr4F2xwx3rspgUn2qXf5ILlnh1GCPL3+JMsw3eWTrMgAQdrqV7/69Q/G00kqrtmg8wAAAABJRU5ErkJggg==",
-            }
+                    "/tailwind.jpg",
+            },
+            {
+                name: "Saas",
+                image:
+                    "/sass.png",
+            },
+            {
+                name: "JavaScript",
+                image:
+                    "/JavaScript.png",
+            },
+            {
+                name: "TypeScript",
+                image:
+                    "/typescript.png",
+            },
+            {
+                name: "React Js",
+                image:
+                    "/react.jpeg",
+            },
+            {
+                name: "Next Js",
+                image:
+                    "/next.jpeg",
+            },
+            {
+                name: "Astro Js",
+                image:
+                    "/astro.jpeg",
+            },
         ],
     },
     {
@@ -70,30 +75,30 @@ export const skills = [
         skills: [
             {
                 name: "Node Js",
-                image: "https://nodejs.org/static/images/logo.svg",
+                image: "/node.jpeg",
             },
             {
                 name: "Express Js",
                 image:
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAbFBMVEX////8/Pz09PT19fX4+Pjd3d2ampoAAAAzNDWoqKno6Oh0dHRcXFzIycm5ubktLi4hIiN7e3yLi4tmZ2fi4uI9Pj7S0tIHCQuzs7NJSkru7u6goKB+f3/W1taNjo69vb1PT1BsbW0VFRc3ODhehn9TAAAA30lEQVR4Ad3QhXHEMBBA0W8QmAVmTq7/HjOeDdSQewNiLfBukjRNM4A0TeCR/0wSpY0xtiihMgWPsraNnLWd8yFEE3vyOIwAeprhMQ5Lm8O6uT3hWPwKjQspj+zsLvlBuwNmV1DaukS+t3sqs8MWkAU7ejMiGnMhkjoCqnZmQ3CZPwM8Hy/8Hd7xF7BWzjQIxulCsJaQbG6r7xXR2zNHrn1s0AwhUdNPjunejTLxTlHedS89EOMwFAkobzR4ewFptRyI9tPY18uZkFIYzUO5akWU22BflYKx2xGX1Rn/yxf+uwzyBt/vSwAAAABJRU5ErkJggg==",
+                    "/express.jpeg",
             },
             {
                 name: "Hono Js",
-                image: "https://www.vectorlogo.zone/logos/graphql/graphql-icon.svg",
-            },
-            {
-                name: "MySQL",
-                image:
-                    "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg",
-            },
-            {
-                name: "Postgresql",
-                image: "https://www.postgresql.org/media/img/about/press/elephant.png",
+                image: "/hono.jpeg",
             },
             {
                 name: "MongoDB",
                 image:
-                    "https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg",
+                    "/mongodb.jpeg",
+            },
+            {
+                name: "MySQL",
+                image:
+                    "/mysql.jpeg",
+            },
+            {
+                name: "Postgresql",
+                image: "/postgres.jpeg",
             },
 
         ],
@@ -104,33 +109,33 @@ export const skills = [
             {
                 name: "Git",
                 image:
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACTklEQVR4AcWVNXAcQRBFx8zMjpcSM4di6dDMGDuPHJmZ2c7MiRlDM2SmyMyMYl790VVXTbVqtDWHXfWP5/6bv9O9ItlqiHuz/oWdJ/+hxrg3XWSzYL4C8kmNCS3JuHFdzOtSH/dWQmSeXQgAjKyPeb4EyCXEgqxD1Ma8VRUR94YCMTtrEDBfAflSOPUPFIh5P8vsn99L7cxB1MTcFVCrOelv2HkE8970G5j3gdakHaI6mjBPKGGu6IBgBbAndElSgiBzyJciCDWJqqh7hq8pDzu30nIm8OfLyZzEk/hWZlfguS/rjnkpH0yYr4B8KTLXJfEz5LzGcycYd1cgZhGE8eWohDkEc1IwBNQBGoQWvUogRi3KzRkAxAAUiC+ldrPSqv6vkP1OnRN1Uff4/4jzIBCiIuJFIWmuKDAJAFg+GeI1zYmHMB8slALApnYgQuJzif1NAhBEUBIkFeBrqd1EHQKAhYKVblj9CdkfsNh5SQAmSXwuaZMAaakOgENgdjwX5RFnGpmbQHAAatEfZfYXPA9RzsMeyNcczMkCJSFKTCE4gNodcsfojMu/Q85TaU5iEIW0niCKTSForW5iQmTOIfJprRGECoCon9I6vH5VwyemHqKA+xongcj/AKKrkkA/fFYbmAQ3TwFiC18D86OaeweJYg+uoIOJqXdbsPpZZj/Tjm3NzlNNYh3UpwrxQzt1ExMy27lJEmhFeR70EzPmFqRgnVqLQqmbm7coCbGnuQwmpmbnWUlCs/NsJaHO9qxAjPsTci//DbnnADBaJFktk63VVxGkRzAAAAAASUVORK5CYII=",
+                    "/git.jpeg",
             },
             {
                 name: "GitHub",
                 image:
-                    "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+                    "/github.jpeg",
             },
 
             {
                 name: "Netlify",
                 image:
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAALVBMVEX////f9PQAt7QAu7iM2dj7/v43xMKe3934/f3a8vLGz8+Mn54hwL0ANDI9xcM3IX9gAAAAUUlEQVR4AWOgHDAKoHCZFFC4zAa4uSwBKFynVBS9YeocDUhc1ko0e1fvgrF4jI2NGvbe5lA2Nj6AxkUoRjMKt0VOT5kU0B1J2EcI76MHDsUAANZSEj24Z6GKAAAAAElFTkSuQmCC",
+                    "/netlify.jpeg",
             },
             {
                 name: "vercel",
                 image:
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAM1BMVEVHcEwAAAAAAAAAAAAAAAAAAAAAAAAAAABYWFiqqqrl5eX///8tLS1/f3/Hx8f4+PiMjIzf+mfPAAAACHRSTlMAT5TK6f8Wp2EzSt0AAACwSURBVHgBhdNRDoQgDATQAh1Qq+r9T7sb3bWjkvT9YlJGpkJSLgpoyUk6agNpVR4yHrKwqnjRSufoqsG5f6EgTLv3Y/k9YBhfQxrYZDNIExGwxWwFE0lgm5kNIEkyyGhfE0iWAjfbYYEronCrHTY4FY5oPxxVbhH/KKooRbysNKJQRDf4JbNHJJPHTBSR7NePEpz29Q4neqyu1usTq3FhosoFpQ1rHy9OvHrx8obr/wFluxNblyUG8AAAAABJRU5ErkJggg==",
+                    "/vercel.jpeg",
             },
             {
                 name: "VS Code",
                 image:
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/512px-Visual_Studio_Code_1.35_icon.svg.png?20210804221519",
+                    "/vscode.jpeg",
             },
             {
                 name: "Postman",
                 image:
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAXVBMVEUAAAD/cED/ajX/azf/bDf/bDb/bDf/azb/aDj/bDf/bTf/bTX/azf/bDf/ajX/bDb/cDD/bDf/bDb/bTX/bDf/azf/bTf/bDb/bDb/azb/bDj/bDb/bjf/bDj/ajhLM8F2AAAAH3RSTlMAEGCfz+//XyCQj4/fvzCgEO/PYK9w34BQoIB/T0Bgzb7ZEAAAAN1JREFUeAF1kolugzAQRMcYT5dkUyhtQ3r+/2dWGalaQbxPJ7zZw7IRlKGOjWxjfTI8YlNjUI+RcuKBc9mVOx+4IHjueLesPrwZRMm8e1HglHnyrAF9r71oAOa+b7wzAUvmxUvBkPrVSb5iznyFacaaeL4BF3JF63uNfyevyDxp2g+pd2AjiZZ4btrhqiXj1xJ54KZL/9i/gE/+83VzHXNgUJXY8a2mecIBTMwT+jbmCRrUIk1suLN4lnBAWJJwS569EuGzHmN4qOKYKNhjM4P2gw7ld14b2dY6RDX+ALhIFgGJ//ETAAAAAElFTkSuQmCC",
+                    "/postman.jpeg",
             },
 
         ],
@@ -144,7 +149,7 @@ export const experiences = [
         img: "https://avatars.githubusercontent.com/u/152776938?v=4",
         role: " Fullstack Engineering Intern",
         company: "Recursive Zero Pvt. Ltd.",
-        date: "jan 2024 - feb 2024",
+        date: "jan 2024 - present",
         desc: "Working on the frontend of the web application using ASTROJS",
         skills: [
             "JavaScript",
