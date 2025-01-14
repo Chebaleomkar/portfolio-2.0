@@ -13,6 +13,6 @@ export const NavbarLinks: { name: string; link: string }[] = [
     },
     {
         name: "Contact",
-        link: "/#contact",
+        link: "/#contactMe",
     },
 ];

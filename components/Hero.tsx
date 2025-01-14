@@ -44,7 +44,7 @@ export const Hero = () => {
                         <SocialIcon href={Bio.facebook} icon={FaFacebook} label="Facebook" />
                         <SocialIcon href={Bio.stack_overflow} icon={FaStackOverflow} label="Stack Overflow" />
                     </div>
-                    <Link href={Bio.resume} target="_blank" rel="noopener noreferrer">
+                    <Link href="/resume" >
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}

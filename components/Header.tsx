@@ -4,10 +4,10 @@ import { NavbarLinks } from '@/utils/constants';
 
 export const Header = () => {
     return (
-        <header className="rounded-md sticky top-0 z-50 bg-background border-b border-border shadow-sm">
+        <header className="rounded-md dark:bg-blue-500 text-black sticky top-0 z-50  border-b border-border shadow-sm">
             <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                 {/* Logo */}
-                <Link href="/" className="text-xl font-bold text-primary hover:text-secondary">
+                <Link href="/" className="text-xl font-bold ">
                     Omkar Chebale
                 </Link>
 
@@ -17,7 +17,7 @@ export const Header = () => {
                         <Link
                             key={index}
                             href={item.link}
-                            className="text-muted-foreground hover:text-primary transition-colors"
+                            className="text-muted-background hover:text-primary transition-colors"
                         >
                             {item.name}
                         </Link>
