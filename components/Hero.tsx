@@ -1,75 +1,90 @@
-import { Bio } from '@/utils/data';
-import { Github, Linkedin, Twitter, Instagram, Facebook, FileText } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
+"use client"
+import Image from 'next/image'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { TypeAnimation } from 'react-type-animation'
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaStackOverflow } from 'react-icons/fa'
+import { Bio } from '@/utils/data'
+
 
 export const Hero = () => {
     return (
-        <section className="relative min-h-screen bg-gradient-to-br dark:from-blue-900 via-black to-gray-900 text-white from-gray-100 dark:via-white dark:to-blue-200">
-            {/* Background Effects */}
-            <div className="absolute inset-0 z-0 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tl from-transparent to-black opacity-60 dark:to-white dark:opacity-20"></div>
-                <div className="absolute w-96 h-96 rounded-full bg-purple-500 opacity-30 blur-3xl top-1/4 left-1/3 animate-pulse"></div>
-                <div className="absolute w-80 h-80 rounded-full bg-blue-500 opacity-20 blur-3xl bottom-1/4 right-1/4 animate-ping"></div>
-            </div>
-
-            <div className="container mx-auto px-6 py-20 relative z-10">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-10">
-                    {/* Text Section */}
-                    <div className="flex-1">
-                        <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 animate-text dark:from-blue-500 dark:via-green-500 dark:to-teal-500">
-                            {Bio.name}
-                        </h1>
-                        <div className="mb-4 space-y-2">
-                            {Bio.roles.map((role, index) => (
-                                <span
-                                    key={index}
-                                    className="text-2xl font-semibold text-muted-foreground mr-2 hover:text-primary transition duration-300"
-                                >
-                                    {role}
-                                    {index !== Bio.roles.length - 1 && (
-                                        <span className="text-purple-400 dark:text-blue-400"> | </span>
-                                    )}
-                                </span>
-                            ))}
-                        </div>
-                        <p className="text-lg leading-relaxed mb-8 text-gray-300 dark:text-gray-700 tracking-wide">
-                            {Bio.description}
-                        </p>
-                        <div className="flex gap-6">
-                            {[
-                                { link: Bio.github, Icon: Github },
-                                { link: Bio.linkedin, Icon: Linkedin },
-                                { link: Bio.twitter, Icon: Twitter },
-                                { link: Bio.insta, Icon: Instagram },
-                                { link: Bio.facebook, Icon: Facebook },
-                                { link: Bio.resume, Icon: FileText },
-                            ].map(({ link, Icon }, index) => (
-                                <Link key={index} href={link} target="_blank">
-                                    <Icon
-                                        size={32}
-                                        className="hover:text-purple-400 dark:hover:text-blue-400 transition transform hover:-translate-y-1"
-                                    />
-                                </Link>
-                            ))}
-                        </div>
+        <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300">
+            <div className="container mx-auto px-4 py-12 flex flex-col lg:flex-row items-center justify-between">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="lg:w-1/2 text-center lg:text-left mb-8 lg:mb-0"
+                >
+                    <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 dark:text-white mb-4">
+                        Hi, I'm{' '}
+                        <TypeAnimation
+                            sequence={[Bio.name, 1000]}
+                            wrapper="span"
+                            cursor={true}
+                            repeat={Infinity}
+                            className="text-blue-600 dark:text-blue-400"
+                        />
+                    </h1>
+                    <h2 className="text-2xl lg:text-3xl text-gray-600 dark:text-gray-300 mb-4">
+                        <TypeAnimation
+                            sequence={Bio.roles.flatMap(role => [role, 1000])}
+                            wrapper="span"
+                            cursor={true}
+                            repeat={Infinity}
+                        />
+                    </h2>
+                    <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">{Bio.description}</p>
+                    <div className="flex justify-center lg:justify-start space-x-4 mb-6">
+                        <SocialIcon href={Bio.github} icon={FaGithub} label="GitHub" />
+                        <SocialIcon href={Bio.linkedin} icon={FaLinkedin} label="LinkedIn" />
+                        <SocialIcon href={Bio.twitter} icon={FaTwitter} label="Twitter" />
+                        <SocialIcon href={Bio.insta} icon={FaInstagram} label="Instagram" />
+                        <SocialIcon href={Bio.facebook} icon={FaFacebook} label="Facebook" />
+                        <SocialIcon href={Bio.stack_overflow} icon={FaStackOverflow} label="Stack Overflow" />
                     </div>
-
-                    {/* Image Section */}
-                    <div className="flex-1 flex justify-center items-center relative">
-                        <div className="relative w-80 h-80">
-                            <Image
-                                src="/profile.jpg"
-                                alt="Hero"
-                                layout="fill"
-                                className="rounded-full border-4 border-gray-800 shadow-2xl hover:scale-105 transform transition duration-300 dark:border-gray-300"
-                            />
-                        </div>
-                        <div className="absolute top-0 right-0 w-32 h-32 rounded-full border-4 border-purple-500 blur-xl animate-spin-slow dark:border-blue-500"></div>
-                        <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full border-4 border-pink-500 blur-lg animate-pulse dark:border-green-500"></div>
+                    <Link href={Bio.resume} target="_blank" rel="noopener noreferrer">
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
+                        >
+                            View Resume
+                        </motion.button>
+                    </Link>
+                </motion.div>
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="lg:w-1/2 flex justify-center lg:justify-end"
+                >
+                    <div className="relative w-64 h-64 lg:w-80 lg:h-80">
+                        <Image
+                            src="/profile.jpg"
+                            alt="Omkar Chebale"
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded-full shadow-2xl"
+                        />
                     </div>
-                </div>
+                </motion.div>
             </div>
         </section>
-    );
-};
+    )
+}
+
+const SocialIcon = ({ href, icon: Icon, label }) => (
+    <motion.a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        whileHover={{ scale: 1.2 }}
+        whileTap={{ scale: 0.9 }}
+        className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300"
+        aria-label={label}
+    >
+        <Icon size={24} />
+    </motion.a>
+)

@@ -9,9 +9,7 @@ export const Bio = {
         "Programmer",
         "coder",
     ],
-    description: `🚀 As a dynamic full-stack engineer, I breathe life into the digital realm through the art of coding. Proficient in JavaScript, React, and Node.js, I've sculpted innovative projects, meticulously crafted and available for exploration on my GitHub.
-      🎤 Passionate about knowledge-sharing, I've stepped into the spotlight, delivering engaging lectures in college. A curious explorer, once entered into the field, I become unstoppable.
-      🌐 Embracing challenges fuels my journey, propelling me to create elegant solutions. Each line of code is an opportunity, and once understood, it becomes an integral part of my ever-growing skill set.`,
+    description: "As a Full-Stack Developer specializing in the MERN stack, I craft intuitive, high-performing digital experiences. My GitHub is a testament to my passion for building and problem-solving.",
     github: "https://github.com/Chebaleomkar",
     resume:
         "https://drive.google.com/file/d/1_xD17Kg6MS0T0ahDAxltGXSxsccutMxr/view?usp=drive_link",
@@ -31,11 +29,6 @@ export const skills = [
                 image:
                     "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMS41IC0xMC4yMzE3NCAyMyAyMC40NjM0OCI+CiAgPHRpdGxlPlJlYWN0IExvZ288L3RpdGxlPgogIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIyLjA1IiBmaWxsPSIjNjFkYWZiIi8+CiAgPGcgc3Ryb2tlPSIjNjFkYWZiIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIi8+CiAgICA8ZWxsaXBzZSByeD0iMTEiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDYwKSIvPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjApIi8+CiAgPC9nPgo8L3N2Zz4K",
             },
-            // {
-            //   name: "Redux",
-            //   image:
-            //     "https://d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg",
-            // },
             {
                 name: "Next Js",
                 image:
@@ -84,10 +77,10 @@ export const skills = [
                 image:
                     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAbFBMVEX////8/Pz09PT19fX4+Pjd3d2ampoAAAAzNDWoqKno6Oh0dHRcXFzIycm5ubktLi4hIiN7e3yLi4tmZ2fi4uI9Pj7S0tIHCQuzs7NJSkru7u6goKB+f3/W1taNjo69vb1PT1BsbW0VFRc3ODhehn9TAAAA30lEQVR4Ad3QhXHEMBBA0W8QmAVmTq7/HjOeDdSQewNiLfBukjRNM4A0TeCR/0wSpY0xtiihMgWPsraNnLWd8yFEE3vyOIwAeprhMQ5Lm8O6uT3hWPwKjQspj+zsLvlBuwNmV1DaukS+t3sqs8MWkAU7ejMiGnMhkjoCqnZmQ3CZPwM8Hy/8Hd7xF7BWzjQIxulCsJaQbG6r7xXR2zNHrn1s0AwhUdNPjunejTLxTlHedS89EOMwFAkobzR4ewFptRyI9tPY18uZkFIYzUO5akWU22BflYKx2xGX1Rn/yxf+uwzyBt/vSwAAAABJRU5ErkJggg==",
             },
-            // {
-            //   name: "Graph Ql",
-            //   image: "https://www.vectorlogo.zone/logos/graphql/graphql-icon.svg",
-            // },
+            {
+                name: "Hono Js",
+                image: "https://www.vectorlogo.zone/logos/graphql/graphql-icon.svg",
+            },
             {
                 name: "MySQL",
                 image:
