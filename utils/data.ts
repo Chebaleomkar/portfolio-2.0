@@ -339,61 +339,6 @@ export const projects = [
         github: "https://github.com/Chebaleomkar/movix",
         webapp: "https://movix-beta-blue.vercel.app/",
     },
-    // {
-    //     id: 5,
-    //     title: "E-commerce App ",
-    //     TitleColor: "text-emerald-500",
-    //     date: "Jan 2023 - Mar 2023",
-    //     description:
-    //         "Experience seamless transactions with Stripe Integration using a dedicated Node.js server. Elevate user communication through Email Automation with Nodemailer. Unleash dynamic data with API Integration, boosting engagement.This project, with its responsive design and cutting-edge features, ensures a modern and efficient user experience.",
-    //     image:
-    //         "ecommerce.jpeg",
-    //     tags: ["React Js", "NodeJs", "Express", "Stripe", "Sass", "Api Integration"],
-    //     category: "machine learning",
-    //     github: " https://github.com/Chebaleomkar/Trendz-E-commerce-full_stack-app",
-    // },
-    // {
-    //     id: 6,
-    //     title: "Joke Chrome Extension ",
-    //     TitleColor: "text-emerald-500",
-    //     date: "Mar 2024 - Mar 2024",
-    //     description:
-    //         "Read the new joke on every click and also share the joke on whatsapp with friends",
-    //     image:
-    //         "/laugh.jpeg",
-    //     tags: ["HTML", "CSS", "JS", "Api Integration"],
-    //     category: "web App ",
-    //     github: " https://github.com/Chebaleomkar/joke-chrome-Extension",
-    // },
-    // {
-    //     id: 7,
-    //     title: "PNR Status - PWA",
-    //     TitleColor: "text-emerald-500",
-    //     date: "Jan 2023 - Mar 2023",
-    //     description:
-    //         "he PNR Status PWA is a user-friendly web application designed to provide real-time information on Passenger Name Record (PNR) status. Users can access essential details about their train journey, including train information, departure time, route, and journey date. This PWA aims to deliver a seamless and efficient experience for checking PNR status. Retrieve the most recent PNR status even when offline, thanks to Progressive Web App capabilities.",
-    //     image:
-    //         "/pnr.jpeg",
-    //     tags: ["HTML", "CSS", "Js", "PWA", "Api Integration"],
-    //     category: "machine learning",
-    //     github: "https://github.com/Chebaleomkar/pnr-status-pwa",
-    // },
-    // {
-    //     id: 5,
-    //     title: "Weather Hub App",
-    //     TitleColor: "text-emerald-500",
-    //     date: "Jan 2023 - Mar 2023",
-    //     description:
-    //         "he PNR Status PWA is a user-friendly web application designed to provide real-time information on Passenger Name Record (PNR) status. Users can access essential details about their train journey, including train information, departure time, route, and journey date. This PWA aims to deliver a seamless and efficient experience for checking PNR status. Retrieve the most recent PNR status even when offline, thanks to Progressive Web App capabilities.",
-    //     image:
-    //         "/weatherhub.jpeg",
-    //     tags: ["ReactJs", "BootStrap", "Js", "Api Integration"],
-    //     category: "machine learning",
-    //     github: "https://github.com/Chebaleomkar/weather-app",
-    //     webapp: " https://jocular-cucurucho-1a13cb.netlify.app/",
-
-    // },
-
 ];
 
 export const blogs = [

@@ -3,22 +3,14 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { NavbarLinks } from '@/utils/constants';
+import { darkColors, lightColors, NavbarLinks } from '@/utils/constants';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 export const Header = () => {
     const { theme } = useTheme();
     const [headerColor, setHeaderColor] = useState('');
-
-    // Function to generate a random light or dark color
     const getRandomColor = (isDarkMode: boolean) => {
-        const lightColors = [
-            '#FFDDC1', '#C1FFD7', '#C1D7FF', '#FFC1E3', '#E3C1FF', '#C1FFF5', '#F5FFC1', '#FFC1C1', '#C1FFE0', '#E0C1FF'
-        ];
-        const darkColors = [
-            '#1A1A2E', '#16213E', '#0F3460', '#1F4068', '#1C2B4E', '#1D2671', '#1E3D59', '#1C1C1C', '#2C3E50', '#34495E'
-        ];
         const colors = isDarkMode ? darkColors : lightColors;
         return colors[Math.floor(Math.random() * colors.length)];
     };
