@@ -100,7 +100,7 @@ export function ContactMe() {
                     className="text-center mb-8"
                 >
                     <h2 className="text-3xl font-bold text-white mb-2">Get in Touch</h2>
-                    <p className="text-gray-400">I'd love to hear from you. Send me a message!</p>
+                    <p className="text-gray-400">I&apos;d love to hear from you. Send me a message!</p>
                 </motion.div>
 
                 <div className="bg-gray-800 p-4 rounded-lg shadow-xl">

@@ -90,8 +90,9 @@ const SkillItem = ({ skill, index }: SkillItemProps) => {
                     src={skill.image}
                     alt={skill.name}
                     className="object-contain rounded-full border-2 border-gray-300 dark:border-gray-600"
-                    layout="fill" // Use layout "fill" for responsive image sizes
+                    style={{ objectFit: 'cover' }}
                     objectFit="contain"
+                    fill
                 />
             </div>
             <div className="flex flex-col justify-center">
