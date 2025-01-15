@@ -1,11 +1,17 @@
-"use client"
-import Image from 'next/image'
-import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { TypeAnimation } from 'react-type-animation'
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaStackOverflow } from 'react-icons/fa'
-import { Bio } from '@/utils/data'
+"use client";
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { TypeAnimation } from 'react-type-animation';
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaStackOverflow } from 'react-icons/fa';
+import { Bio } from '@/utils/data';
 
+// Define the type for the SocialIcon props
+interface SocialIconProps {
+    href: string;
+    icon: React.ComponentType<{ size: number }>;
+    label: string;
+}
 
 export const Hero = () => {
     return (
@@ -18,7 +24,7 @@ export const Hero = () => {
                     className="lg:w-1/2 text-center lg:text-left mb-8 lg:mb-0"
                 >
                     <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 dark:text-white mb-4">
-                        Hi, I'm {' '}
+                        Hi, I'm{' '}
                         <TypeAnimation
                             sequence={[Bio.name, 1000]}
                             wrapper="span"
@@ -29,7 +35,7 @@ export const Hero = () => {
                     </h1>
                     <h2 className="text-2xl lg:text-3xl text-gray-600 dark:text-gray-300 mb-4">
                         <TypeAnimation
-                            sequence={Bio.roles.flatMap(role => [role, 1000])}
+                            sequence={Bio.roles.flatMap((role) => [role, 1000])}
                             wrapper="span"
                             cursor={true}
                             repeat={Infinity}
@@ -44,7 +50,7 @@ export const Hero = () => {
                         <SocialIcon href={Bio.facebook} icon={FaFacebook} label="Facebook" />
                         <SocialIcon href={Bio.stack_overflow} icon={FaStackOverflow} label="Stack Overflow" />
                     </div>
-                    <Link href="/resume" >
+                    <Link href="/resume">
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
@@ -72,10 +78,11 @@ export const Hero = () => {
                 </motion.div>
             </div>
         </section>
-    )
-}
+    );
+};
 
-const SocialIcon = ({ href, icon: Icon, label }) => (
+// SocialIcon component with TypeScript types
+const SocialIcon = ({ href, icon: Icon, label }: SocialIconProps) => (
     <motion.a
         href={href}
         target="_blank"
@@ -87,4 +94,4 @@ const SocialIcon = ({ href, icon: Icon, label }) => (
     >
         <Icon size={24} />
     </motion.a>
-)
+);

@@ -1,40 +1,51 @@
-'use client'
+'use client';
 
-import { Bio, projects } from '@/utils/data'
-import Link from 'next/link'
-import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
-import { Button } from './ui/button'
-import { motion, useAnimation } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
-import { TypeAnimation } from 'react-type-animation'
-import { MoveRightIcon } from 'lucide-react'
+import { Bio, projects } from '@/utils/data';
+import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { Button } from './ui/button';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { TypeAnimation } from 'react-type-animation';
+import { MoveRightIcon } from 'lucide-react';
+
+// Define the type for a project
+interface Project {
+    title: string;
+    description: string;
+    image: string;
+    tags: string[];
+    github?: string;
+    webapp?: string;
+    TitleColor?: string;
+}
 
 export const Projects = () => {
-    const controls = useAnimation()
-    const [ref, inView] = useInView()
-    const [isLoading, setIsLoading] = useState(true)
+    const controls = useAnimation();
+    const [ref, inView] = useInView();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         if (inView) {
-            controls.start('visible')
+            controls.start('visible');
         }
         // Simulate loading delay
-        setTimeout(() => setIsLoading(false), 1500)
-    }, [controls, inView])
+        setTimeout(() => setIsLoading(false), 1500);
+    }, [controls, inView]);
 
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.2
-            }
-        }
-    }
+                staggerChildren: 0.2,
+            },
+        },
+    };
 
     return (
-        <section id='projects' className=" px-8 py-8 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
+        <section id="projects" className="px-8 py-8 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
             {isLoading ? (
                 <LoadingAnimation />
             ) : (
@@ -68,18 +79,23 @@ export const Projects = () => {
                             <MoveRightIcon size={35} className="text-white animate-pulse" />
                         </div>
                     </Link>
-
                 </>
             )}
         </section>
-    )
+    );
+};
+
+// Define the props for the ProjectCard component
+interface ProjectCardProps {
+    project: Project;
+    index: number;
 }
 
-const ProjectCard = ({ project, index }) => {
+const ProjectCard = ({ project, index }: ProjectCardProps) => {
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
-    })
+    });
 
     const cardVariants = {
         hidden: { opacity: 0, y: 50 },
@@ -88,10 +104,10 @@ const ProjectCard = ({ project, index }) => {
             y: 0,
             transition: {
                 duration: 0.5,
-                delay: index * 0.1
-            }
-        }
-    }
+                delay: index * 0.1,
+            },
+        },
+    };
 
     return (
         <div>
@@ -110,9 +126,15 @@ const ProjectCard = ({ project, index }) => {
                     />
                 </div>
                 <div className="p-6">
-                    <h3 style={{ color: `${project.TitleColor}` }} className={`text-xl font-semibold mb-2  h-14`}>{project.title}
+                    <h3
+                        style={{ color: project.TitleColor }}
+                        className={`text-xl font-semibold mb-2 h-14`}
+                    >
+                        {project.title}
                     </h3>
-                    <p className="text-sm mb-4 text-clip line-clamp-3  text-gray-600 dark:text-gray-300">{project.description}</p>
+                    <p className="text-sm mb-4 text-clip line-clamp-3 text-gray-600 dark:text-gray-300">
+                        {project.description}
+                    </p>
                     <div className="flex flex-wrap gap-2 mb-4">
                         {project.tags.map((tag, index) => (
                             <span
@@ -149,11 +171,9 @@ const ProjectCard = ({ project, index }) => {
                     </div>
                 </div>
             </motion.div>
-
         </div>
-
-    )
-}
+    );
+};
 
 const LoadingAnimation = () => {
     return (
@@ -161,8 +181,8 @@ const LoadingAnimation = () => {
             <motion.div
                 className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full"
                 animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
             />
         </div>
-    )
-}
+    );
+};

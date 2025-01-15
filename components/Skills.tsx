@@ -5,6 +5,19 @@ import { useInView } from "react-intersection-observer";
 import Image from "next/image";
 import { skills } from "@/utils/data";
 
+// Define the type for a skill
+interface Skill {
+    name: string;
+    image: string;
+    description?: string;
+}
+
+// Define the type for a skill category
+interface SkillCategoryType {
+    title: string;
+    skills: Skill[];
+}
+
 export const Skills = () => {
     return (
         <section id="skills" className="py-16 bg-gray-50 dark:bg-gray-900">
@@ -22,7 +35,12 @@ export const Skills = () => {
     );
 };
 
-const SkillCategory = ({ category }) => {
+// Define the props for the SkillCategory component
+interface SkillCategoryProps {
+    category: SkillCategoryType;
+}
+
+const SkillCategory = ({ category }: SkillCategoryProps) => {
     const [ref, inView] = useInView({
         threshold: 0.1,
     });
@@ -47,8 +65,13 @@ const SkillCategory = ({ category }) => {
     );
 };
 
+// Define the props for the SkillItem component
+interface SkillItemProps {
+    skill: Skill;
+    index: number;
+}
 
-const SkillItem = ({ skill, index }) => {
+const SkillItem = ({ skill, index }: SkillItemProps) => {
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
