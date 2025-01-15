@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Image from "next/image";
 import { skills } from "@/utils/data";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { darkColors, lightColors } from "@/utils/constants";
 
 // Define the type for a skill
 interface Skill {
@@ -72,6 +75,20 @@ interface SkillItemProps {
 }
 
 const SkillItem = ({ skill, index }: SkillItemProps) => {
+    const { theme } = useTheme();
+        const [borderColor, setBorderColor] = useState('');
+        
+        const getRandomColor = (isDarkMode: boolean) => {
+            const colors = isDarkMode ? darkColors : lightColors;
+            return colors[Math.floor(Math.random() * colors.length)];
+        };
+    
+        // Update header color whenever the theme changes
+        useEffect(() => {
+            const isDarkMode = theme === 'dark';
+            setBorderColor(getRandomColor(isDarkMode));
+        }, [theme]);
+
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
@@ -83,13 +100,14 @@ const SkillItem = ({ skill, index }: SkillItemProps) => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={inView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-            className="flex items-center space-x-3 p-2 rounded-lg bg-white dark:bg-gray-700 shadow-md transform transition-all hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-900"
+            style={{borderBottom : `5px solid ${borderColor} `}}
+            className={`flex items-center space-x-3 p-2 rounded-lg bg-white dark:bg-gray-700 shadow-md transform transition-all hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-900 `}
         >
-            <div className="relative w-10 h-10">
+            <div className='relative w-10 h-10'>
                 <Image
                     src={skill.image}
                     alt={skill.name}
-                    className="object-contain rounded-full border-2 border-gray-300 dark:border-gray-600"
+                    className="object-contain rounded-full border-2 border-green-300 dark:border-yellow-600"
                     style={{ objectFit: 'cover' }}
                     objectFit="contain"
                     fill

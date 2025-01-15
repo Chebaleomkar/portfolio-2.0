@@ -3,15 +3,17 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { darkColors, lightColors, NavbarLinks } from '@/utils/constants';
+import { lightColors, NavbarLinks } from '@/utils/constants';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export const Header = () => {
     const { theme } = useTheme();
     const [headerColor, setHeaderColor] = useState('');
+
     const getRandomColor = (isDarkMode: boolean) => {
-        const colors = isDarkMode ? darkColors : lightColors;
+        const colors = isDarkMode ? ['white'] : lightColors;
         return colors[Math.floor(Math.random() * colors.length)];
     };
 
@@ -34,29 +36,27 @@ export const Header = () => {
         hover: { scale: 1.1, color: '#3B82F6', transition: { duration: 0.2 } }, // Blue color on hover
     };
 
-    // Animation for the logo
-    const logoVariants = {
-        hidden: { opacity: 0, x: -50 },
-        visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: 'easeOut' } },
-        hover: { rotate: [0, 10, -10, 0], transition: { duration: 0.5 } }, // Fun wobble effect on hover
-    };
-
     return (
         <motion.header
             initial="hidden"
             animate="visible"
             variants={headerVariants}
-            className="rounded-md sticky top-0 z-50 border-b border-border shadow-sm backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80"
-            style={{ backgroundColor: headerColor }} // Apply random color
+            className="rounded-md sticky top-0 z-50 dark:text-black  border-b border-border shadow-sm backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80"
+            style={{ backgroundColor: headerColor }} 
         >
-            <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                {/* Logo with animation */}
+            <div className="container mx-auto px-4 p-1 flex justify-between items-center">
+                {/* Logo with slight tilt */}
                 <motion.div
-                    variants={logoVariants}
-                    whileHover="hover"
+                    className='dark:bg-white '
                 >
-                    <Link href="/" className="text-2xl font-bold">
-                        Omkar Chebale
+                    <Link href="/">
+                        <Image
+                            src="/sign.png"
+                            alt="Omkar Chebale"
+                            width={150}
+                            height={100}
+                            className="object-contain max-sm:w-[50%]   "
+                        />
                     </Link>
                 </motion.div>
 
@@ -70,7 +70,7 @@ export const Header = () => {
                         >
                             <Link
                                 href={item.link}
-                                className="font-semibold hover:text-primary transition-colors"
+                                className="font-semibold dark:hover:text-yellow-500 transition-colors"
                             >
                                 {item.name}
                             </Link>

@@ -108,7 +108,7 @@ export function ContactMe() {
     }
 
     return (
-        <section id="contactMe" className="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen flex items-center justify-center">
+        <section id="contactMe" className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
             <Toaster position="top-center" />
             <motion.div
                 ref={ref}
@@ -121,7 +121,7 @@ export function ContactMe() {
                     variants={itemVariants}
                     className="text-center mb-8"
                 >
-                    <h2 className="text-3xl font-bold text-white mb-2">Get in Touch</h2>
+                    <h2 className="text-3xl font-bold  mb-2">Get in Touch</h2>
                     <p className="text-gray-400">I&apos;d love to hear from you. Send me a message!</p>
                 </motion.div>
 
