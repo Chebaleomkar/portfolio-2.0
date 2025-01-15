@@ -5,7 +5,8 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
-
+import { useState } from "react"
+import { Check, Loader2, Mail, PenTool, MessageCircle } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import {
     Form,
@@ -17,9 +18,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/hooks/use-toast"
-import { useState } from "react"
-import { Check, Loader2 } from 'lucide-react'
+import toast, { Toaster } from 'react-hot-toast'
 
 const formSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
@@ -47,19 +46,37 @@ export function ContactMe() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsSubmitting(true)
         try {
-            // Simulate API call
-            await new Promise((resolve) => setTimeout(resolve, 2000))
-            console.log(values)
-            setIsSubmitted(true)
-            toast({
-                title: "Message sent successfully!",
-                description: "Thank you for reaching out. I'll get back to you soon.",
+            // Send POST request to /api/send-email
+            const response = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
             })
+
+            if (!response.ok) {
+                throw new Error('Failed to send message')
+            }
+
+            // Show success toast
+            toast.success("🎉 Your message has been successfully sent to Mr. Omkar Chebale!", {
+                style: {
+                    background: '#10B981',
+                    color: '#FFFFFF',
+                    border: '1px solid #059669',
+                    width : '70%'
+                },
+            })
+            setIsSubmitted(true)
         } catch (error) {
-            toast({
-                title: "Error",
-                description: "Something went wrong. Please try again.",
-                variant: "destructive",
+            // Show error toast
+            toast.error("❌ Something went wrong. Please try again.", {
+                style: {
+                    background: '#EF4444',
+                    color: '#FFFFFF',
+                    border: '1px solid #DC2626',
+                },
             })
         } finally {
             setIsSubmitting(false)
@@ -86,8 +103,13 @@ export function ContactMe() {
         },
     }
 
+    const iconVariants = {
+        hover: { scale: 1.1, rotate: [0, -10, 10, 0], transition: { duration: 0.5 } },
+    }
+
     return (
-        <section id="contactMe" className=" bg-gray-900 min-h-screen flex items-center justify-center ">
+        <section id="contactMe" className="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen flex items-center justify-center">
+            <Toaster position="top-center" />
             <motion.div
                 ref={ref}
                 initial="hidden"
@@ -103,7 +125,7 @@ export function ContactMe() {
                     <p className="text-gray-400">I&apos;d love to hear from you. Send me a message!</p>
                 </motion.div>
 
-                <div className="bg-gray-800 p-4 rounded-lg shadow-xl">
+                <div className="bg-gray-800 p-6 rounded-lg shadow-xl">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                             <motion.div variants={itemVariants}>
@@ -112,7 +134,15 @@ export function ContactMe() {
                                     name="email"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-gray-200">Email</FormLabel>
+                                            <FormLabel className="text-gray-200 flex items-center gap-2">
+                                                <motion.span
+                                                    variants={iconVariants}
+                                                    whileHover="hover"
+                                                >
+                                                    <Mail className="w-5 h-5" />
+                                                </motion.span>
+                                                Email
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     placeholder="your@email.com"
@@ -132,7 +162,15 @@ export function ContactMe() {
                                     name="subject"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-gray-200">Subject</FormLabel>
+                                            <FormLabel className="text-gray-200 flex items-center gap-2">
+                                                <motion.span
+                                                    variants={iconVariants}
+                                                    whileHover="hover"
+                                                >
+                                                    <PenTool className="w-5 h-5" />
+                                                </motion.span>
+                                                Subject
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     placeholder="What's this about?"
@@ -152,7 +190,15 @@ export function ContactMe() {
                                     name="message"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-gray-200">Message</FormLabel>
+                                            <FormLabel className="text-gray-200 flex items-center gap-2">
+                                                <motion.span
+                                                    variants={iconVariants}
+                                                    whileHover="hover"
+                                                >
+                                                    <MessageCircle className="w-5 h-5" />
+                                                </motion.span>
+                                                Message
+                                            </FormLabel>
                                             <FormControl>
                                                 <Textarea
                                                     placeholder="Your message here..."
@@ -197,4 +243,3 @@ export function ContactMe() {
         </section>
     )
 }
-

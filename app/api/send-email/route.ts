@@ -26,7 +26,7 @@ export async function POST(request: Request) {
         const mailOptions = {
             from: process.env.GMAIL_USER, // Sender address
             to: process.env.GMAIL_USER, // Receiver address (your email)
-            subject: `New Message: ${subject}`, // Subject line
+            subject: `Portfolio Message: ${subject}`, // Subject line
             text: `You have received a new message from ${email}:\n\n${message}`, // Plain text body
             html: `<p>You have received a new message from <strong>${email}</strong>:</p><p>${message}</p>`, // HTML body
         };

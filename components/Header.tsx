@@ -4,8 +4,31 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { NavbarLinks } from '@/utils/constants';
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 export const Header = () => {
+    const { theme } = useTheme();
+    const [headerColor, setHeaderColor] = useState('');
+
+    // Function to generate a random light or dark color
+    const getRandomColor = (isDarkMode: boolean) => {
+        const lightColors = [
+            '#FFDDC1', '#C1FFD7', '#C1D7FF', '#FFC1E3', '#E3C1FF', '#C1FFF5', '#F5FFC1', '#FFC1C1', '#C1FFE0', '#E0C1FF'
+        ];
+        const darkColors = [
+            '#1A1A2E', '#16213E', '#0F3460', '#1F4068', '#1C2B4E', '#1D2671', '#1E3D59', '#1C1C1C', '#2C3E50', '#34495E'
+        ];
+        const colors = isDarkMode ? darkColors : lightColors;
+        return colors[Math.floor(Math.random() * colors.length)];
+    };
+
+    // Update header color whenever the theme changes
+    useEffect(() => {
+        const isDarkMode = theme === 'dark';
+        setHeaderColor(getRandomColor(isDarkMode));
+    }, [theme]);
+
     // Animation variants for the header
     const headerVariants = {
         hidden: { opacity: 0, y: -50 },
@@ -31,7 +54,8 @@ export const Header = () => {
             initial="hidden"
             animate="visible"
             variants={headerVariants}
-            className="rounded-md dark:bg-blue-500 text-black sticky top-0 z-50 border-b border-border shadow-sm backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80"
+            className="rounded-md sticky top-0 z-50 border-b border-border shadow-sm backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80"
+            style={{ backgroundColor: headerColor }} // Apply random color
         >
             <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                 {/* Logo with animation */}
@@ -39,7 +63,7 @@ export const Header = () => {
                     variants={logoVariants}
                     whileHover="hover"
                 >
-                    <Link href="/" className="text-xl font-bold">
+                    <Link href="/" className="text-2xl font-bold">
                         Omkar Chebale
                     </Link>
                 </motion.div>
@@ -54,7 +78,7 @@ export const Header = () => {
                         >
                             <Link
                                 href={item.link}
-                                className="text-muted-background hover:text-primary transition-colors"
+                                className="font-semibold hover:text-primary transition-colors"
                             >
                                 {item.name}
                             </Link>
