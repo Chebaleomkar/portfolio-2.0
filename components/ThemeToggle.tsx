@@ -12,7 +12,7 @@ export const ThemeToggle = () => {
     return (
         <div
             className="flex items-center space-x-4 cursor-pointer"
-            onClick={toggleTheme} // Toggle theme when clicking anywhere in this div
+            onClick={toggleTheme} 
         >
             <div className="text-muted-foreground ">
                 {theme === 'light' ? <Sun size={iconSize} /> : <Moon size={iconSize} />}

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaStackOverflow } from 'react-icons/fa';
 import { Bio } from '@/utils/data';
+import { useEffect, useState } from 'react';
 
 // Define the type for the SocialIcon props
 interface SocialIconProps {
@@ -14,32 +15,56 @@ interface SocialIconProps {
 }
 
 export const Hero = () => {
+    const [showBullet, setShowBullet] = useState(false);
+
+    // Effect to toggle the bullet animation every 10 seconds
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setShowBullet((prev) => !prev);
+        }, 10000); // 10 seconds
+
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300">
             <div className="container mx-auto px-4 py-12 flex flex-col lg:flex-row items-center justify-between">
+                {/* Left Side: Text Content */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
+                    initial={{ x: -100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ duration: 0.8, ease: 'easeOut' }}
                     className="lg:w-1/2 text-center lg:text-left mb-8 lg:mb-0"
                 >
                     <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 dark:text-white mb-4">
-                        Hi, I'm{' '}
-                        <TypeAnimation
-                            sequence={[Bio.name, 1000]}
-                            wrapper="span"
-                            cursor={true}
-                            repeat={Infinity}
+                        Hi, I&apos;m{' '}
+                        <motion.span
+                            initial={{ x: -50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ duration: 0.5, ease: 'easeOut' }}
                             className="text-blue-600 dark:text-blue-400"
-                        />
+                        >
+                            {Bio.name}
+                        </motion.span>
                     </h1>
-                    <h2 className="text-2xl lg:text-3xl text-gray-600 dark:text-gray-300 mb-4">
+                    <h2 className="text-2xl font-semibold lg:text-3xl text-gray-600 dark:text-gray-300 mb-4">
                         <TypeAnimation
                             sequence={Bio.roles.flatMap((role) => [role, 1000])}
                             wrapper="span"
-                            cursor={true}
+                            cursor={false} // Disable the default cursor
                             repeat={Infinity}
                         />
+                        {/* Custom Bullet Animation */}
+                        {showBullet && (
+                            <motion.span
+                                initial={{ x: -20, opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{ duration: 0.5, ease: 'easeOut' }}
+                                className="ml-2 text-blue-600 dark:text-blue-400 "
+                            >
+                                •
+                            </motion.span>
+                        )}
                     </h2>
                     <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">{Bio.description}</p>
                     <div className="flex justify-center lg:justify-start space-x-4 mb-6">
@@ -60,18 +85,20 @@ export const Hero = () => {
                         </motion.button>
                     </Link>
                 </motion.div>
+
+                {/* Right Side: Profile Image */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.8, ease: 'easeOut' }}
                     className="lg:w-1/2 flex justify-center lg:justify-end"
                 >
                     <div className="relative w-64 h-64 lg:w-80 lg:h-80">
                         <Image
                             src="/profile.jpg"
                             alt="Omkar Chebale"
-                            layout="fill"
-                            objectFit="cover"
+                            fill
+                            style={{ objectFit: 'cover' }}
                             className="rounded-full shadow-2xl"
                         />
                     </div>

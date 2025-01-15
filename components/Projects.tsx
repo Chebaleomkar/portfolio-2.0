@@ -1,16 +1,14 @@
 'use client';
-
 import { Bio, projects } from '@/utils/data';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Button } from './ui/button';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { TypeAnimation } from 'react-type-animation';
 import { MoveRightIcon } from 'lucide-react';
+import GithubAnimatedButton from '@/components/GithubAnimationButton';
+import LiveDemoButton from '@/components/LiveDemoButton';
 
-// Define the type for a project
 interface Project {
     title: string;
     description: string;
@@ -30,7 +28,6 @@ export const Projects = () => {
         if (inView) {
             controls.start('visible');
         }
-        // Simulate loading delay
         setTimeout(() => setIsLoading(false), 1500);
     }, [controls, inView]);
 
@@ -45,7 +42,13 @@ export const Projects = () => {
     };
 
     return (
-        <section id="projects" className="px-8 py-8 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
+        <motion.section
+            id="projects"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="px-8 py-16 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden"
+        >
             {isLoading ? (
                 <LoadingAnimation />
             ) : (
@@ -63,29 +66,32 @@ export const Projects = () => {
                         variants={containerVariants}
                         initial="hidden"
                         animate={controls}
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-[90rem] mx-auto"
                     >
                         {projects.map((project, i) => (
                             <ProjectCard key={i} project={project} index={i} />
                         ))}
                     </motion.div>
                     <Link href={Bio.github}>
-                        <div className="h-20 mt-5 flex items-center justify-center gap-8 px-8 bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-gray-700 dark:to-gray-900 text-white rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                        <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="h-20 mt-10 flex items-center justify-center gap-8 px-8 bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-gray-700 dark:to-gray-900 text-white rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                        >
                             <div className="flex items-center">
                                 <span className="text-lg font-medium">
                                     See More Projects on <span className="font-semibold underline">GitHub</span>
                                 </span>
                             </div>
                             <MoveRightIcon size={35} className="text-white animate-pulse" />
-                        </div>
+                        </motion.div>
                     </Link>
                 </>
             )}
-        </section>
+        </motion.section>
     );
 };
 
-// Define the props for the ProjectCard component
 interface ProjectCardProps {
     project: Project;
     index: number;
@@ -110,68 +116,60 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
     };
 
     return (
-        <div>
-            <motion.div
-                ref={ref}
-                variants={cardVariants}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
-            >
-                <div className="relative h-48 overflow-hidden">
-                    <Image
-                        src={project.image}
-                        alt={project.title}
-                        layout="fill"
-                        objectFit="cover"
-                        className="transition-transform duration-300 hover:scale-110"
-                    />
+        <motion.div
+            ref={ref}
+            variants={cardVariants}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            whileHover={{ scale: 1.05, rotate: [0, -2, 2, -2, 0] }}
+            transition={{ type: "spring", stiffness: 300 }}
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl"
+        >
+            <div className="relative h-48 overflow-hidden">
+                <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    className="transition-transform duration-300 hover:scale-110"
+                />
+            </div>
+            <div className="p-6">
+                <motion.h3
+                    style={{ color: project.TitleColor }}
+                    whileHover={{ scale: 1.1, borderRadius: "50%" }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="text-xl font-semibold mb-2 h-14"
+                >
+                    {project.title}
+                </motion.h3>
+                <p className="text-sm mb-4 text-clip line-clamp-3 text-gray-600 dark:text-gray-300">
+                    {project.description}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                    {project.tags.map((tag, index) => (
+                        <span
+                            key={index}
+                            className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-medium"
+                        >
+                            {tag}
+                        </span>
+                    ))}
                 </div>
-                <div className="p-6">
-                    <h3
-                        style={{ color: project.TitleColor }}
-                        className={`text-xl font-semibold mb-2 h-14`}
-                    >
-                        {project.title}
-                    </h3>
-                    <p className="text-sm mb-4 text-clip line-clamp-3 text-gray-600 dark:text-gray-300">
-                        {project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                        {project.tags.map((tag, index) => (
-                            <span
-                                key={index}
-                                className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-medium"
-                            >
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
-                    <div className="flex gap-4">
-                        {project.github && (
-                            <Link
-                                href={project.github}
-                                target="_blank"
-                                className="text-primary hover:underline"
-                            >
-                                <Button variant="outline" className="transition-all duration-300 hover:bg-primary hover:text-white">
-                                    GitHub
-                                </Button>
-                            </Link>
-                        )}
-                        {project.webapp && (
-                            <Link
-                                href={project.webapp}
-                                target="_blank"
-                                className="text-primary hover:underline"
-                            >
-                                <Button className="transition-all duration-300 hover:bg-primary-dark">
-                                    Live Demo
-                                </Button>
-                            </Link>
-                        )}
-                    </div>
+                <div className="flex gap-4">
+                    {project.github && (
+                        <Link href={project.github} target="_blank">
+                        <GithubAnimatedButton />
+                        </Link>
+                    )}
+                    {project.webapp && (
+                        <Link href={project.webapp} target="_blank">
+                           <LiveDemoButton />
+                        </Link>
+                    )}
                 </div>
-            </motion.div>
-        </div>
+            </div>
+        </motion.div>
     );
 };
 
