@@ -78,7 +78,7 @@ export const Hero = () => {
                         <SocialIcon href={Bio.facebook} icon={FaFacebook} label="Facebook" />
                         <SocialIcon href={Bio.stack_overflow} icon={FaStackOverflow} label="Stack Overflow" />
                     </div>
-                    <Link href="/resume">
+                    <Link href="/omkar-chebale-resume">
                         <ResumeButton/>
                     </Link>
                 </motion.div>
