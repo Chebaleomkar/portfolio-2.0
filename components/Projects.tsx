@@ -1,186 +1,121 @@
-'use client';
-import GithubAnimatedButton from '@/components/GithubAnimationButton';
-import LiveDemoButton from '@/components/LiveDemoButton';
-import { Bio, projects } from '@/utils/data';
-import { motion, useAnimation } from 'framer-motion';
-import { MoveRightIcon } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
+"use client"
+
+import GithubAnimatedButton from "@/components/GithubAnimationButton"
+import LiveDemoButton from "@/components/LiveDemoButton"
+import { Bio, projects } from "@/utils/data"
+import { ArrowRight } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { memo } from "react"
 
 interface Project {
-  title: string;
-  description: string;
-  image: string;
-  tags: string[];
-  github?: string;
-  webapp?: string;
-  TitleColor?: string;
+  title: string
+  description: string
+  image: string
+  tags: string[]
+  github?: string
+  webapp?: string
+  TitleColor?: string
 }
 
-export const Projects = () => {
-  const controls = useAnimation();
-  const [ref, inView] = useInView();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (inView) {
-      controls.start('visible');
-    }
-    setTimeout(() => setIsLoading(false), 1500);
-  }, [controls, inView]);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
+export const Projects = memo(() => {
   return (
-    <motion.section
+    <section
       id="projects"
-      initial={ { opacity: 0 } }
-      animate={ { opacity: 1 } }
-      transition={ { duration: 0.8 } }
-      className="px-8 py-16 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden"
+      className="py-20 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-gray-800"
+      aria-labelledby="projects-heading"
     >
-      { isLoading ? (
-        <LoadingAnimation />
-      ) : (
-        <>
-          <motion.h2
-            initial={ { opacity: 0, y: -20 } }
-            animate={ { opacity: 1, y: 0 } }
-            transition={ { duration: 0.5 } }
-            className="text-4xl font-bold mb-10 text-center text-gray-800 dark:text-white"
+      <div className="container mx-auto px-4 max-w-7xl">
+        <header className="text-center mb-16">
+          <h2
+            id="projects-heading"
+            className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4"
           >
-            Projects
-          </motion.h2>
-          <motion.div
-            ref={ ref }
-            variants={ containerVariants }
-            initial="hidden"
-            animate={ controls }
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-[90rem] mx-auto"
+            Featured Projects
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            A showcase of my recent work and personal projects
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          { projects.map((project, index) => (
+            <ProjectCard key={ `${project.title}-${index}` } project={ project } />
+          )) }
+        </div>
+
+        {/* View More Projects CTA */ }
+        <div className="text-center">
+          <Link
+            href={ Bio.github }
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
           >
-            { projects.map((project, i) => (
-              <ProjectCard key={ i } project={ project } index={ i } />
-            )) }
-          </motion.div>
-          <Link href={ Bio.github }>
-            <motion.div
-              whileHover={ { scale: 1.05 } }
-              whileTap={ { scale: 0.95 } }
-              className="h-20 mt-10 flex items-center justify-center gap-8 px-8 bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-gray-700 dark:to-gray-900 text-white rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-            >
-              <div className="flex items-center">
-                <span className="text-lg font-medium">
-                  See More Projects on <span className="font-semibold underline">GitHub</span>
-                </span>
-              </div>
-              <MoveRightIcon size={ 35 } className="text-white animate-pulse" />
-            </motion.div>
+            <span>View More Projects on GitHub</span>
+            <ArrowRight size={ 20 } />
           </Link>
-        </>
-      ) }
-    </motion.section>
-  );
-};
+        </div>
+      </div>
+    </section>
+  )
+})
 
-interface ProjectCardProps {
-  project: Project;
-  index: number;
-}
-
-const ProjectCard = ({ project, index }: ProjectCardProps) => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        delay: index * 0.1,
-      },
-    },
-  };
-
+const ProjectCard = memo(({ project }: { project: Project }) => {
   return (
-    <motion.div
-      ref={ ref }
-      variants={ cardVariants }
-      initial="hidden"
-      animate={ inView ? "visible" : "hidden" }
-      whileHover={ { scale: 1.05, rotate: [0, -2, 2, -2, 0] } }
-      transition={ { type: "spring", stiffness: 300 } }
-      className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl"
-    >
+    <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 group">
+      {/* Project Image */ }
       <div className="relative h-48 overflow-hidden">
         <Image
-          src={ project.image }
-          alt={ project.title }
+          src={ project.image || "/placeholder.svg" }
+          alt={ `${project.title} project screenshot` }
           fill
-          style={ { objectFit: 'cover' } }
-          className="transition-transform duration-300 hover:scale-110"
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
+
+      {/* Project Content */ }
       <div className="p-6">
-        <motion.h3
+        <h3
+          className="text-xl font-bold mb-3 text-gray-900 dark:text-white line-clamp-2"
           style={ { color: project.TitleColor } }
-          whileHover={ { scale: 1.1, borderRadius: "50%" } }
-          transition={ { type: "spring", stiffness: 300 } }
-          className="text-xl font-semibold mb-2 h-14"
         >
           { project.title }
-        </motion.h3>
-        <p className="text-sm mb-4 text-clip line-clamp-3 text-gray-600 dark:text-gray-300">
-          { project.description }
-        </p>
-        <div className="flex flex-wrap gap-2 mb-4">
-          { project.tags.map((tag, index) => (
+        </h3>
+
+        <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 leading-relaxed">{ project.description }</p>
+
+        {/* Tags */ }
+        <div className="flex flex-wrap gap-2 mb-6">
+          { project.tags.map((tag) => (
             <span
-              key={ index }
-              className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-medium"
+              key={ tag }
+              className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs font-medium rounded-full"
             >
               { tag }
             </span>
           )) }
         </div>
-        <div className="flex gap-4">
+
+        {/* Action Buttons */ }
+        <div className="flex gap-3">
           { project.github && (
-            <Link href={ project.github } target="_blank">
+            <Link href={ project.github } target="_blank" rel="noopener noreferrer" className="flex-1">
               <GithubAnimatedButton />
             </Link>
           ) }
           { project.webapp && (
-            <Link href={ project.webapp } target="_blank">
+            <Link href={ project.webapp } target="_blank" rel="noopener noreferrer" className="flex-1">
               <LiveDemoButton />
             </Link>
           ) }
         </div>
       </div>
-    </motion.div>
-  );
-};
+    </article>
+  )
+})
 
-const LoadingAnimation = () => {
-  return (
-    <div className="flex justify-center items-center h-64">
-      <motion.div
-        className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full"
-        animate={ { rotate: 360 } }
-        transition={ { duration: 1, repeat: Infinity, ease: 'linear' } }
-      />
-    </div>
-  );
-};
+Projects.displayName = "Projects"
+ProjectCard.displayName = "ProjectCard"

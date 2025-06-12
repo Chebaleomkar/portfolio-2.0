@@ -7,7 +7,7 @@ const ResumeButton = () => {
       whileHover={ { scale: 1.05, backgroundColor: '#7C3AED' } } // Purple on hover
       whileTap={ { scale: 0.95 } }
       transition={ { type: "spring", stiffness: 300, damping: 20 } }
-      className=" text-white font-bold py-3 bg-green-500 dark:bg-yellow-500 px-6 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1"
+      className=" text-white font-bold py-3 bg-green-500 dark:bg-blue-500 px-6 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1"
     >
       <div className="flex items-center justify-center gap-2">
         <motion.span

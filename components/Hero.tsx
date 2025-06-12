@@ -1,124 +1,108 @@
-"use client";
-import ResumeButton from '@/components/ResumeButton';
-import { Bio } from '@/utils/data';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { FaFacebook, FaGithub, FaInstagram, FaLinkedin, FaStackOverflow, FaTwitter } from 'react-icons/fa';
-import { TypeAnimation } from 'react-type-animation';
+"use client"
 
-// Define the type for the SocialIcon props
+import ResumeButton from "@/components/ResumeButton"
+import { Bio } from "@/utils/data"
+import Image from "next/image"
+import Link from "next/link"
+import { memo } from "react"
+import { FaFacebook, FaGithub, FaInstagram, FaLinkedin, FaStackOverflow, FaTwitter } from "react-icons/fa"
+import { TypeAnimation } from "react-type-animation"
+
 interface SocialIconProps {
-  href: string;
-  icon: React.ComponentType<{ size: number }>;
-  label: string;
+  href: string
+  icon: React.ComponentType<{ size: number; className?: string }>
+  label: string
 }
 
-export const Hero = () => {
-  const [showBullet, setShowBullet] = useState(false);
-
-  // Effect to toggle the bullet animation every 10 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setShowBullet((prev) => !prev);
-    }, 10000); // 10 seconds
-
-    return () => clearInterval(interval);
-  }, []);
-
+export const Hero = memo(() => {
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300">
-      <div className="container mx-auto px-4 py-12 flex flex-col lg:flex-row items-center justify-between">
-        {/* Left Side: Text Content */ }
-        <motion.div
-          initial={ { x: -100, opacity: 0 } }
-          animate={ { x: 0, opacity: 1 } }
-          transition={ { duration: 0.8, ease: 'easeOut' } }
-          className="lg:w-1/2 text-center lg:text-left mb-8 lg:mb-0"
-        >
-          <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 dark:text-white mb-4">
-            Hi, I&apos;m{ ' ' }
-            <motion.span
-              initial={ { x: -50, opacity: 0 } }
-              animate={ { x: 0, opacity: 1 } }
-              transition={ { duration: 0.5, ease: 'easeOut' } }
-              className="text-blue-600 dark:text-blue-400"
-            >
-              { Bio.name }
-            </motion.span>
-          </h1>
-          <div className='h-10'>
-            <h2 className="text-2xl  font-semibold lg:text-3xl text-gray-600 dark:text-gray-300 mb-4">
-              <TypeAnimation
-                sequence={ Bio.roles.flatMap((role) => [role, 1000]) }
-                wrapper="span"
-                cursor={ false } // Disable the default cursor
-                repeat={ Infinity }
-              />
-              {/* Custom Bullet Animation */ }
-              { showBullet && (
-                <motion.span
-                  initial={ { x: -20, opacity: 0 } }
-                  animate={ { x: 0, opacity: 1 } }
-                  transition={ { duration: 0.5, ease: 'easeOut' } }
-                  className="ml-2 text-blue-600 dark:text-blue-400 "
-                >
-                  •
-                </motion.span>
-              ) }
-            </h2>
-          </div>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">{ Bio.description }</p>
-          <div className="flex justify-center lg:justify-start space-x-4 mb-6">
-            <SocialIcon href={ Bio.github } icon={ FaGithub } label="GitHub" />
-            <SocialIcon href={ Bio.linkedin } icon={ FaLinkedin } label="LinkedIn" />
-            <SocialIcon href={ Bio.twitter } icon={ FaTwitter } label="Twitter" />
-            <SocialIcon href={ Bio.insta } icon={ FaInstagram } label="Instagram" />
-            <SocialIcon href={ Bio.facebook } icon={ FaFacebook } label="Facebook" />
-            <SocialIcon href={ Bio.stack_overflow } icon={ FaStackOverflow } label="Stack Overflow" />
-          </div>
-          <Link href="/omkar-chebale-resume">
-            <ResumeButton />
-          </Link>
-        </motion.div>
+    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
+      {/* Background decoration */ }
+      <div className="absolute inset-0 bg-grid-pattern opacity-5 dark:opacity-10" />
+      <div className="absolute top-20 left-20 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob" />
+      <div className="absolute top-40 right-20 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000" />
+      <div className="absolute -bottom-8 left-40 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000" />
 
-        {/* Right Side: Profile Image */ }
-        <motion.div
-          initial={ { opacity: 0, scale: 0.5 } }
-          animate={ { opacity: 1, scale: 1 } }
-          transition={ { duration: 0.8, ease: 'easeOut' } }
-          className="lg:w-1/2 flex justify-center lg:justify-end"
-        >
-          <motion.div
-            className="relative w-80 h-80 lg:w-96 lg:h-96"
-            whileHover={ { scale: 1.1 } } // Zoom effect on hover
-            transition={ { type: 'spring', stiffness: 300 } } // Smooth spring animation
-          >
-            <Image
-              src="/profile.jpg"
-              alt="Omkar Chebale"
-              fill
-              style={ { objectFit: 'cover' } }
-              className="rounded-full shadow-2xl"
-            />
-          </motion.div>
-        </motion.div>
+      <div className="container mx-auto px-4 py-12 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 max-w-7xl mx-auto">
+          {/* Content */ }
+          <div className="lg:w-1/2 text-center lg:text-left space-y-8">
+            <div className="space-y-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
+                Hi, I&apos;m{ " " }
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  { Bio.name }
+                </span>
+              </h1>
+
+              <div className="h-16 flex items-center justify-center lg:justify-start">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-700 dark:text-gray-300">
+                  <TypeAnimation
+                    sequence={ Bio.roles.flatMap((role) => [role, 2000]) }
+                    wrapper="span"
+                    cursor={ true }
+                    repeat={ Infinity }
+                    style={ { display: 'inline-block' } }
+                  />
+                </h2>
+              </div>
+            </div>
+
+            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed">
+              { Bio.description }
+            </p>
+
+            {/* Social Links */ }
+            <div className="flex justify-center lg:justify-start gap-4">
+              <SocialIcon href={ Bio.github } icon={ FaGithub } label="GitHub" />
+              <SocialIcon href={ Bio.linkedin } icon={ FaLinkedin } label="LinkedIn" />
+              <SocialIcon href={ Bio.twitter } icon={ FaTwitter } label="Twitter" />
+              <SocialIcon href={ Bio.insta } icon={ FaInstagram } label="Instagram" />
+              <SocialIcon href={ Bio.facebook } icon={ FaFacebook } label="Facebook" />
+              <SocialIcon href={ Bio.stack_overflow } icon={ FaStackOverflow } label="Stack Overflow" />
+            </div>
+
+            {/* CTA Button */ }
+            <div className="pt-4">
+              <Link href="/omkar-chebale-resume" className="inline-block">
+                <ResumeButton />
+              </Link>
+            </div>
+          </div>
+
+          {/* Profile Image */ }
+          <div className="lg:w-1/2 flex justify-center lg:justify-end">
+            <div className="relative">
+              <div className="w-80 h-80 lg:w-96 lg:h-96 relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full blur-2xl opacity-20" />
+                <Image
+                  src="/profile.jpg"
+                  alt="Omkar Chebale - Full Stack Developer"
+                  fill
+                  className="object-cover rounded-full shadow-2xl border-4 border-white dark:border-gray-700 relative z-10"
+                  priority
+                  sizes="(max-width: 768px) 320px, 384px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
-  );
-};
+  )
+})
 
-const SocialIcon = ({ href, icon: Icon, label }: SocialIconProps) => (
-  <motion.a
+const SocialIcon = memo(({ href, icon: Icon, label }: SocialIconProps) => (
+  <a
     href={ href }
     target="_blank"
     rel="noopener noreferrer"
-    whileHover={ { scale: 1.2 } }
-    whileTap={ { scale: 0.9 } }
-    className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300"
+    className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:scale-110 border border-gray-200 dark:border-gray-700"
     aria-label={ label }
   >
     <Icon size={ 24 } />
-  </motion.a>
-);
+  </a>
+))
+
+Hero.displayName = "Hero"
+SocialIcon.displayName = "SocialIcon"

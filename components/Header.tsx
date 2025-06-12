@@ -57,7 +57,7 @@ export const Header = () => {
         >
           <Link href="/">
             <Image
-              src="/sign.png"
+              src="/sign-removebg-preview.png"
               alt="Omkar Chebale"
               width={ 150 }
               height={ 100 }

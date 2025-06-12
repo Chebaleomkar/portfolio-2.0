@@ -121,7 +121,7 @@ export function ContactMe() {
           variants={ itemVariants }
           className="text-center mb-8"
         >
-          <h2 className="text-3xl font-bold  mb-2">Get in Touch</h2>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">Get in Touch</h2>
           <p className="text-gray-400">I&apos;d love to hear from you. Send me a message! This form works </p>
         </motion.div>
 
