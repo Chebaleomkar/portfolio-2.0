@@ -4,9 +4,9 @@ import { ClientReview } from "@/components/ClientReviews";
 export const Bio = {
   name: "Omkar Chebale ",
   roles: [
+    "You can call me RUSHI",
+    "Freelancer",
     "Full Stack Developer",
-    "Frontend Developer",
-    "MERN Stack Developer",
     "Programmer",
     "coder",
   ],
@@ -365,23 +365,20 @@ export const ClientProjects = [
     description: "Created a system to generate and send vehicle quotations to customers via WhatsApp  in PDF format.",
     year: 2024,
     impact: "Reduced manual workload by 70% and improved customer response time.",
-    image: "/images/prisha.png",
   },
   {
     business: "IIB Institute, Latur",
     project: "Question Bank System",
     description: "Developed a system to store and manage questions with images, formulas, or chemical reactions, and track student performance.",
-    year: 2024,
+    year: 2025,
     impact: "Helps teachers analyze each student's strengths and weaknesses based on past exam performance.",
-    image: "/images/IIB.png",
   },
   {
     business: "Newaskar Automobiles,Sangamner ",
     project: "Automatic Quotation System",
     description: "Created a system to generate and send vehicle quotations to customers via WhatsApp  in PDF format.",
-    year: 2024,
+    year: 2025,
     impact: "Reduced manual workload by 70% and improved customer response time",
-    image: "/images/newaskar.png",
   },
   {
     business: "Shree Shyam Bhoj Restaurant, Latur",
@@ -389,7 +386,6 @@ export const ClientProjects = [
     description: "Built a website with an admin panel to easily update and share the daily food menu.",
     year: 2025,
     impact: "Customers can now check the daily menu online without needing to call the restaurant.",
-    image: "/images/bhoj.png",
   }
 ]
 
@@ -397,10 +393,18 @@ export const ClientProjects = [
 export const clientReviews: ClientReview[] = [
   {
     review:
-      "We are extremely pleased with Rishi's work at Prisha Motors. He has demonstrated exceptional technical skills and dedication while developing software for us. His ability to understand our requirements and deliver a well-structured, efficient solution has been impressive. Rishi is a hardworking and efficient professional who approaches challenges with a problem-solving mindset. His attention to detail, timely execution, and proactive approach have greatly contributed to the success of our project. We truly appreciate his commitment and expertise, and we look forward to working with him on future projects. Keep up the great work, Rishi!",
+      "Rushi delivered an efficient, well-structured software solution for Prisha Motors. His technical skills, problem-solving mindset, and timely execution were impressive. We're very pleased with his work and look forward to future collaborations.",
     by: "Amit Gilda",
     profession: "MD - Prisha Motors",
     rating: 5,
   },
-  // Add more reviews here
+
+  {
+    review:
+      "Rushi built a powerful Question Bank System for IIB Institute that made managing exam content—like formulas and diagrams extremely easy. The platform's ability to analyze individual student performance has been a game-changer for our faculty. His work was thoughtful, reliable, and impactful.",
+    by: "Shyamsundar Soni",
+    profession: "IIB Institute, Latur",
+    rating: 5,
+  },
+
 ]

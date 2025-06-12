@@ -115,14 +115,14 @@ export function ContactMe() {
         initial="hidden"
         animate={ inView ? "visible" : "hidden" }
         variants={ containerVariants }
-        className="max-w-md w-full"
+        className="max-w-3xl w-full"
       >
         <motion.div
           variants={ itemVariants }
           className="text-center mb-8"
         >
           <h2 className="text-3xl font-bold  mb-2">Get in Touch</h2>
-          <p className="text-gray-400">I&apos;d love to hear from you. Send me a message!</p>
+          <p className="text-gray-400">I&apos;d love to hear from you. Send me a message! This form works </p>
         </motion.div>
 
         <div className="bg-gray-800 p-6 rounded-lg shadow-xl">

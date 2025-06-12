@@ -1,19 +1,27 @@
 'use client'
 
+import { ClientProject } from "@/types/ClientProject"
 import { ClientProjects } from "@/utils/data"
-import { memo } from 'react'
+import { memo, useRef } from 'react'
 
-type ClientProject = {
-  business: string
-  project: string
-  description: string
-  impact?: string
-  year?: string
-}
 
 export const ClientProjectsSection = memo(() => {
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null)
+
+  const scrollToProject = (index: number) => {
+    const container = scrollContainerRef.current
+    if (container) {
+      const child = container.children[index] as HTMLElement
+      container.scrollTo({
+        left: child.offsetLeft,
+        behavior: 'smooth',
+      })
+    }
+  }
+
   return (
     <section
+      id="freelance"
       aria-labelledby="client-projects-heading"
       className="py-16 px-4 sm:px-8 lg:px-16 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800"
     >
@@ -33,6 +41,7 @@ export const ClientProjectsSection = memo(() => {
         {/* Horizontal scrollable container */ }
         <div className="relative">
           <div
+            ref={ scrollContainerRef }
             className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide"
             style={ {
               scrollbarWidth: 'none',
@@ -41,18 +50,20 @@ export const ClientProjectsSection = memo(() => {
             role="region"
             aria-label="Client projects carousel"
           >
-            { ClientProjects.map((proj: ClientProject, index: number) => (
-              <ProjectCard key={ `${proj.business}-${index}` } project={ proj } index={ index } />
+            { ClientProjects.map((project, i) => (
+              <ProjectCard key={ i } project={ project } index={ i } />
             )) }
           </div>
 
           {/* Scroll indicators */ }
           <div className="flex justify-center mt-6 gap-2">
             { ClientProjects.map((_, index) => (
-              <div
+              <button
                 key={ index }
-                className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600"
-                aria-hidden="true"
+                onClick={ () => scrollToProject(index) }
+                className="w-3 h-3 rounded-full  bg-blue-500 focus:outline-none transition-colors"
+                title={ `Go to project ${index + 1}` }
+                aria-label={ `Go to project ${index + 1}` }
               />
             )) }
           </div>

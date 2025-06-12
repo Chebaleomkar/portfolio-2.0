@@ -15,6 +15,7 @@ export type ClientReview = {
 export const ClientReviewsSection = memo(() => {
   return (
     <section
+      id="review"
       aria-labelledby="client-reviews-heading"
       className="py-16 px-4 sm:px-8 lg:px-16 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-900"
     >
@@ -75,8 +76,6 @@ const ReviewCard = memo(({ review, index }: { review: ClientReview; index: numbe
       className="flex-none w-80 sm:w-96 p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 dark:border-gray-700 snap-start group relative overflow-hidden"
       aria-labelledby={ `review-author-${index}` }
     >
-      {/* Background decoration */ }
-      <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-indigo-500/10 to-blue-500/10 rounded-full -translate-y-10 translate-x-10" />
 
       {/* Quote icon */ }
       <div className="flex justify-between items-start mb-4">

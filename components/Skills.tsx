@@ -45,7 +45,7 @@ interface SkillCategoryProps {
 
 const SkillCategory = ({ category }: SkillCategoryProps) => {
   const [ref, inView] = useInView({
-    threshold: 0.1,
+    threshold: 0,
   });
 
   return (
