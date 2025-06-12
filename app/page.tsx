@@ -1,3 +1,5 @@
+import { ClientProjectsSection } from "@/components/ClientProjects";
+import { ClientReviewsSection } from "@/components/ClientReviews";
 import { ContactMe } from "@/components/ContactMe";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -7,8 +9,10 @@ import { Skills } from "@/components/Skills";
 export default function Home() {
   return (
     <>
-    <Header />
+      <Header />
       <Hero />
+      <ClientProjectsSection />
+      <ClientReviewsSection />
       <Skills />
       <Projects />
       <ContactMe />
