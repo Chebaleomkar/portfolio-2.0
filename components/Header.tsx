@@ -34,13 +34,13 @@ export const Header = () => {
       initial="hidden"
       animate="visible"
       variants={ headerVariants }
-      className="rounded-md sticky top-0 z-50 dark:text-black  border-b border-border shadow-sm backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80"
+      className="rounded-md sticky top-0 z-50  border-b border-border shadow-sm backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80"
       style={ { backgroundColor: headerColor } }
     >
       <div className="container mx-auto px-4 p-1 flex justify-between items-center">
         {/* Logo with slight tilt */ }
         <motion.div
-          className='dark:bg-white '
+          className=' '
         >
           <Link href="/">
             <Image

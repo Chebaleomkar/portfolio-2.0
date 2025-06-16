@@ -4,11 +4,11 @@ import { ClientReview } from "@/components/ClientReviews";
 export const Bio = {
   name: "Omkar Chebale ",
   roles: [
+    "Helping businesses go digital with smart, custom web solutions",
     "You can call me Rushi",
-    "Freelancer",
-    "Full Stack Developer",
-    "Programmer",
-    "coder",
+    "Freelance Full-Stack Developer",
+    "MERN Stack Specialist",
+    "Digital Solution Builder",
   ],
   description: "I’m a passionate software engineer who helps businesses bring their digital ideas to life. From scalable web apps to custom solutions, I focus on clean code, great UX, and real results. I’ve worked with local businesses to automate systems, improve customer experience, and grow their online presence.",
   github: "https://github.com/Chebaleomkar",

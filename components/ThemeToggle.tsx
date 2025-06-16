@@ -26,7 +26,16 @@ export const ThemeToggle = () => {
           transition={ { duration: 0.3, ease: "easeInOut" } }
           className="text-muted-foreground"
         >
-          { theme === 'light' ? <Sun size={ iconSize } /> : <Moon size={ iconSize } /> }
+          { theme === 'light' ?
+            <Sun
+              className="border-b border-black rounded-full p-1  text-gray-800 "
+              size={ iconSize } /> : <div>
+              <Moon
+                className="border-t border-black rounded-full p-1 bg-white text-gray-800 "
+                size={ iconSize }
+              />
+            </div>
+          }
         </motion.div>
       </AnimatePresence>
     </div>
