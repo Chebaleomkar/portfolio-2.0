@@ -4,13 +4,13 @@ import { ClientReview } from "@/components/ClientReviews";
 export const Bio = {
   name: "Omkar Chebale ",
   roles: [
-    "You can call me RUSHI",
+    "You can call me Rushi",
     "Freelancer",
     "Full Stack Developer",
     "Programmer",
     "coder",
   ],
-  description: "As a Full-Stack Developer specializing in the MERN stack, I craft intuitive, high-performing digital experiences. My GitHub is a testament to my passion for building and problem-solving.",
+  description: "I’m a passionate software engineer who helps businesses bring their digital ideas to life. From scalable web apps to custom solutions, I focus on clean code, great UX, and real results. I’ve worked with local businesses to automate systems, improve customer experience, and grow their online presence.",
   github: "https://github.com/Chebaleomkar",
   resume:
     "https://drive.google.com/file/d/1_xD17Kg6MS0T0ahDAxltGXSxsccutMxr/view?usp=drive_link",
@@ -344,7 +344,7 @@ export const projects = [
 
 export const blogs = [
   {
-    title: "what , why and how zod works?",
+    title: "what why and how zod works?",
     link: "https://medium.com/@omkarchebale0/what-why-and-how-zod-works-b022e3bd13ec",
     topic: "zod"
   },
@@ -355,6 +355,7 @@ export const TimeLineData = [
   { year: 2023, text: "worked on my technical skills " },
   { year: 2023, text: "Shared my projects with the world" },
   { year: 2024, text: "Intern as developer in Recursive Zero" },
+  { year: 2025, text: "Freelancing and helping business to digitize" },
 ];
 
 
