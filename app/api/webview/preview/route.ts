@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request) {
+export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
         const dataParam = searchParams.get('data');
@@ -146,7 +146,7 @@ export async function GET(request) {
             },
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Preview error:', error);
         return new Response(`
       <!DOCTYPE html>
