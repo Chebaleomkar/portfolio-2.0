@@ -7,7 +7,7 @@ function PreviewContent() {
     const searchParams = useSearchParams();
     const [content, setContent] = useState('');
     const [title, setTitle] = useState('Loading...');
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         try {
@@ -26,7 +26,7 @@ function PreviewContent() {
             setContent(html);
             setTitle(data.title || 'Preview');
 
-        } catch (err) {
+        } catch (err: any) {
             console.error('Preview error:', err);
             setError('Error loading preview: ' + err.message);
             setContent('<p style="color: red;">Failed to decode HTML content</p>');
