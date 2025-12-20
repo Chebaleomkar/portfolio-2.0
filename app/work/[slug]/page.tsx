@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { HiArrowLeft } from 'react-icons/hi'
+import { HiArrowLeft, HiStar } from 'react-icons/hi'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { getBlogPostBySlug } from '@/lib/blog'
@@ -60,6 +60,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     {/* Header */}
                     <header className="mb-12">
                         <div className="flex items-center gap-3 text-xs text-gray-500 mb-4">
+                            {post.isStarred && (
+                                <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-500/10 rounded text-yellow-500">
+                                    <HiStar size={12} />
+                                    Featured
+                                </span>
+                            )}
                             <span>{post.createdAt}</span>
                             {post.tags.length > 0 && (
                                 <>

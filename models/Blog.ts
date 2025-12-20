@@ -8,6 +8,7 @@ export interface IBlog extends Document {
     tags: string[]
     external?: string
     published: boolean
+    isStarred: boolean
     createdAt: Date
     updatedAt: Date
 }
@@ -47,11 +48,18 @@ const BlogSchema = new Schema<IBlog>(
             type: Boolean,
             default: true,
         },
+        isStarred: {
+            type: Boolean,
+            default: false,
+        },
     },
     {
         timestamps: true,
     }
 )
+
+// Create text index for search functionality
+BlogSchema.index({ title: 'text', description: 'text', content: 'text' })
 
 // Generate slug from title before saving
 BlogSchema.pre('save', function (next) {
@@ -61,7 +69,6 @@ BlogSchema.pre('save', function (next) {
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/(^-|-$)/g, '')
     }
-    next()
 })
 
 // Prevent model recompilation in development

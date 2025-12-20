@@ -1,7 +1,7 @@
 import { connectDB } from '@/lib/mongodb'
-import Blog, { IBlog } from '@/models/Blog'
+import Blog from '@/models/Blog'
 
-export interface BlogPost {
+export interface BlogPostDetail {
     _id: string
     slug: string
     title: string
@@ -9,36 +9,14 @@ export interface BlogPost {
     content: string
     tags: string[]
     external?: string
+    isStarred: boolean
     createdAt: string
 }
 
 /**
- * Get all published blog posts
+ * Get a single blog post by slug (includes content)
  */
-export async function getAllBlogPosts(): Promise<BlogPost[]> {
-    await connectDB()
-
-    const posts = await Blog.find({ published: true })
-        .sort({ createdAt: -1 })
-        .select('-__v')
-        .lean()
-
-    return posts.map((post) => ({
-        _id: post._id.toString(),
-        slug: post.slug,
-        title: post.title,
-        description: post.description,
-        content: post.content,
-        tags: post.tags,
-        external: post.external || undefined,
-        createdAt: post.createdAt.toISOString().split('T')[0],
-    }))
-}
-
-/**
- * Get a single blog post by slug
- */
-export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+export async function getBlogPostBySlug(slug: string): Promise<BlogPostDetail | null> {
     await connectDB()
 
     const post = await Blog.findOne({ slug, published: true })
@@ -55,6 +33,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
         content: post.content,
         tags: post.tags,
         external: post.external || undefined,
+        isStarred: post.isStarred,
         createdAt: post.createdAt.toISOString().split('T')[0],
     }
 }

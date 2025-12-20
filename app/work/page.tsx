@@ -1,12 +1,66 @@
-import Link from "next/link"
-import { HiArrowLeft, HiArrowRight } from "react-icons/hi"
-import { getAllBlogPosts } from "@/lib/blog"
+'use client'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+import { useState, useEffect, useCallback } from 'react'
+import Link from 'next/link'
+import { HiArrowLeft } from 'react-icons/hi'
+import { SearchBar } from '@/components/SearchBar'
+import { Pagination } from '@/components/Pagination'
+import { BlogCard } from '@/components/BlogCard'
+import type { BlogPost, PaginationInfo } from '@/types/blog'
 
-export default async function WorkPage() {
-    const posts = await getAllBlogPosts()
+export default function WorkPage() {
+    const [posts, setPosts] = useState<BlogPost[]>([])
+    const [pagination, setPagination] = useState<PaginationInfo | null>(null)
+    const [searchQuery, setSearchQuery] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+
+    // Fetch posts from API
+    const fetchPosts = useCallback(async (page: number, search: string) => {
+        setIsLoading(true)
+        setError(null)
+
+        try {
+            const params = new URLSearchParams({
+                page: page.toString(),
+                ...(search && { search }),
+            })
+
+            const response = await fetch(`/api/blog?${params}`)
+            const data = await response.json()
+
+            if (data.success) {
+                setPosts(data.posts)
+                setPagination(data.pagination)
+            } else {
+                setError(data.error || 'Failed to fetch posts')
+            }
+        } catch (err) {
+            setError('Failed to fetch posts')
+            console.error('Error fetching posts:', err)
+        } finally {
+            setIsLoading(false)
+        }
+    }, [])
+
+    // Fetch on mount and when page/search changes
+    useEffect(() => {
+        fetchPosts(currentPage, searchQuery)
+    }, [currentPage, searchQuery, fetchPosts])
+
+    // Handle search - reset to page 1
+    const handleSearch = useCallback((query: string) => {
+        setSearchQuery(query)
+        setCurrentPage(1)
+    }, [])
+
+    // Handle page change
+    const handlePageChange = useCallback((page: number) => {
+        setCurrentPage(page)
+        // Scroll to top on page change
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
 
     return (
         <main className="min-h-screen bg-[#0a0a0a]">
@@ -27,8 +81,10 @@ export default async function WorkPage() {
             <section className="py-20 px-6">
                 <div className="max-w-3xl mx-auto">
                     {/* Header */}
-                    <header className="mb-16">
-                        <p className="text-sm uppercase tracking-widest text-gray-500 mb-3">Writing & Projects</p>
+                    <header className="mb-12">
+                        <p className="text-sm uppercase tracking-widest text-gray-500 mb-3">
+                            Writing & Projects
+                        </p>
                         <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
                             Work
                         </h1>
@@ -37,88 +93,91 @@ export default async function WorkPage() {
                         </p>
                     </header>
 
-                    {/* Posts list */}
-                    <div className="space-y-1">
-                        {posts.map((post) => (
-                            post.external ? (
-                                <a
-                                    key={post.slug}
-                                    href={post.external}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group block py-6 border-b border-white/5 hover:border-white/20 transition-colors"
-                                >
-                                    <div className="flex items-start justify-between gap-4">
-                                        <div className="flex-1">
-                                            <h2 className="text-lg md:text-xl font-medium text-white group-hover:text-gray-300 transition-colors mb-2">
-                                                {post.title}
-                                            </h2>
-                                            <p className="text-gray-500 text-sm mb-3">
-                                                {post.description}
-                                            </p>
-                                            <div className="flex items-center gap-3 text-xs text-gray-600">
-                                                <span>{post.createdAt}</span>
-                                                {post.tags.length > 0 && (
-                                                    <>
-                                                        <span>·</span>
-                                                        <div className="flex gap-2">
-                                                            {post.tags.map((tag) => (
-                                                                <span key={tag} className="text-gray-500">{tag}</span>
-                                                            ))}
-                                                        </div>
-                                                    </>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <HiArrowRight
-                                            size={18}
-                                            className="text-gray-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-1"
-                                        />
-                                    </div>
-                                </a>
-                            ) : (
-                                <Link
-                                    key={post.slug}
-                                    href={`/work/${post.slug}`}
-                                    className="group block py-6 border-b border-white/5 hover:border-white/20 transition-colors"
-                                >
-                                    <div className="flex items-start justify-between gap-4">
-                                        <div className="flex-1">
-                                            <h2 className="text-lg md:text-xl font-medium text-white group-hover:text-gray-300 transition-colors mb-2">
-                                                {post.title}
-                                            </h2>
-                                            <p className="text-gray-500 text-sm mb-3">
-                                                {post.description}
-                                            </p>
-                                            <div className="flex items-center gap-3 text-xs text-gray-600">
-                                                <span>{post.createdAt}</span>
-                                                {post.tags.length > 0 && (
-                                                    <>
-                                                        <span>·</span>
-                                                        <div className="flex gap-2">
-                                                            {post.tags.map((tag) => (
-                                                                <span key={tag} className="text-gray-500">{tag}</span>
-                                                            ))}
-                                                        </div>
-                                                    </>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <HiArrowRight
-                                            size={18}
-                                            className="text-gray-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-1"
-                                        />
-                                    </div>
-                                </Link>
-                            )
-                        ))}
-                    </div>
+                    {/* Search Bar */}
+                    <SearchBar
+                        onSearch={handleSearch}
+                        placeholder="Search posts by title, description, or tags..."
+                    />
 
-                    {/* Empty state */}
-                    {posts.length === 0 && (
-                        <div className="py-12 border border-dashed border-white/10 rounded-lg text-center">
-                            <p className="text-gray-500">No posts yet. Create one via the API!</p>
+                    {/* Posts Count & Filter Info */}
+                    {pagination && !isLoading && (
+                        <div className="flex items-center justify-between mb-6 text-sm text-gray-500">
+                            <span>
+                                {searchQuery ? (
+                                    <>
+                                        Found <span className="text-white">{pagination.totalPosts}</span> posts
+                                        for &quot;{searchQuery}&quot;
+                                    </>
+                                ) : (
+                                    <>
+                                        Showing <span className="text-white">{posts.length}</span> of{' '}
+                                        <span className="text-white">{pagination.totalPosts}</span> posts
+                                    </>
+                                )}
+                            </span>
+                            {pagination.totalPages > 1 && (
+                                <span>
+                                    Page {pagination.currentPage} of {pagination.totalPages}
+                                </span>
+                            )}
                         </div>
+                    )}
+
+                    {/* Loading State */}
+                    {isLoading && (
+                        <div className="py-20 text-center">
+                            <div className="inline-block w-8 h-8 border-2 border-gray-700 border-t-white rounded-full animate-spin" />
+                            <p className="text-gray-500 mt-4">Loading posts...</p>
+                        </div>
+                    )}
+
+                    {/* Error State */}
+                    {error && !isLoading && (
+                        <div className="py-12 border border-red-900/50 bg-red-900/10 rounded-lg text-center">
+                            <p className="text-red-400">{error}</p>
+                            <button
+                                onClick={() => fetchPosts(currentPage, searchQuery)}
+                                className="mt-4 px-4 py-2 text-sm border border-gray-700 rounded-lg text-gray-400 hover:text-white hover:border-gray-600 transition-colors"
+                            >
+                                Try again
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Posts List */}
+                    {!isLoading && !error && (
+                        <>
+                            <div className="space-y-1">
+                                {posts.map((post) => (
+                                    <BlogCard key={post._id} post={post} />
+                                ))}
+                            </div>
+
+                            {/* Empty State */}
+                            {posts.length === 0 && (
+                                <div className="py-12 border border-dashed border-white/10 rounded-lg text-center">
+                                    {searchQuery ? (
+                                        <p className="text-gray-500">
+                                            No posts found for &quot;{searchQuery}&quot;
+                                        </p>
+                                    ) : (
+                                        <p className="text-gray-500">
+                                            No posts yet. Create one via the API!
+                                        </p>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Pagination */}
+                            {pagination && pagination.totalPages > 1 && (
+                                <Pagination
+                                    currentPage={pagination.currentPage}
+                                    totalPages={pagination.totalPages}
+                                    onPageChange={handlePageChange}
+                                    windowSize={5}
+                                />
+                            )}
+                        </>
                     )}
                 </div>
             </section>

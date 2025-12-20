@@ -3,20 +3,77 @@ import { connectDB } from '@/lib/mongodb'
 import Blog from '@/models/Blog'
 
 const BLOG_PASSWORD = process.env.BLOG_PASSWORD
+const POSTS_PER_PAGE = 20
 
 /**
- * GET /api/blog - Get all published blog posts
+ * GET /api/blog - Get paginated blog posts with optional search
+ * 
+ * Query params:
+ *   page?: number (default: 1)
+ *   search?: string (search in title, description, content)
+ *   starred?: boolean (filter starred posts only)
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
     try {
         await connectDB()
 
-        const posts = await Blog.find({ published: true })
-            .sort({ createdAt: -1 })
-            .select('-__v')
+        const { searchParams } = new URL(request.url)
+        const page = Math.max(1, parseInt(searchParams.get('page') || '1'))
+        const search = searchParams.get('search')?.trim() || ''
+        const starredOnly = searchParams.get('starred') === 'true'
+
+        // Build query
+        const query: Record<string, unknown> = { published: true }
+
+        // Add search filter
+        if (search) {
+            query.$or = [
+                { title: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } },
+                { tags: { $in: [new RegExp(search, 'i')] } },
+            ]
+        }
+
+        // Add starred filter
+        if (starredOnly) {
+            query.isStarred = true
+        }
+
+        // Get total count for pagination
+        const totalPosts = await Blog.countDocuments(query)
+        const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE)
+
+        // Get paginated posts (starred posts first, then by date)
+        const posts = await Blog.find(query)
+            .sort({ isStarred: -1, createdAt: -1 })
+            .skip((page - 1) * POSTS_PER_PAGE)
+            .limit(POSTS_PER_PAGE)
+            .select('-__v -content')
             .lean()
 
-        return NextResponse.json({ success: true, posts })
+        const formattedPosts = posts.map((post) => ({
+            _id: post._id.toString(),
+            slug: post.slug,
+            title: post.title,
+            description: post.description,
+            tags: post.tags,
+            external: post.external || undefined,
+            isStarred: post.isStarred,
+            createdAt: post.createdAt.toISOString().split('T')[0],
+        }))
+
+        return NextResponse.json({
+            success: true,
+            posts: formattedPosts,
+            pagination: {
+                currentPage: page,
+                totalPages,
+                totalPosts,
+                postsPerPage: POSTS_PER_PAGE,
+                hasNextPage: page < totalPages,
+                hasPrevPage: page > 1,
+            },
+        })
     } catch (error) {
         console.error('Error fetching posts:', error)
         return NextResponse.json(
@@ -37,11 +94,11 @@ export async function GET() {
  *   body: string (markdown content, required)
  *   description?: string
  *   tags?: string[]
- *   external?: string (external link if any)
+ *   external?: string
+ *   isStarred?: boolean
  */
 export async function POST(request: NextRequest) {
     try {
-        // Check password authentication
         const password = request.headers.get('password')
 
         if (!BLOG_PASSWORD) {
@@ -58,11 +115,9 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Parse request body
         const body = await request.json()
-        const { title, body: content, description, tags, external } = body
+        const { title, body: content, description, tags, external, isStarred } = body
 
-        // Validate required fields
         if (!title || typeof title !== 'string') {
             return NextResponse.json(
                 { success: false, error: 'Title is required' },
@@ -77,16 +132,13 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Connect to database
         await connectDB()
 
-        // Generate slug
         const slug = title
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/(^-|-$)/g, '')
 
-        // Check if slug already exists
         const existingPost = await Blog.findOne({ slug })
         if (existingPost) {
             return NextResponse.json(
@@ -95,7 +147,6 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Create the blog post
         const newPost = await Blog.create({
             title,
             slug,
@@ -103,6 +154,7 @@ export async function POST(request: NextRequest) {
             content,
             tags: tags || [],
             external: external || null,
+            isStarred: isStarred || false,
             published: true,
         })
 
