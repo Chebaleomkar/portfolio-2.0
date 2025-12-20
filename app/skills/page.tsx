@@ -1,5 +1,6 @@
 "use client"
 
+import { Navbar } from "@/components/navbar"
 import { skills } from "@/utils/data"
 import Link from "next/link"
 import { memo } from "react"
@@ -14,6 +15,7 @@ export default function SkillsPage() {
     return (
         <main className="min-h-screen bg-[#0a0a0a]">
             {/* Navigation */}
+            <Navbar />
             <nav className="pt-8 px-6">
                 <div className="max-w-3xl mx-auto">
                     <Link

@@ -7,7 +7,7 @@ export const Bio = {
     "AI Engineer",
     "Full-Stack Developer",
   ],
-  description: "AI Engineer specializing in LLMs, RAG, and full-stack systems.",
+  description: "AI/ML Engineer specializing in LLMs, RAG, and full-stack systems.",
   github: "https://github.com/Chebaleomkar",
   resume:
     "https://drive.google.com/file/d/1_xD17Kg6MS0T0ahDAxltGXSxsccutMxr/view?usp=drive_link",
@@ -21,7 +21,7 @@ export const Bio = {
 export const skills = [
   {
     title: "AI / ML",
-    skills: ["LLMs", "RAG", "NLP", "Embeddings", "LangChain", "OpenAI", "Gemini", "Pinecone", "Vector Databases"],
+    skills: ["Machine Learning", "Deep Learning", "Data Science", "LLMs", "RAG", "NLP", "Agentic Workflows", "LangChain", "Vector Databases"],
   },
   {
     title: "Frontend",

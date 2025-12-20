@@ -67,6 +67,7 @@ export const Footer = () => {
               />
               <input
                 type="text"
+                id="contact-subject"
                 placeholder="Subject"
                 {...form.register("subject")}
                 className="w-full px-4 py-3 bg-transparent border border-white/10 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-white/30 transition-colors text-sm"

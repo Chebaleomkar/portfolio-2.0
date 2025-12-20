@@ -377,7 +377,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://omkarchebale.vercel.app/og-blog.png',
+        url: 'https://omkarchebale.vercel.app/profile.jpg',
         width: 1200,
         height: 630,
         alt: `${Bio.name} - Full Stack Developer Portfolio`,
@@ -388,7 +388,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: `${Bio.name} | Full Stack Developer`,
     description: 'Building intelligent experiences with AI, MERN Stack & Modern Web Technologies.',
-    images: ['https://omkarchebale.vercel.app/og-blog.png'],
+    images: ['https://omkarchebale.vercel.app/profile.jpg'],
     creator: '@chebalerushi',
   },
   alternates: {

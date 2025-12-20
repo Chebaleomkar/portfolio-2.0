@@ -8,6 +8,7 @@ import { Pagination } from '@/components/Pagination'
 import { BlogCard } from '@/components/BlogCard'
 import { CuratedSidebar } from '@/components/CuratedSidebar'
 import type { BlogPost, PaginationInfo } from '@/types/blog'
+import { Navbar } from '@/components/navbar'
 
 export default function WorkPage() {
     const [posts, setPosts] = useState<BlogPost[]>([])
@@ -71,6 +72,7 @@ export default function WorkPage() {
     return (
         <main className="min-h-screen bg-[#0a0a0a]">
             {/* Navigation */}
+            <Navbar />
             <nav className="pt-8 px-6">
                 <div className="max-w-6xl mx-auto">
                     <Link
