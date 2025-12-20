@@ -1,14 +1,66 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { Metadata } from 'next'
 import { HiArrowLeft, HiStar } from 'react-icons/hi'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { getBlogPostBySlug } from '@/lib/blog'
+import { connectDB } from '@/lib/mongodb'
+import Blog from '@/models/Blog'
 
 export const dynamic = 'force-dynamic'
 
 interface BlogPostPageProps {
     params: Promise<{ slug: string }>
+}
+
+// Generate dynamic metadata for each blog post
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+    const { slug } = await params
+
+    await connectDB()
+    const post = await Blog.findOne({ slug, published: true }).lean()
+
+    if (!post) {
+        return {
+            title: 'Blog Not Found',
+            description: 'The requested blog post could not be found.',
+        }
+    }
+
+    const baseUrl = 'https://omkarchebale.vercel.app'
+
+    return {
+        title: `${post.title} | Omkar Chebale`,
+        description: post.description || `Read ${post.title} on Omkar Chebale's blog`,
+        keywords: post.tags,
+        authors: [{ name: 'Omkar Chebale' }],
+        openGraph: {
+            title: post.title,
+            description: post.description || `Read ${post.title} on Omkar Chebale's blog`,
+            url: `${baseUrl}/work/${slug}`,
+            siteName: 'Omkar Chebale',
+            type: 'article',
+            publishedTime: post.createdAt?.toISOString(),
+            authors: ['Omkar Chebale'],
+            tags: post.tags,
+            images: [
+                {
+                    url: `${baseUrl}/og-blog.png`,
+                    width: 1200,
+                    height: 630,
+                    alt: post.title,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: post.title,
+            description: post.description || `Read ${post.title}`,
+            images: [`${baseUrl}/og-blog.png`],
+            creator: '@chebalerushi',
+        },
+    }
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {

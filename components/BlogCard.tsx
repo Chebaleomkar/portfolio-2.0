@@ -15,7 +15,7 @@ export function BlogCard({ post }: BlogCardProps) {
     return (
         <CardWrapper
             {...cardProps}
-            className="group block py-5 border-b border-white/5 hover:border-white/20 transition-colors"
+            className="group block py-5 px-2 border-b border-white/5 hover:border-green-500 transition-colors"
         >
             <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
