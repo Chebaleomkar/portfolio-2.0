@@ -6,10 +6,12 @@ import { HiArrowLeft } from 'react-icons/hi'
 import { SearchBar } from '@/components/SearchBar'
 import { Pagination } from '@/components/Pagination'
 import { BlogCard } from '@/components/BlogCard'
+import { CuratedSection } from '@/components/CuratedSection'
 import type { BlogPost, PaginationInfo } from '@/types/blog'
 
 export default function WorkPage() {
     const [posts, setPosts] = useState<BlogPost[]>([])
+    const [curatedPosts, setCuratedPosts] = useState<BlogPost[]>([])
     const [pagination, setPagination] = useState<PaginationInfo | null>(null)
     const [searchQuery, setSearchQuery] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
@@ -32,6 +34,7 @@ export default function WorkPage() {
 
             if (data.success) {
                 setPosts(data.posts)
+                setCuratedPosts(data.curatedPosts || [])
                 setPagination(data.pagination)
             } else {
                 setError(data.error || 'Failed to fetch posts')
@@ -61,6 +64,9 @@ export default function WorkPage() {
         // Scroll to top on page change
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
+
+    // Show curated section only on first page and when not searching
+    const showCurated = currentPage === 1 && !searchQuery && curatedPosts.length > 0
 
     return (
         <main className="min-h-screen bg-[#0a0a0a]">
@@ -99,6 +105,11 @@ export default function WorkPage() {
                         placeholder="Search posts by title, description, or tags..."
                     />
 
+                    {/* Curated Section - Only on first page without search */}
+                    {showCurated && !isLoading && (
+                        <CuratedSection posts={curatedPosts} />
+                    )}
+
                     {/* Posts Count & Filter Info */}
                     {pagination && !isLoading && (
                         <div className="flex items-center justify-between mb-6 text-sm text-gray-500">
@@ -110,6 +121,9 @@ export default function WorkPage() {
                                     </>
                                 ) : (
                                     <>
+                                        {showCurated && (
+                                            <span className="text-gray-600 mr-2">All posts •</span>
+                                        )}
                                         Showing <span className="text-white">{posts.length}</span> of{' '}
                                         <span className="text-white">{pagination.totalPosts}</span> posts
                                     </>

@@ -21,6 +21,7 @@ export interface PaginationInfo {
 export interface BlogApiResponse {
     success: boolean
     posts: BlogPost[]
+    curatedPosts: BlogPost[]
     pagination: PaginationInfo
     error?: string
 }

@@ -43,9 +43,9 @@ export async function GET(request: NextRequest) {
         const totalPosts = await Blog.countDocuments(query)
         const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE)
 
-        // Get paginated posts (starred posts first, then by date)
+        // Get paginated posts (by date)
         const posts = await Blog.find(query)
-            .sort({ isStarred: -1, createdAt: -1 })
+            .sort({ createdAt: -1 })
             .skip((page - 1) * POSTS_PER_PAGE)
             .limit(POSTS_PER_PAGE)
             .select('-__v -content')
@@ -62,9 +62,31 @@ export async function GET(request: NextRequest) {
             createdAt: post.createdAt.toISOString().split('T')[0],
         }))
 
+        // Get starred/curated posts only on first page and when not searching
+        let curatedPosts: typeof formattedPosts = []
+        if (page === 1 && !search && !starredOnly) {
+            const starred = await Blog.find({ published: true, isStarred: true })
+                .sort({ createdAt: -1 })
+                .limit(5)
+                .select('-__v -content')
+                .lean()
+
+            curatedPosts = starred.map((post) => ({
+                _id: post._id.toString(),
+                slug: post.slug,
+                title: post.title,
+                description: post.description,
+                tags: post.tags,
+                external: post.external || undefined,
+                isStarred: post.isStarred,
+                createdAt: post.createdAt.toISOString().split('T')[0],
+            }))
+        }
+
         return NextResponse.json({
             success: true,
             posts: formattedPosts,
+            curatedPosts,
             pagination: {
                 currentPage: page,
                 totalPages,
