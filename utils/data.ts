@@ -4,13 +4,10 @@ import { ClientReview } from "@/components/ClientReviews";
 export const Bio = {
   name: "Omkar Chebale ",
   roles: [
-    "Helping businesses go digital with smart, custom web solutions",
-    "You can call me Rushi",
-    "Freelance Full-Stack Developer",
-    "MERN Stack Specialist",
-    "Digital Solution Builder",
+    "AI Engineer",
+    "Full-Stack Developer",
   ],
-  description: "I’m a passionate software engineer who helps businesses bring their digital ideas to life. From scalable web apps to custom solutions, I focus on clean code, great UX, and real results. I’ve worked with local businesses to automate systems, improve customer experience, and grow their online presence.",
+  description: "AI Engineer specializing in LLMs, RAG, and full-stack systems.",
   github: "https://github.com/Chebaleomkar",
   resume:
     "https://drive.google.com/file/d/1_xD17Kg6MS0T0ahDAxltGXSxsccutMxr/view?usp=drive_link",
@@ -23,123 +20,20 @@ export const Bio = {
 
 export const skills = [
   {
+    title: "AI / ML",
+    skills: ["LLMs", "RAG", "NLP", "Embeddings", "LangChain", "OpenAI", "Gemini", "Pinecone", "Vector Databases"],
+  },
+  {
     title: "Frontend",
-    skills: [
-      {
-        name: "HTML",
-        image: "/html.jpg",
-      },
-      {
-        name: "CSS",
-        image:
-          "/css.jpg",
-      },
-      {
-        name: "Tailwind UI",
-        image:
-          "/tailwind.jpg",
-      },
-      {
-        name: "Saas",
-        image:
-          "/sass.png",
-      },
-      {
-        name: "JavaScript",
-        image:
-          "/JavaScript.png",
-      },
-      {
-        name: "TypeScript",
-        image:
-          "/typescript.png",
-      },
-      {
-        name: "React Js",
-        image:
-          "/react.jpeg",
-      },
-      {
-        name: "Next Js",
-        image:
-          "/next.jpeg",
-      },
-      {
-        name: "Astro Js",
-        image:
-          "/astro.jpeg",
-      },
-    ],
+    skills: ["React", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "Astro"],
   },
   {
     title: "Backend",
-    skills: [
-      {
-        name: "Node Js",
-        image: "/node.jpeg",
-      },
-      {
-        name: "Express Js",
-        image:
-          "/express.jpeg",
-      },
-      {
-        name: "Hono Js",
-        image: "/hono.jpeg",
-      },
-      {
-        name: "MongoDB",
-        image:
-          "/mongodb.jpeg",
-      },
-      {
-        name: "MySQL",
-        image:
-          "/mysql.jpeg",
-      },
-      {
-        name: "Postgresql",
-        image: "/postgres.jpeg",
-      },
-
-    ],
+    skills: ["Node.js", "Express", "Hono", "Python", "REST APIs", "MongoDB", "PostgreSQL"],
   },
   {
-    title: "Others",
-    skills: [
-      {
-        name: "Git",
-        image:
-          "/git.jpeg",
-      },
-      {
-        name: "GitHub",
-        image:
-          "/github.jpeg",
-      },
-
-      {
-        name: "Netlify",
-        image:
-          "/netlify.jpeg",
-      },
-      {
-        name: "vercel",
-        image:
-          "/vercel.jpeg",
-      },
-      {
-        name: "VS Code",
-        image:
-          "/vscode.jpeg",
-      },
-      {
-        name: "Postman",
-        image:
-          "/postman.jpeg",
-      },
-
-    ],
+    title: "DevOps",
+    skills: ["Docker", "AWS", "Git", "Vercel", "CI/CD"],
   },
 ];
 

@@ -1,108 +1,112 @@
 "use client"
 
-import ResumeButton from "@/components/ResumeButton"
 import { Bio } from "@/utils/data"
-import Image from "next/image"
 import Link from "next/link"
 import { memo } from "react"
-import { FaFacebook, FaGithub, FaInstagram, FaLinkedin, FaStackOverflow, FaTwitter } from "react-icons/fa"
-import { TypeAnimation } from "react-type-animation"
-
-interface SocialIconProps {
-  href: string
-  icon: React.ComponentType<{ size: number; className?: string }>
-  label: string
-}
+import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa"
+import { HiArrowDown } from "react-icons/hi"
 
 export const Hero = memo(() => {
+  const scrollToNext = () => {
+    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
+  }
+
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
-      {/* Background decoration */ }
-      <div className="absolute inset-0 bg-grid-pattern opacity-5 dark:opacity-10" />
-      <div className="absolute top-20 left-20 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob" />
-      <div className="absolute top-40 right-20 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000" />
-      <div className="absolute -bottom-8 left-40 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000" />
+    <section className="min-h-screen flex flex-col relative overflow-hidden bg-[#0a0a0a]">
+      {/* Subtle grid background */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                           linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px'
+        }}
+      />
 
-      <div className="container mx-auto px-4 py-12 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 max-w-7xl mx-auto">
-          {/* Content */ }
-          <div className="lg:w-1/2 text-center lg:text-left space-y-8">
-            <div className="space-y-4">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
-                Hi, I&apos;m{ " " }
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  { Bio.name }
-                </span>
-              </h1>
+      {/* Subtle gradient accent */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-emerald-500/5 via-cyan-500/5 to-transparent blur-3xl" />
 
-              <div className="h-16 flex items-center justify-center lg:justify-start">
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-700 dark:text-gray-300">
-                  <TypeAnimation
-                    sequence={ Bio.roles.flatMap((role) => [role, 2000]) }
-                    wrapper="span"
-                    cursor={ true }
-                    repeat={ Infinity }
-                    style={ { display: 'inline-block' } }
-                  />
-                </h2>
-              </div>
-            </div>
-
-            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed">
-              { Bio.description }
-            </p>
-
-            {/* Social Links */ }
-            <div className="flex justify-center lg:justify-start gap-4">
-              <SocialIcon href={ Bio.github } icon={ FaGithub } label="GitHub" />
-              <SocialIcon href={ Bio.linkedin } icon={ FaLinkedin } label="LinkedIn" />
-              <SocialIcon href={ Bio.twitter } icon={ FaTwitter } label="Twitter" />
-              <SocialIcon href={ Bio.insta } icon={ FaInstagram } label="Instagram" />
-              <SocialIcon href={ Bio.facebook } icon={ FaFacebook } label="Facebook" />
-              <SocialIcon href={ Bio.stack_overflow } icon={ FaStackOverflow } label="Stack Overflow" />
-            </div>
-
-            {/* CTA Button */ }
-            <div className="pt-4">
-              <Link href="/omkar-chebale-resume" className="inline-block">
-                <ResumeButton />
-              </Link>
-            </div>
+      {/* Navigation */}
+      <nav className="relative z-20 pt-8 px-6">
+        <div className="max-w-5xl mx-auto flex items-center justify-between">
+          <Link
+            href="/"
+            className="text-white/90 hover:text-white transition-colors font-medium tracking-tight"
+          >
+            {Bio.name.trim().split(' ')[0]}
+            <span className="text-emerald-400">.</span>
+          </Link>
+          <div className="flex items-center gap-8">
+            <Link href="/work" className="text-sm text-gray-500 hover:text-white transition-colors">
+              Work
+            </Link>
+            <Link href="/skills" className="text-sm text-gray-500 hover:text-white transition-colors">
+              Skills
+            </Link>
+            <Link href="/about" className="text-sm text-gray-500 hover:text-white transition-colors">
+              About
+            </Link>
           </div>
+        </div>
+      </nav>
 
-          {/* Profile Image */ }
-          <div className="lg:w-1/2 flex justify-center lg:justify-end">
-            <div className="relative">
-              <div className="w-80 h-80 lg:w-96 lg:h-96 relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full blur-2xl opacity-20" />
-                <Image
-                  src="/profile.jpg"
-                  alt="Omkar Chebale - Full Stack Developer"
-                  fill
-                  className="object-cover rounded-full shadow-2xl border-4 border-white dark:border-gray-700 relative z-10"
-                  priority
-                  sizes="(max-width: 768px) 320px, 384px"
-                />
-              </div>
-            </div>
+      {/* Main content */}
+      <div className="flex-1 flex items-center justify-center relative z-10 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+
+          {/* Name */}
+          <h1 className="mb-6">
+            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white">
+              {Bio.name.trim()}
+            </span>
+          </h1>
+
+          {/* Social links */}
+          <div className="flex items-center justify-center gap-6">
+            <a
+              href={Bio.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 rounded-lg border border-gray-800 bg-gray-900/50 text-gray-400 hover:text-white hover:border-gray-700 hover:bg-gray-800/50 transition-all duration-200"
+              aria-label="GitHub"
+            >
+              <FaGithub size={20} />
+            </a>
+            <a
+              href={Bio.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 rounded-lg border border-gray-800 bg-gray-900/50 text-gray-400 hover:text-white hover:border-gray-700 hover:bg-gray-800/50 transition-all duration-200"
+              aria-label="LinkedIn"
+            >
+              <FaLinkedin size={20} />
+            </a>
+            <a
+              href={Bio.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 rounded-lg border border-gray-800 bg-gray-900/50 text-gray-400 hover:text-white hover:border-gray-700 hover:bg-gray-800/50 transition-all duration-200"
+              aria-label="Twitter"
+            >
+              <FaTwitter size={20} />
+            </a>
           </div>
         </div>
       </div>
+
+      {/* Scroll indicator */}
+      <button
+        onClick={scrollToNext}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-600 hover:text-white transition-colors duration-300 z-20 group"
+        aria-label="Scroll down"
+      >
+        <div className="flex flex-col items-center gap-2">
+          <span className="text-xs uppercase tracking-widest font-mono">Scroll</span>
+          <HiArrowDown size={18} className="group-hover:translate-y-1 transition-transform" />
+        </div>
+      </button>
     </section>
   )
 })
 
-const SocialIcon = memo(({ href, icon: Icon, label }: SocialIconProps) => (
-  <a
-    href={ href }
-    target="_blank"
-    rel="noopener noreferrer"
-    className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:scale-110 border border-gray-200 dark:border-gray-700"
-    aria-label={ label }
-  >
-    <Icon size={ 24 } />
-  </a>
-))
-
 Hero.displayName = "Hero"
-SocialIcon.displayName = "SocialIcon"

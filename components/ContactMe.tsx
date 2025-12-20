@@ -1,23 +1,10 @@
 'use client'
 
-import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { motion } from "framer-motion"
-import { Check, Loader2, Mail, MessageCircle, PenTool } from 'lucide-react'
+import { Check, Loader2 } from 'lucide-react'
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import toast, { Toaster } from 'react-hot-toast'
-import { useInView } from "react-intersection-observer"
 import * as z from "zod"
 
 const formSchema = z.object({
@@ -29,10 +16,6 @@ const formSchema = z.object({
 export function ContactMe() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,7 +29,6 @@ export function ContactMe() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     try {
-      // Send POST request to /api/send-email
       const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
@@ -59,23 +41,21 @@ export function ContactMe() {
         throw new Error('Failed to send message')
       }
 
-      // Show success toast
-      toast.success("🎉 Your message has been successfully sent to Mr. Omkar Chebale!", {
+      toast.success("Message sent successfully!", {
         style: {
-          background: '#10B981',
-          color: '#FFFFFF',
-          border: '1px solid #059669',
-          width: '70%'
+          background: '#1a1a1a',
+          color: '#fff',
+          border: '1px solid #333',
         },
       })
       setIsSubmitted(true)
-    } catch (error) {
-      // Show error toast
-      toast.error("❌ Something went wrong. Please try again.", {
+      form.reset()
+    } catch {
+      toast.error("Something went wrong. Please try again.", {
         style: {
-          background: '#EF4444',
-          color: '#FFFFFF',
-          border: '1px solid #DC2626',
+          background: '#1a1a1a',
+          color: '#fff',
+          border: '1px solid #333',
         },
       })
     } finally {
@@ -83,163 +63,108 @@ export function ContactMe() {
     }
   }
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.1,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-    },
-  }
-
-  const iconVariants = {
-    hover: { scale: 1.1, rotate: [0, -10, 10, 0], transition: { duration: 0.5 } },
-  }
-
   return (
-    <section id="contactMe" className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+    <section id="contact" className="py-24 bg-[#030303]">
       <Toaster position="top-center" />
-      <motion.div
-        ref={ ref }
-        initial="hidden"
-        animate={ inView ? "visible" : "hidden" }
-        variants={ containerVariants }
-        className="max-w-3xl w-full"
-      >
-        <motion.div
-          variants={ itemVariants }
-          className="text-center mb-8"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">Get in Touch</h2>
-          <p className="text-gray-400">I&apos;d love to hear from you. Send me a message! This form works </p>
-        </motion.div>
 
-        <div className="bg-gray-800 p-6 rounded-lg shadow-xl">
-          <Form { ...form }>
-            <form onSubmit={ form.handleSubmit(onSubmit) } className="space-y-6">
-              <motion.div variants={ itemVariants }>
-                <FormField
-                  control={ form.control }
-                  name="email"
-                  render={ ({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-200 flex items-center gap-2">
-                        <motion.span
-                          variants={ iconVariants }
-                          whileHover="hover"
-                        >
-                          <Mail className="w-5 h-5" />
-                        </motion.span>
-                        Email
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="your@email.com"
-                          { ...field }
-                          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  ) }
-                />
-              </motion.div>
+      <div className="container mx-auto px-6 max-w-2xl">
+        {/* Header */}
+        <header className="mb-12">
+          <p className="text-sm uppercase tracking-widest text-gray-500 mb-3">Get in touch</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Contact
+          </h2>
+          <p className="text-gray-400">
+            Have a project in mind? Let's talk.
+          </p>
+        </header>
 
-              <motion.div variants={ itemVariants }>
-                <FormField
-                  control={ form.control }
-                  name="subject"
-                  render={ ({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-200 flex items-center gap-2">
-                        <motion.span
-                          variants={ iconVariants }
-                          whileHover="hover"
-                        >
-                          <PenTool className="w-5 h-5" />
-                        </motion.span>
-                        Subject
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="What's this about?"
-                          { ...field }
-                          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  ) }
-                />
-              </motion.div>
+        {/* Form */}
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          {/* Email */}
+          <div>
+            <label htmlFor="email" className="block text-sm text-gray-400 mb-2">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              placeholder="your@email.com"
+              {...form.register("email")}
+              className="w-full px-4 py-3 bg-transparent border border-white/10 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-white/30 transition-colors"
+            />
+            {form.formState.errors.email && (
+              <p className="mt-1 text-sm text-red-400">{form.formState.errors.email.message}</p>
+            )}
+          </div>
 
-              <motion.div variants={ itemVariants }>
-                <FormField
-                  control={ form.control }
-                  name="message"
-                  render={ ({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-200 flex items-center gap-2">
-                        <motion.span
-                          variants={ iconVariants }
-                          whileHover="hover"
-                        >
-                          <MessageCircle className="w-5 h-5" />
-                        </motion.span>
-                        Message
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Your message here..."
-                          { ...field }
-                          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 min-h-[150px]"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  ) }
-                />
-              </motion.div>
+          {/* Subject */}
+          <div>
+            <label htmlFor="subject" className="block text-sm text-gray-400 mb-2">
+              Subject
+            </label>
+            <input
+              id="subject"
+              type="text"
+              placeholder="What's this about?"
+              {...form.register("subject")}
+              className="w-full px-4 py-3 bg-transparent border border-white/10 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-white/30 transition-colors"
+            />
+            {form.formState.errors.subject && (
+              <p className="mt-1 text-sm text-red-400">{form.formState.errors.subject.message}</p>
+            )}
+          </div>
 
-              <motion.div
-                variants={ itemVariants }
-                className="pt-2"
-              >
-                <Button
-                  type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300"
-                  disabled={ isSubmitting || isSubmitted }
-                >
-                  { isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Sending...
-                    </>
-                  ) : isSubmitted ? (
-                    <>
-                      <Check className="mr-2 h-4 w-4" />
-                      Sent Successfully
-                    </>
-                  ) : (
-                    "Send Message"
-                  ) }
-                </Button>
-              </motion.div>
-            </form>
-          </Form>
-        </div>
-      </motion.div>
+          {/* Message */}
+          <div>
+            <label htmlFor="message" className="block text-sm text-gray-400 mb-2">
+              Message
+            </label>
+            <textarea
+              id="message"
+              placeholder="Tell me about your project..."
+              rows={5}
+              {...form.register("message")}
+              className="w-full px-4 py-3 bg-transparent border border-white/10 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-white/30 transition-colors resize-none"
+            />
+            {form.formState.errors.message && (
+              <p className="mt-1 text-sm text-red-400">{form.formState.errors.message.message}</p>
+            )}
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isSubmitting || isSubmitted}
+            className="w-full py-3 bg-white text-black font-medium rounded-lg hover:bg-gray-200 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Sending...
+              </>
+            ) : isSubmitted ? (
+              <>
+                <Check className="h-4 w-4" />
+                Sent
+              </>
+            ) : (
+              "Send Message"
+            )}
+          </button>
+        </form>
+
+        {/* Alternative contact */}
+        <p className="mt-8 text-center text-sm text-gray-600">
+          Or email me directly at{' '}
+          <a
+            href="mailto:chebaleomkar@gmail.com"
+            className="text-gray-400 hover:text-white transition-colors"
+          >
+            chebaleomkar@gmail.com
+          </a>
+        </p>
+      </div>
     </section>
   )
 }
