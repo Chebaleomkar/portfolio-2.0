@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm'
 import { getBlogPostBySlug } from '@/lib/blog'
 import { connectDB } from '@/lib/mongodb'
 import Blog from '@/models/Blog'
+import { Navbar } from '@/components/navbar'
 
 export const dynamic = 'force-dynamic'
 
@@ -94,6 +95,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     return (
         <main className="min-h-screen bg-[#0a0a0a]">
             {/* Navigation */}
+            <Navbar />
             <nav className="pt-8 px-6">
                 <div className="max-w-3xl mx-auto">
                     <Link
