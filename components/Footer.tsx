@@ -135,18 +135,6 @@ export const Footer = () => {
           </p>
         </div>
       </div>
-
-      {/* Sunset Glow - At the very bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-[300px] pointer-events-none">
-        {/* Main horizon glow */}
-        <div className="absolute bottom-0 left-0 right-0 h-full bg-gradient-to-t from-orange-600/40 via-amber-500/20 to-transparent" />
-        {/* Center hot glow */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[200px] bg-gradient-radial from-orange-500/60 via-amber-500/30 to-transparent blur-2xl" />
-        {/* Secondary glow */}
-        <div className="absolute bottom-0 left-1/4 right-1/4 h-[200px] bg-gradient-to-t from-orange-500/50 via-amber-400/25 to-transparent blur-xl" />
-        {/* Horizon line */}
-        <div className="absolute bottom-[150px] left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
-      </div>
     </footer>
   )
 }

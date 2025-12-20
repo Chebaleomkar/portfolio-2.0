@@ -1,21 +1,13 @@
-"use client"
-
 import Link from "next/link"
 import { HiArrowLeft, HiArrowRight } from "react-icons/hi"
+import { getAllBlogPosts } from "@/lib/blog"
 
-// Blog posts data - you can move this to a separate file later
-const posts = [
-    {
-        slug: "what-why-how-zod-works",
-        title: "What, Why and How Zod Works?",
-        description: "Understanding the popular TypeScript-first schema validation library",
-        date: "2024",
-        tags: ["TypeScript", "Zod", "Validation"],
-        external: "https://medium.com/@omkarchebale0/what-why-and-how-zod-works-b022e3bd13ec"
-    },
-]
+export const dynamic = 'force-dynamic' // Ensures fresh data on each request
+export const revalidate = 0
 
 export default function WorkPage() {
+    const posts = getAllBlogPosts()
+
     return (
         <main className="min-h-screen bg-[#0a0a0a]">
             {/* Navigation */}
@@ -48,41 +40,88 @@ export default function WorkPage() {
                     {/* Posts list */}
                     <div className="space-y-1">
                         {posts.map((post) => (
-                            <a
-                                key={post.slug}
-                                href={post.external}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="group block py-6 border-b border-white/5 hover:border-white/20 transition-colors"
-                            >
-                                <div className="flex items-start justify-between gap-4">
-                                    <div className="flex-1">
-                                        <h2 className="text-lg md:text-xl font-medium text-white group-hover:text-gray-300 transition-colors mb-2">
-                                            {post.title}
-                                        </h2>
-                                        <p className="text-gray-500 text-sm mb-3">
-                                            {post.description}
-                                        </p>
-                                        <div className="flex items-center gap-3 text-xs text-gray-600">
-                                            <span>{post.date}</span>
-                                            <span>·</span>
-                                            <div className="flex gap-2">
-                                                {post.tags.map((tag) => (
-                                                    <span key={tag} className="text-gray-500">{tag}</span>
-                                                ))}
+                            post.external ? (
+                                <a
+                                    key={post.slug}
+                                    href={post.external}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group block py-6 border-b border-white/5 hover:border-white/20 transition-colors"
+                                >
+                                    <div className="flex items-start justify-between gap-4">
+                                        <div className="flex-1">
+                                            <h2 className="text-lg md:text-xl font-medium text-white group-hover:text-gray-300 transition-colors mb-2">
+                                                {post.title}
+                                            </h2>
+                                            <p className="text-gray-500 text-sm mb-3">
+                                                {post.description}
+                                            </p>
+                                            <div className="flex items-center gap-3 text-xs text-gray-600">
+                                                <span>{post.date}</span>
+                                                {post.tags.length > 0 && (
+                                                    <>
+                                                        <span>·</span>
+                                                        <div className="flex gap-2">
+                                                            {post.tags.map((tag) => (
+                                                                <span key={tag} className="text-gray-500">{tag}</span>
+                                                            ))}
+                                                        </div>
+                                                    </>
+                                                )}
                                             </div>
                                         </div>
+                                        <HiArrowRight
+                                            size={18}
+                                            className="text-gray-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-1"
+                                        />
                                     </div>
-                                    <HiArrowRight
-                                        size={18}
-                                        className="text-gray-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-1"
-                                    />
-                                </div>
-                            </a>
+                                </a>
+                            ) : (
+                                <Link
+                                    key={post.slug}
+                                    href={`/work/${post.slug}`}
+                                    className="group block py-6 border-b border-white/5 hover:border-white/20 transition-colors"
+                                >
+                                    <div className="flex items-start justify-between gap-4">
+                                        <div className="flex-1">
+                                            <h2 className="text-lg md:text-xl font-medium text-white group-hover:text-gray-300 transition-colors mb-2">
+                                                {post.title}
+                                            </h2>
+                                            <p className="text-gray-500 text-sm mb-3">
+                                                {post.description}
+                                            </p>
+                                            <div className="flex items-center gap-3 text-xs text-gray-600">
+                                                <span>{post.date}</span>
+                                                {post.tags.length > 0 && (
+                                                    <>
+                                                        <span>·</span>
+                                                        <div className="flex gap-2">
+                                                            {post.tags.map((tag) => (
+                                                                <span key={tag} className="text-gray-500">{tag}</span>
+                                                            ))}
+                                                        </div>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <HiArrowRight
+                                            size={18}
+                                            className="text-gray-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-1"
+                                        />
+                                    </div>
+                                </Link>
+                            )
                         ))}
                     </div>
 
-                    {/* Empty state for future posts */}
+                    {/* Empty state */}
+                    {posts.length === 0 && (
+                        <div className="py-12 border border-dashed border-white/10 rounded-lg text-center">
+                            <p className="text-gray-500">No posts yet. Create one via the API!</p>
+                        </div>
+                    )}
+
+                    {/* Single post hint */}
                     {posts.length === 1 && (
                         <div className="mt-16 py-12 border border-dashed border-white/10 rounded-lg text-center">
                             <p className="text-gray-500">More posts coming soon...</p>
