@@ -1,127 +1,60 @@
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
+import { connectDB } from '@/lib/mongodb'
+import Blog, { IBlog } from '@/models/Blog'
 
 export interface BlogPost {
+    _id: string
     slug: string
     title: string
     description: string
-    date: string
-    tags: string[]
     content: string
+    tags: string[]
     external?: string
+    createdAt: string
 }
 
-const blogsDirectory = path.join(process.cwd(), 'blogs')
-
 /**
- * Get all blog posts from the /blogs directory
+ * Get all published blog posts
  */
-export function getAllBlogPosts(): BlogPost[] {
-    // Ensure the blogs directory exists
-    if (!fs.existsSync(blogsDirectory)) {
-        fs.mkdirSync(blogsDirectory, { recursive: true })
-        return []
-    }
+export async function getAllBlogPosts(): Promise<BlogPost[]> {
+    await connectDB()
 
-    const fileNames = fs.readdirSync(blogsDirectory)
-    const markdownFiles = fileNames.filter((file) => file.endsWith('.md'))
+    const posts = await Blog.find({ published: true })
+        .sort({ createdAt: -1 })
+        .select('-__v')
+        .lean()
 
-    const posts = markdownFiles
-        .map((fileName) => {
-            const slug = fileName.replace(/\.md$/, '')
-            const fullPath = path.join(blogsDirectory, fileName)
-            const fileContents = fs.readFileSync(fullPath, 'utf8')
-
-            // Use gray-matter to parse the post metadata section
-            const { data, content } = matter(fileContents)
-
-            return {
-                slug,
-                title: data.title || slug,
-                description: data.description || '',
-                date: data.date || new Date().toISOString().split('T')[0],
-                tags: data.tags || [],
-                content,
-                external: data.external,
-            } as BlogPost
-        })
-        .sort((a, b) => (a.date > b.date ? -1 : 1)) // Sort by date descending
-
-    return posts
+    return posts.map((post) => ({
+        _id: post._id.toString(),
+        slug: post.slug,
+        title: post.title,
+        description: post.description,
+        content: post.content,
+        tags: post.tags,
+        external: post.external || undefined,
+        createdAt: post.createdAt.toISOString().split('T')[0],
+    }))
 }
 
 /**
  * Get a single blog post by slug
  */
-export function getBlogPostBySlug(slug: string): BlogPost | null {
-    const fullPath = path.join(blogsDirectory, `${slug}.md`)
+export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+    await connectDB()
 
-    if (!fs.existsSync(fullPath)) {
-        return null
-    }
+    const post = await Blog.findOne({ slug, published: true })
+        .select('-__v')
+        .lean()
 
-    const fileContents = fs.readFileSync(fullPath, 'utf8')
-    const { data, content } = matter(fileContents)
+    if (!post) return null
 
     return {
-        slug,
-        title: data.title || slug,
-        description: data.description || '',
-        date: data.date || new Date().toISOString().split('T')[0],
-        tags: data.tags || [],
-        content,
-        external: data.external,
-    }
-}
-
-/**
- * Create a new blog post
- */
-export function createBlogPost(
-    title: string,
-    body: string,
-    options?: {
-        description?: string
-        tags?: string[]
-        date?: string
-    }
-): { success: boolean; slug: string; error?: string } {
-    try {
-        // Ensure the blogs directory exists
-        if (!fs.existsSync(blogsDirectory)) {
-            fs.mkdirSync(blogsDirectory, { recursive: true })
-        }
-
-        // Generate slug from title
-        const slug = title
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/(^-|-$)/g, '')
-
-        const date = options?.date || new Date().toISOString().split('T')[0]
-        const description = options?.description || ''
-        const tags = options?.tags || []
-
-        // Create frontmatter
-        const frontmatter = `---
-title: "${title}"
-description: "${description}"
-date: "${date}"
-tags: [${tags.map((t) => `"${t}"`).join(', ')}]
----
-
-${body}`
-
-        const filePath = path.join(blogsDirectory, `${slug}.md`)
-        fs.writeFileSync(filePath, frontmatter, 'utf8')
-
-        return { success: true, slug }
-    } catch (error) {
-        return {
-            success: false,
-            slug: '',
-            error: error instanceof Error ? error.message : 'Unknown error',
-        }
+        _id: post._id.toString(),
+        slug: post.slug,
+        title: post.title,
+        description: post.description,
+        content: post.content,
+        tags: post.tags,
+        external: post.external || undefined,
+        createdAt: post.createdAt.toISOString().split('T')[0],
     }
 }

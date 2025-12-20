@@ -2,11 +2,11 @@ import Link from "next/link"
 import { HiArrowLeft, HiArrowRight } from "react-icons/hi"
 import { getAllBlogPosts } from "@/lib/blog"
 
-export const dynamic = 'force-dynamic' // Ensures fresh data on each request
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export default function WorkPage() {
-    const posts = getAllBlogPosts()
+export default async function WorkPage() {
+    const posts = await getAllBlogPosts()
 
     return (
         <main className="min-h-screen bg-[#0a0a0a]">
@@ -57,7 +57,7 @@ export default function WorkPage() {
                                                 {post.description}
                                             </p>
                                             <div className="flex items-center gap-3 text-xs text-gray-600">
-                                                <span>{post.date}</span>
+                                                <span>{post.createdAt}</span>
                                                 {post.tags.length > 0 && (
                                                     <>
                                                         <span>·</span>
@@ -91,7 +91,7 @@ export default function WorkPage() {
                                                 {post.description}
                                             </p>
                                             <div className="flex items-center gap-3 text-xs text-gray-600">
-                                                <span>{post.date}</span>
+                                                <span>{post.createdAt}</span>
                                                 {post.tags.length > 0 && (
                                                     <>
                                                         <span>·</span>
@@ -118,13 +118,6 @@ export default function WorkPage() {
                     {posts.length === 0 && (
                         <div className="py-12 border border-dashed border-white/10 rounded-lg text-center">
                             <p className="text-gray-500">No posts yet. Create one via the API!</p>
-                        </div>
-                    )}
-
-                    {/* Single post hint */}
-                    {posts.length === 1 && (
-                        <div className="mt-16 py-12 border border-dashed border-white/10 rounded-lg text-center">
-                            <p className="text-gray-500">More posts coming soon...</p>
                         </div>
                     )}
                 </div>

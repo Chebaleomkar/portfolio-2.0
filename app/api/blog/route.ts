@@ -1,16 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createBlogPost, getAllBlogPosts } from '@/lib/blog'
+import { connectDB } from '@/lib/mongodb'
+import Blog from '@/models/Blog'
 
 const BLOG_PASSWORD = process.env.BLOG_PASSWORD
 
 /**
- * GET /api/blog - Get all blog posts
+ * GET /api/blog - Get all published blog posts
  */
 export async function GET() {
     try {
-        const posts = getAllBlogPosts()
+        await connectDB()
+
+        const posts = await Blog.find({ published: true })
+            .sort({ createdAt: -1 })
+            .select('-__v')
+            .lean()
+
         return NextResponse.json({ success: true, posts })
     } catch (error) {
+        console.error('Error fetching posts:', error)
         return NextResponse.json(
             { success: false, error: 'Failed to fetch posts' },
             { status: 500 }
@@ -29,6 +37,7 @@ export async function GET() {
  *   body: string (markdown content, required)
  *   description?: string
  *   tags?: string[]
+ *   external?: string (external link if any)
  */
 export async function POST(request: NextRequest) {
     try {
@@ -51,41 +60,58 @@ export async function POST(request: NextRequest) {
 
         // Parse request body
         const body = await request.json()
-        const { title, body: content, description, tags } = body
+        const { title, body: content, description, tags, external } = body
 
         // Validate required fields
         if (!title || typeof title !== 'string') {
             return NextResponse.json(
-                { success: false, error: 'Title is required and must be a string' },
+                { success: false, error: 'Title is required' },
                 { status: 400 }
             )
         }
 
         if (!content || typeof content !== 'string') {
             return NextResponse.json(
-                { success: false, error: 'Body is required and must be a string (markdown format)' },
+                { success: false, error: 'Body is required (markdown format)' },
                 { status: 400 }
             )
         }
 
-        // Create the blog post
-        const result = createBlogPost(title, content, {
-            description,
-            tags,
-        })
+        // Connect to database
+        await connectDB()
 
-        if (!result.success) {
+        // Generate slug
+        const slug = title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '')
+
+        // Check if slug already exists
+        const existingPost = await Blog.findOne({ slug })
+        if (existingPost) {
             return NextResponse.json(
-                { success: false, error: result.error },
-                { status: 500 }
+                { success: false, error: 'A post with this title already exists' },
+                { status: 409 }
             )
         }
+
+        // Create the blog post
+        const newPost = await Blog.create({
+            title,
+            slug,
+            description: description || '',
+            content,
+            tags: tags || [],
+            external: external || null,
+            published: true,
+        })
 
         return NextResponse.json(
             {
                 success: true,
                 message: 'Blog post created successfully',
-                slug: result.slug,
+                slug: newPost.slug,
+                id: newPost._id,
             },
             { status: 201 }
         )

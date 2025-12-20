@@ -3,23 +3,17 @@ import Link from 'next/link'
 import { HiArrowLeft } from 'react-icons/hi'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { getAllBlogPosts, getBlogPostBySlug } from '@/lib/blog'
+import { getBlogPostBySlug } from '@/lib/blog'
+
+export const dynamic = 'force-dynamic'
 
 interface BlogPostPageProps {
     params: Promise<{ slug: string }>
 }
 
-// Generate static params for all blog posts
-export async function generateStaticParams() {
-    const posts = getAllBlogPosts()
-    return posts.map((post) => ({
-        slug: post.slug,
-    }))
-}
-
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
     const { slug } = await params
-    const post = getBlogPostBySlug(slug)
+    const post = await getBlogPostBySlug(slug)
 
     if (!post) {
         notFound()
@@ -66,7 +60,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     {/* Header */}
                     <header className="mb-12">
                         <div className="flex items-center gap-3 text-xs text-gray-500 mb-4">
-                            <span>{post.date}</span>
+                            <span>{post.createdAt}</span>
                             {post.tags.length > 0 && (
                                 <>
                                     <span>·</span>
