@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import toast, { Toaster } from "react-hot-toast"
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa"
 import * as z from "zod"
+import { NewsletterForm } from "./NewsletterForm"
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -47,10 +48,17 @@ export const Footer = () => {
     <footer className="relative bg-[#030303] overflow-hidden">
       <Toaster position="top-center" />
 
+      {/* Newsletter Section - Full width above footer */}
+      <div className="border-b border-white/5">
+        <div className="container mx-auto px-6 max-w-5xl py-16">
+          <NewsletterForm />
+        </div>
+      </div>
+
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 max-w-5xl py-20">
+      <div className="relative z-10 container mx-auto px-6 max-w-5xl py-16">
         {/* Two Column Layout */}
-        <div className="grid md:grid-cols-2 gap-16 mb-16">
+        <div className="grid md:grid-cols-2 gap-12 mb-12">
           {/* Left - Contact Form */}
           <div>
             <h3 className="text-sm uppercase tracking-widest text-gray-500 mb-4">Get in touch</h3>
