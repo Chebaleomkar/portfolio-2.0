@@ -10,7 +10,7 @@ import { CuratedSidebar } from '@/components/CuratedSidebar'
 import type { BlogPost, PaginationInfo } from '@/types/blog'
 import { Navbar } from '@/components/navbar'
 
-export default function WorkPage() {
+export default function BlogPage() {
     const [posts, setPosts] = useState<BlogPost[]>([])
     const [curatedPosts, setCuratedPosts] = useState<BlogPost[]>([])
     const [pagination, setPagination] = useState<PaginationInfo | null>(null)
@@ -94,7 +94,7 @@ export default function WorkPage() {
                             {/* Header */}
                             <header className="mb-12">
                                 <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                                    Work
+                                    Blog
                                 </h1>
                                 <p className="text-gray-400 text-sm">
                                     Thoughts on whatever I build, break, and learn in AI, engineering, and more.
@@ -111,8 +111,8 @@ export default function WorkPage() {
                                                    hover:bg-amber-500/10 hover:border-amber-500 
                                                    transition-all duration-200 font-medium text-xs"
                                     >
+                                        <HiSparkles size={14} />
                                         <span>Curated</span>
-                                        <span>≡</span>
                                     </button>
                                 </div>
                             )}

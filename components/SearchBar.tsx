@@ -112,7 +112,7 @@ export function SearchBar({
                             const Wrapper = post.external ? 'a' : Link
                             const wrapperProps = post.external
                                 ? { href: post.external, target: '_blank', rel: 'noopener noreferrer' }
-                                : { href: `/work/${post.slug}` }
+                                : { href: `/blog/${post.slug}` }
 
                             return (
                                 <Wrapper

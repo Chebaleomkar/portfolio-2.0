@@ -8,6 +8,7 @@ import { getBlogPostBySlug } from '@/lib/blog'
 import { connectDB } from '@/lib/mongodb'
 import Blog from '@/models/Blog'
 import { Navbar } from '@/components/navbar'
+import { ShareButtons } from '@/components/ShareButtons'
 
 export const dynamic = 'force-dynamic'
 
@@ -31,11 +32,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     }
 
     const baseUrl = 'https://omkarchebale.vercel.app'
-    const blogUrl = `${baseUrl}/work/${slug}`
+    const blogUrl = `${baseUrl}/blog/${slug}`
     const publishDate = post.createdAt?.toISOString() || new Date().toISOString()
     const modifiedDate = post.updatedAt?.toISOString() || publishDate
 
-    // Create keyword-rich description for AI crawlers
     const seoDescription = post.description
         ? `${post.description} | Tags: ${post.tags?.join(', ') || 'Tech, Development'}`
         : `Read about ${post.title} - insights on ${post.tags?.join(', ') || 'software development'} by Omkar Chebale`
@@ -54,8 +54,6 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
         authors: [{ name: 'Omkar Chebale', url: baseUrl }],
         creator: 'Omkar Chebale',
         publisher: 'Omkar Chebale',
-
-        // Robots & Indexing
         robots: {
             index: true,
             follow: true,
@@ -67,13 +65,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
                 'max-snippet': -1,
             },
         },
-
-        // Canonical URL
         alternates: {
             canonical: blogUrl,
         },
-
-        // Open Graph for social sharing
         openGraph: {
             title: post.title,
             description: post.description || `Read ${post.title} on Omkar Chebale's blog`,
@@ -96,8 +90,6 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
                 },
             ],
         },
-
-        // Twitter Card
         twitter: {
             card: 'summary_large_image',
             site: '@chebalerushi',
@@ -109,8 +101,6 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
                 alt: `${post.title} - Blog by Omkar Chebale`,
             },
         },
-
-        // Additional metadata for AI crawlers
         other: {
             'article:author': 'Omkar Chebale',
             'article:published_time': publishDate,
@@ -129,7 +119,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         notFound()
     }
 
-    // If it's an external post, redirect
     if (post.external) {
         return (
             <main className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
@@ -149,7 +138,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         )
     }
 
-    // Generate JSON-LD structured data for AI crawlers
     const jsonLd = {
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',
@@ -176,7 +164,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         dateModified: post.createdAt,
         mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': `https://omkarchebale.vercel.app/work/${slug}`,
+            '@id': `https://omkarchebale.vercel.app/blog/${slug}`,
         },
         keywords: post.tags?.join(', '),
         articleSection: 'Technology',
@@ -187,33 +175,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
     return (
         <>
-            {/* JSON-LD Structured Data for AI & Search Crawlers */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
 
             <main className="min-h-screen bg-[#0a0a0a]">
-                {/* Navigation */}
                 <Navbar />
                 <nav className="pt-8 px-6">
                     <div className="max-w-3xl mx-auto">
                         <Link
-                            href="/work"
+                            href="/blog"
                             className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm"
                         >
                             <HiArrowLeft size={16} />
-                            Back to Work
+                            Back to Blog
                         </Link>
                     </div>
                 </nav>
 
-                {/* Article */}
                 <article className="py-16 px-6">
                     <div className="max-w-3xl mx-auto">
-                        {/* Header */}
                         <header className="mb-12">
-                            <div className="flex items-center gap-3 text-xs text-gray-500 mb-4">
+                            {/* Meta row */}
+                            <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 mb-4">
                                 {post.isStarred && (
                                     <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-500/10 rounded text-yellow-500">
                                         <HiStar size={12} />
@@ -221,30 +206,36 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                                     </span>
                                 )}
                                 <span>{post.createdAt}</span>
-                                {post.tags.length > 0 && (
-                                    <>
-                                        <span>·</span>
-                                        <div className="flex gap-2">
-                                            {post.tags.map((tag) => (
-                                                <span
-                                                    key={tag}
-                                                    className="px-2 py-1 bg-gray-800/50 rounded text-gray-400"
-                                                >
-                                                    {tag}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </>
-                                )}
                             </div>
-                            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+
+                            {/* Title */}
+                            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
                                 {post.title}
                             </h1>
+
+                            {/* Description */}
                             {post.description && (
-                                <p className="text-xl text-gray-400">
+                                <p className="text-base sm:text-lg md:text-xl text-gray-400 mb-6">
                                     {post.description}
                                 </p>
                             )}
+
+                            {/* Tags - responsive wrap */}
+                            {post.tags.length > 0 && (
+                                <div className="flex flex-wrap gap-2 mb-6">
+                                    {post.tags.map((tag) => (
+                                        <span
+                                            key={tag}
+                                            className="px-3 py-1 text-xs font-medium bg-gray-800/80 border border-gray-700/50 rounded-full text-gray-400"
+                                        >
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Share Section */}
+                            <ShareButtons title={post.title} slug={slug} />
                         </header>
 
                         {/* Content - Rendered Markdown */}
@@ -289,9 +280,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                                                 </code>
                                             )
                                         }
-                                        return (
-                                            <code className={className}>{children}</code>
-                                        )
+                                        return <code className={className}>{children}</code>
                                     },
                                     pre: ({ children }) => (
                                         <pre className="bg-gray-900 border border-gray-800 rounded-lg p-4 overflow-x-auto my-4">

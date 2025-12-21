@@ -13,8 +13,8 @@ export const Navbar = () => {
                     <span className="text-emerald-400">.</span>
                 </Link>
                 <div className="flex items-center gap-4 md:gap-8">
-                    <Link href="/work" className="text-sm text-gray-500 hover:text-white transition-colors">
-                        Work
+                    <Link href="/blog" className="text-sm text-gray-500 hover:text-white transition-colors">
+                        Blog
                     </Link>
                     <Link href="/skills" className="text-sm text-gray-500 hover:text-white transition-colors hidden sm:block">
                         Skills

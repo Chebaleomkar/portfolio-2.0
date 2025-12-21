@@ -2,23 +2,12 @@
 
 import { Bio, skills } from "@/utils/data"
 import Link from "next/link"
-import { memo, useEffect, useState } from "react"
+import { memo } from "react"
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa"
 import { HiArrowDown, HiCode, HiLightningBolt, HiSparkles } from "react-icons/hi"
 import { Navbar } from "./navbar"
 
 export const Hero = memo(() => {
-  const [currentRole, setCurrentRole] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
-
-  // Rotate through roles
-  useEffect(() => {
-    setIsVisible(true)
-    const interval = setInterval(() => {
-      setCurrentRole((prev) => (prev + 1) % Bio.roles.length)
-    }, 3000)
-    return () => clearInterval(interval)
-  }, [])
 
   const scrollToNext = () => {
     window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
@@ -48,8 +37,7 @@ export const Hero = memo(() => {
 
       {/* Main content */}
       <div className="flex-1 flex items-center justify-center relative z-10 px-4 md:px-6 py-8 md:py-0">
-        <div className={`max-w-5xl mx-auto w-full transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-
+        <div className={`max-w-5xl mx-auto w-full transition-all duration-700`}>
           {/* Name & Role */}
           <div className="text-center mb-8">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-4">
@@ -80,7 +68,7 @@ export const Hero = memo(() => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
             <Link
-              href="/work"
+              href="/blog"
               className="w-full sm:w-auto px-6 py-3 bg-white text-black font-medium rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
             >
               <HiSparkles size={18} />

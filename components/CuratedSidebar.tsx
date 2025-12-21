@@ -108,7 +108,7 @@ function CuratedPostCard({ post, onClose }: { post: BlogPost; onClose?: () => vo
     const CardWrapper = post.external ? 'a' : Link
     const cardProps = post.external
         ? { href: post.external, target: '_blank', rel: 'noopener noreferrer' }
-        : { href: `/work/${post.slug}` }
+        : { href: `/blog/${post.slug}` }
 
     return (
         <CardWrapper

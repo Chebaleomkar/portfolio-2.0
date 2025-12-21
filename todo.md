@@ -1,0 +1,7 @@
+# TOOD
+
+- [ ] add share button on the blog detail page 
+- [ ] SEO friendly and agentic seo ( ai also should be to crawl for my blogs on specific keywords if matching with the blog title and description or keywords ) for each blog when sharing on social media  
+- [ ] /work page the tags should be comma separated and looks like they are tags 
+- [ ] feat : implementation of the newsletter: new user should able to subscribe to my newsletter using email, name is optional in just 2 seconds
+- [ ] feat : This feature is very new, and I want a clean dashboard for my site where I could look and know as a how many users are active on my site. It's a dashboard full of analytics about my site and which user is looking for what kind of blogs, how many times he has spent on the blogs, what type of keywords that he is loving. So that we could send direct mail whenever that type of automation that I want Means we are working on a new feature that could lead us into the era of Analytics dashboard creation. That dashboard page should be authenticated with some password which will be coming from the.env. Password would have a length of almost 10 digits, and I will be the admin, so we are not creating a user-specific, but it should be analytics for me to know which user is. Looking for which blogs, for example, I want to create an analysis that this blog how many users have read so I could able to see them and how much my blogs are performing on my personal site how many crawlers have been visited. It's a complete new feature that we have to definitely work on. 
