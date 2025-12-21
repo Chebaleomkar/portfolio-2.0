@@ -7,7 +7,8 @@ export const Bio = {
     "AI Engineer",
     "Full-Stack Developer",
   ],
-  description: "AI/ML Engineer + full-stack developer.",
+  description:
+    "Omkar Chebale is a dedicated AI Engineer and Full-Stack Developer specializing in building intelligent systems, machine learning models, and scalable web applications.",
   github: "https://github.com/Chebaleomkar",
   resume:
     "https://drive.google.com/file/d/1_xD17Kg6MS0T0ahDAxltGXSxsccutMxr/view?usp=drive_link",
