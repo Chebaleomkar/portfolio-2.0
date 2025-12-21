@@ -1,4 +1,5 @@
 import { connectDB } from '@/lib/mongodb'
+import { sendWelcomeEmail, sendWelcomeBackEmail } from '@/lib/email'
 import Subscriber from '@/models/Subscriber'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -26,16 +27,32 @@ export async function POST(request: NextRequest) {
 
         await connectDB()
 
+        const subscriberEmail = email.toLowerCase().trim()
+        const subscriberName = name?.trim() || ''
+        const subscriberTopics = Array.isArray(topics) ? topics : []
+
         // Check if already subscribed
-        const existingSubscriber = await Subscriber.findOne({ email: email.toLowerCase() })
+        const existingSubscriber = await Subscriber.findOne({ email: subscriberEmail })
 
         if (existingSubscriber) {
             // If inactive, reactivate
             if (!existingSubscriber.isActive) {
                 existingSubscriber.isActive = true
-                existingSubscriber.topics = topics || existingSubscriber.topics
-                existingSubscriber.name = name || existingSubscriber.name
+                existingSubscriber.topics = subscriberTopics.length > 0 ? subscriberTopics : existingSubscriber.topics
+                existingSubscriber.name = subscriberName || existingSubscriber.name
                 await existingSubscriber.save()
+
+                // Send welcome back email
+                try {
+                    await sendWelcomeBackEmail({
+                        email: subscriberEmail,
+                        name: existingSubscriber.name,
+                        topics: existingSubscriber.topics,
+                    })
+                } catch (emailError) {
+                    console.error('Failed to send welcome back email:', emailError)
+                    // Don't fail the subscription if email fails
+                }
 
                 return NextResponse.json({
                     success: true,
@@ -51,15 +68,27 @@ export async function POST(request: NextRequest) {
 
         // Create new subscriber
         await Subscriber.create({
-            email: email.toLowerCase().trim(),
-            name: name?.trim() || '',
-            topics: Array.isArray(topics) ? topics : [],
+            email: subscriberEmail,
+            name: subscriberName,
+            topics: subscriberTopics,
             isActive: true,
         })
 
+        // Send welcome email
+        try {
+            await sendWelcomeEmail({
+                email: subscriberEmail,
+                name: subscriberName,
+                topics: subscriberTopics,
+            })
+        } catch (emailError) {
+            console.error('Failed to send welcome email:', emailError)
+            // Don't fail the subscription if email fails
+        }
+
         return NextResponse.json({
             success: true,
-            message: 'You\'re in! Expect curated blogs that match your interests.',
+            message: 'You\'re in! Check your inbox for a welcome message.',
         })
     } catch (error) {
         console.error('Newsletter subscription error:', error)
