@@ -1,46 +1,61 @@
 'use client'
 
-import { useState, useRef, useEffect, useCallback } from 'react'
-import { HiMail, HiCheck, HiX, HiPlus } from 'react-icons/hi'
+import { useState, useEffect, useCallback } from 'react'
+import { HiMail, HiCheck, HiCheckCircle } from 'react-icons/hi'
 
-// Static topics - curated list of interests
+// Predefined topics - curated list
 const PREDEFINED_TOPICS = [
-    'AI & Machine Learning',
-    'Web Development',
-    'Backend Engineering',
-    'DevOps & Cloud',
-    'System Design',
-    'LLMs & RAG',
+    'JavaScript',
+    'TypeScript',
+    'React',
+    'NextJS',
+    'NodeJS',
+    'Python',
+    'AI',
+    'MachineLearning',
+    'DeepLearning',
+    'NLP',
+    'LLM',
+    'GenerativeAI',
+    'AgenticAI',
+    'Agents',
     'Automation',
-    'Career & Growth',
-    'Tutorials',
-    'Project Updates',
+    'API',
+    'Backend',
+    'Frontend',
+    'Fullstack',
+    'Engineering',
+    'SoftwareArchitecture',
+    'SystemDesign',
+    'DevOps',
+    'CloudComputing',
+    'SaaS',
+    'Tech',
+    'SoftwareDeveloper',
+    'SaaS',
+    'AgenticAI',
+    'Automation',
+    'LifeOfAnEngineer',
+    'OpenSource',
+    'DataScience',
+    'Database'
 ]
 
-interface NewsletterFormProps {
-    variant?: 'default' | 'minimal'
-}
-
-export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
+export function NewsletterForm() {
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
     const [selectedTopics, setSelectedTopics] = useState<string[]>([])
     const [topicSearch, setTopicSearch] = useState('')
-    const [showTopicDropdown, setShowTopicDropdown] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
     const [message, setMessage] = useState('')
-    const [showAdvanced, setShowAdvanced] = useState(false)
-
-    const topicInputRef = useRef<HTMLInputElement>(null)
-    const dropdownRef = useRef<HTMLDivElement>(null)
 
     // Filter topics based on search
-    const filteredTopics = PREDEFINED_TOPICS.filter(
-        topic =>
-            topic.toLowerCase().includes(topicSearch.toLowerCase()) &&
-            !selectedTopics.includes(topic)
-    )
+    const filteredTopics = topicSearch.trim()
+        ? PREDEFINED_TOPICS.filter(topic =>
+            topic.toLowerCase().includes(topicSearch.toLowerCase())
+        )
+        : PREDEFINED_TOPICS
 
     // Check if search term is a new custom topic
     const canAddCustomTopic =
@@ -48,29 +63,26 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
         !PREDEFINED_TOPICS.some(t => t.toLowerCase() === topicSearch.toLowerCase()) &&
         !selectedTopics.some(t => t.toLowerCase() === topicSearch.toLowerCase())
 
-    // Close dropdown on outside click
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-                setShowTopicDropdown(false)
+    // Toggle topic selection
+    const toggleTopic = useCallback((topic: string) => {
+        setSelectedTopics(prev =>
+            prev.includes(topic)
+                ? prev.filter(t => t !== topic)
+                : [...prev, topic]
+        )
+    }, [])
+
+    // Add custom topic on Enter
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault()
+            const newTopic = topicSearch.trim()
+            if (newTopic && !selectedTopics.includes(newTopic)) {
+                setSelectedTopics(prev => [...prev, newTopic])
+                setTopicSearch('')
             }
         }
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [])
-
-    // Add topic
-    const addTopic = useCallback((topic: string) => {
-        if (!selectedTopics.includes(topic) && selectedTopics.length < 5) {
-            setSelectedTopics(prev => [...prev, topic])
-            setTopicSearch('')
-        }
-    }, [selectedTopics])
-
-    // Remove topic
-    const removeTopic = useCallback((topic: string) => {
-        setSelectedTopics(prev => prev.filter(t => t !== topic))
-    }, [])
+    }
 
     // Handle form submit
     const handleSubmit = async (e: React.FormEvent) => {
@@ -104,7 +116,7 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
                 setEmail('')
                 setName('')
                 setSelectedTopics([])
-                setShowAdvanced(false)
+                setTopicSearch('')
             } else {
                 setSubmitStatus('error')
                 setMessage(data.error)
@@ -128,50 +140,17 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
         }
     }, [submitStatus])
 
-    if (variant === 'minimal') {
-        return (
-            <div className="w-full max-w-md">
-                {submitStatus === 'success' ? (
-                    <div className="flex items-center gap-2 px-4 py-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 text-sm">
-                        <HiCheck size={18} />
-                        <span>{message}</span>
-                    </div>
-                ) : (
-                    <form onSubmit={handleSubmit} className="flex gap-2">
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="your@email.com"
-                            className="flex-1 px-4 py-2.5 bg-gray-900/50 border border-gray-800 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-700 text-sm"
-                        />
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="px-4 py-2.5 bg-white text-black font-medium rounded-lg hover:bg-gray-200 transition-colors text-sm disabled:opacity-50"
-                        >
-                            {isSubmitting ? '...' : 'Subscribe'}
-                        </button>
-                    </form>
-                )}
-                {submitStatus === 'error' && (
-                    <p className="mt-2 text-sm text-red-400">{message}</p>
-                )}
-            </div>
-        )
-    }
-
     return (
-        <div className="w-full max-w-lg mx-auto">
+        <div className="w-full max-w-2xl mx-auto">
             {/* Header */}
-            <div className="text-center mb-6">
+            <div className="text-center mb-8">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-2xl mb-4">
                     <HiMail className="text-emerald-400" size={24} />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
                     Stay in the loop
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed max-w-sm mx-auto">
+                <p className="text-gray-400 text-sm leading-relaxed max-w-md mx-auto">
                     No spam, promise. I only send curated blogs that match your interests —
                     the stuff you'd actually want to read.
                 </p>
@@ -186,34 +165,20 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
                     <p className="text-gray-400 text-sm">{message}</p>
                 </div>
             ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Email - Required */}
-                    <div>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="your@email.com *"
-                            className="w-full px-4 py-3 bg-gray-900/50 border border-gray-800 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-700 focus:ring-1 focus:ring-gray-700 transition-all text-sm"
-                            required
-                        />
-                    </div>
-
-                    {/* Optional fields toggle */}
-                    {!showAdvanced && (
-                        <button
-                            type="button"
-                            onClick={() => setShowAdvanced(true)}
-                            className="text-xs text-gray-500 hover:text-gray-400 transition-colors"
-                        >
-                            + Add name & interests (optional)
-                        </button>
-                    )}
-
-                    {/* Advanced options */}
-                    {showAdvanced && (
-                        <div className="space-y-4 animate-in slide-in-from-top-2">
-                            {/* Name - Optional */}
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* Email & Name Row */}
+                    <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="your@email.com"
+                                className="w-full px-4 py-3 bg-gray-900/50 border border-gray-800 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-700 focus:ring-1 focus:ring-gray-700 transition-all text-sm"
+                                required
+                            />
+                        </div>
+                        <div>
                             <input
                                 type="text"
                                 value={name}
@@ -221,75 +186,78 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
                                 placeholder="Your name (optional)"
                                 className="w-full px-4 py-3 bg-gray-900/50 border border-gray-800 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-700 transition-all text-sm"
                             />
-
-                            {/* Topics - Optional */}
-                            <div ref={dropdownRef} className="relative">
-                                <div className="relative">
-                                    <input
-                                        ref={topicInputRef}
-                                        type="text"
-                                        value={topicSearch}
-                                        onChange={(e) => setTopicSearch(e.target.value)}
-                                        onFocus={() => setShowTopicDropdown(true)}
-                                        placeholder="Search or add interests..."
-                                        className="w-full px-4 py-3 bg-gray-900/50 border border-gray-800 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-700 transition-all text-sm"
-                                    />
-                                    {selectedTopics.length > 0 && (
-                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">
-                                            {selectedTopics.length}/5
-                                        </span>
-                                    )}
-                                </div>
-
-                                {/* Selected topics */}
-                                {selectedTopics.length > 0 && (
-                                    <div className="flex flex-wrap gap-1.5 mt-2">
-                                        {selectedTopics.map(topic => (
-                                            <span
-                                                key={topic}
-                                                className="inline-flex items-center gap-1 px-2 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 text-xs"
-                                            >
-                                                {topic}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeTopic(topic)}
-                                                    className="hover:text-white transition-colors"
-                                                >
-                                                    <HiX size={12} />
-                                                </button>
-                                            </span>
-                                        ))}
-                                    </div>
-                                )}
-
-                                {/* Dropdown */}
-                                {showTopicDropdown && (filteredTopics.length > 0 || canAddCustomTopic) && (
-                                    <div className="absolute top-full left-0 right-0 mt-1 bg-[#111] border border-gray-800 rounded-xl shadow-xl z-50 overflow-hidden max-h-48 overflow-y-auto">
-                                        {filteredTopics.map(topic => (
-                                            <button
-                                                key={topic}
-                                                type="button"
-                                                onClick={() => addTopic(topic)}
-                                                className="w-full px-4 py-2.5 text-left text-sm text-gray-300 hover:bg-gray-800/50 hover:text-white transition-colors"
-                                            >
-                                                {topic}
-                                            </button>
-                                        ))}
-                                        {canAddCustomTopic && (
-                                            <button
-                                                type="button"
-                                                onClick={() => addTopic(topicSearch.trim())}
-                                                className="w-full px-4 py-2.5 text-left text-sm text-emerald-400 hover:bg-emerald-500/10 transition-colors flex items-center gap-2 border-t border-gray-800"
-                                            >
-                                                <HiPlus size={14} />
-                                                Add "{topicSearch.trim()}"
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
                         </div>
-                    )}
+                    </div>
+
+                    {/* Topics Section */}
+                    <div>
+                        <p className="text-xs text-gray-500 mb-3 uppercase tracking-wide">
+                            Interests (optional)
+                        </p>
+
+                        {/* Search/Add Input */}
+                        <input
+                            type="text"
+                            value={topicSearch}
+                            onChange={(e) => setTopicSearch(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            placeholder="Search or add keyword..."
+                            className="w-full px-4 py-2.5 bg-gray-900/50 border border-gray-800 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-700 transition-all text-sm mb-3"
+                        />
+
+                        {/* Selected Topics (custom ones that aren't in predefined) */}
+                        {selectedTopics.filter(t => !PREDEFINED_TOPICS.includes(t)).length > 0 && (
+                            <div className="flex flex-wrap gap-2 mb-3">
+                                {selectedTopics.filter(t => !PREDEFINED_TOPICS.includes(t)).map(topic => (
+                                    <button
+                                        key={topic}
+                                        type="button"
+                                        onClick={() => toggleTopic(topic)}
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border-2 border-emerald-500/50 rounded-lg text-emerald-400 text-xs font-medium transition-all"
+                                    >
+                                        <HiCheckCircle size={14} />
+                                        {topic}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Predefined Topics Grid */}
+                        <div className="flex flex-wrap gap-2">
+                            {filteredTopics.map(topic => {
+                                const isSelected = selectedTopics.includes(topic)
+                                return (
+                                    <button
+                                        key={topic}
+                                        type="button"
+                                        onClick={() => toggleTopic(topic)}
+                                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200
+                                            ${isSelected
+                                                ? 'bg-emerald-500/10 border-2 border-emerald-500/50 text-emerald-400'
+                                                : 'bg-gray-900/50 border border-gray-800 text-gray-400 hover:border-gray-700 hover:text-gray-300'
+                                            }`}
+                                    >
+                                        {isSelected && <HiCheckCircle size={14} />}
+                                        {topic}
+                                    </button>
+                                )
+                            })}
+
+                            {/* Show "Add" option if custom topic */}
+                            {canAddCustomTopic && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setSelectedTopics(prev => [...prev, topicSearch.trim()])
+                                        setTopicSearch('')
+                                    }}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/5 border border-emerald-500/30 border-dashed rounded-lg text-emerald-400/80 text-xs font-medium hover:bg-emerald-500/10 transition-all"
+                                >
+                                    + Add "{topicSearch.trim()}"
+                                </button>
+                            )}
+                        </div>
+                    </div>
 
                     {/* Error message */}
                     {submitStatus === 'error' && (
