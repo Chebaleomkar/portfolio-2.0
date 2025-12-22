@@ -47,14 +47,6 @@ export const Footer = () => {
   return (
     <footer className="relative bg-[#030303] overflow-hidden">
       <Toaster position="top-center" />
-
-      {/* Newsletter Section - Full width above footer */}
-      <div className="border-b border-white/5">
-        <div className="container mx-auto px-6 max-w-5xl py-16">
-          <NewsletterForm />
-        </div>
-      </div>
-
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 max-w-5xl py-16">
         {/* Two Column Layout */}

@@ -9,6 +9,7 @@ import { connectDB } from '@/lib/mongodb'
 import Blog from '@/models/Blog'
 import { Navbar } from '@/components/navbar'
 import { ShareButtons } from '@/components/ShareButtons'
+import { NewsletterForm } from '@/components/NewsletterForm'
 
 export const dynamic = 'force-dynamic'
 
@@ -316,6 +317,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     </div>
                 </article>
             </main>
+            {/* Newsletter Section - Full width above footer */}
+            <div className="border-b border-white/5">
+                <div className="container mx-auto px-6 max-w-5xl py-16">
+                    <NewsletterForm />
+                </div>
+            </div>
+
         </>
     )
 }

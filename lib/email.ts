@@ -43,18 +43,11 @@ export async function sendWelcomeEmail({ email, name, topics }: WelcomeEmailPara
             <td align="center">
                 <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
                     
-                    <!-- Header -->
-                    <tr>
-                        <td style="padding: 32px 32px 0 32px;">
-                            <p style="margin: 0; font-size: 24px;">👋</p>
-                        </td>
-                    </tr>
-                    
                     <!-- Content -->
                     <tr>
                         <td style="padding: 24px 32px 32px 32px;">
                             <h1 style="margin: 0 0 16px 0; font-size: 22px; font-weight: 600; color: #1a1a1a;">
-                                Hey ${firstName}!
+                                Hey ${firstName} 👋!
                             </h1>
                             
                             <p style="margin: 0 0 16px 0; font-size: 15px; line-height: 1.6; color: #444;">

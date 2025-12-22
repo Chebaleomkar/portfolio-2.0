@@ -27,16 +27,9 @@ const PREDEFINED_TOPICS = [
     'Engineering',
     'SoftwareArchitecture',
     'SystemDesign',
-    'DevOps',
     'CloudComputing',
-    'SaaS',
     'Tech',
-    'SoftwareDeveloper',
-    'SaaS',
-    'AgenticAI',
     'Automation',
-    'LifeOfAnEngineer',
-    'OpenSource',
     'DataScience',
     'Database'
 ]
@@ -129,32 +122,9 @@ export function NewsletterForm() {
         }
     }
 
-    // Reset status after 5 seconds
-    useEffect(() => {
-        if (submitStatus !== 'idle') {
-            const timer = setTimeout(() => {
-                setSubmitStatus('idle')
-                setMessage('')
-            }, 5000)
-            return () => clearTimeout(timer)
-        }
-    }, [submitStatus])
-
     return (
         <div className="w-full max-w-2xl mx-auto">
             {/* Header */}
-            <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-2xl mb-4">
-                    <HiMail className="text-emerald-400" size={24} />
-                </div>
-                <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
-                    Stay in the loop
-                </h3>
-                <p className="text-gray-400 text-sm leading-relaxed max-w-md mx-auto">
-                    No spam, promise. I only send curated blogs that match your interests —
-                    the stuff you'd actually want to read.
-                </p>
-            </div>
 
             {submitStatus === 'success' ? (
                 <div className="text-center py-8">
@@ -165,126 +135,140 @@ export function NewsletterForm() {
                     <p className="text-gray-400 text-sm">{message}</p>
                 </div>
             ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    {/* Email & Name Row */}
-                    <div className="grid sm:grid-cols-2 gap-4">
-                        <div>
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="your@email.com"
-                                className="w-full px-4 py-3 bg-gray-900/50 border border-gray-800 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-700 focus:ring-1 focus:ring-gray-700 transition-all text-sm"
-                                required
-                            />
+                <><div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-2xl mb-4">
+                        <HiMail className="text-emerald-400" size={24} />
+                    </div>
+                    <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+                        Subscribe to my newsletter
+                    </h3>
+                    <p className="text-gray-400 text-sm leading-relaxed max-w-md mx-auto">
+                        No spam, promise. I only send curated blogs that match your interests —
+                        the stuff you'd actually want to read.
+                    </p>
+                </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                        {/* Email & Name Row */}
+                        <div className="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="your@email.com"
+                                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-800 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-700 focus:ring-1 focus:ring-gray-700 transition-all text-sm"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Your name (optional)"
+                                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-800 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-700 transition-all text-sm"
+                                />
+                            </div>
                         </div>
+
+                        {/* Topics Section */}
                         <div>
+                            <p className="text-xs text-gray-500 mb-3 uppercase tracking-wide">
+                                Interests (optional)
+                            </p>
+
+                            {/* Search/Add Input */}
                             <input
                                 type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                placeholder="Your name (optional)"
-                                className="w-full px-4 py-3 bg-gray-900/50 border border-gray-800 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-700 transition-all text-sm"
+                                value={topicSearch}
+                                onChange={(e) => setTopicSearch(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                placeholder="Search or add keyword..."
+                                className="w-full px-4 py-2.5 bg-gray-900/50 border border-gray-800 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-700 transition-all text-sm mb-3"
                             />
-                        </div>
-                    </div>
 
-                    {/* Topics Section */}
-                    <div>
-                        <p className="text-xs text-gray-500 mb-3 uppercase tracking-wide">
-                            Interests (optional)
-                        </p>
-
-                        {/* Search/Add Input */}
-                        <input
-                            type="text"
-                            value={topicSearch}
-                            onChange={(e) => setTopicSearch(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            placeholder="Search or add keyword..."
-                            className="w-full px-4 py-2.5 bg-gray-900/50 border border-gray-800 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-700 transition-all text-sm mb-3"
-                        />
-
-                        {/* Selected Topics (custom ones that aren't in predefined) */}
-                        {selectedTopics.filter(t => !PREDEFINED_TOPICS.includes(t)).length > 0 && (
-                            <div className="flex flex-wrap gap-2 mb-3">
-                                {selectedTopics.filter(t => !PREDEFINED_TOPICS.includes(t)).map(topic => (
-                                    <button
-                                        key={topic}
-                                        type="button"
-                                        onClick={() => toggleTopic(topic)}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border-2 border-emerald-500/50 rounded-lg text-emerald-400 text-xs font-medium transition-all"
-                                    >
-                                        <HiCheckCircle size={14} />
-                                        {topic}
-                                    </button>
-                                ))}
-                            </div>
-                        )}
-
-                        {/* Predefined Topics Grid */}
-                        <div className="flex flex-wrap gap-2">
-                            {filteredTopics.map(topic => {
-                                const isSelected = selectedTopics.includes(topic)
-                                return (
-                                    <button
-                                        key={topic}
-                                        type="button"
-                                        onClick={() => toggleTopic(topic)}
-                                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200
-                                            ${isSelected
-                                                ? 'bg-emerald-500/10 border-2 border-emerald-500/50 text-emerald-400'
-                                                : 'bg-gray-900/50 border border-gray-800 text-gray-400 hover:border-gray-700 hover:text-gray-300'
-                                            }`}
-                                    >
-                                        {isSelected && <HiCheckCircle size={14} />}
-                                        {topic}
-                                    </button>
-                                )
-                            })}
-
-                            {/* Show "Add" option if custom topic */}
-                            {canAddCustomTopic && (
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setSelectedTopics(prev => [...prev, topicSearch.trim()])
-                                        setTopicSearch('')
-                                    }}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/5 border border-emerald-500/30 border-dashed rounded-lg text-emerald-400/80 text-xs font-medium hover:bg-emerald-500/10 transition-all"
-                                >
-                                    + Add "{topicSearch.trim()}"
-                                </button>
+                            {/* Selected Topics (custom ones that aren't in predefined) */}
+                            {selectedTopics.filter(t => !PREDEFINED_TOPICS.includes(t)).length > 0 && (
+                                <div className="flex flex-wrap gap-2 mb-3">
+                                    {selectedTopics.filter(t => !PREDEFINED_TOPICS.includes(t)).map(topic => (
+                                        <button
+                                            key={topic}
+                                            type="button"
+                                            onClick={() => toggleTopic(topic)}
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border-2 border-emerald-500/50 rounded-lg text-emerald-400 text-xs font-medium transition-all"
+                                        >
+                                            <HiCheckCircle size={14} />
+                                            {topic}
+                                        </button>
+                                    ))}
+                                </div>
                             )}
+
+                            {/* Predefined Topics Grid */}
+                            <div className="flex flex-wrap gap-2">
+                                {filteredTopics.map(topic => {
+                                    const isSelected = selectedTopics.includes(topic)
+                                    return (
+                                        <button
+                                            key={topic}
+                                            type="button"
+                                            onClick={() => toggleTopic(topic)}
+                                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200
+                                            ${isSelected
+                                                    ? 'bg-emerald-500/10 border-2 border-emerald-500/50 text-emerald-400'
+                                                    : 'bg-gray-900/50 border border-gray-800 text-gray-400 hover:border-gray-700 hover:text-gray-300'
+                                                }`}
+                                        >
+                                            {isSelected && <HiCheckCircle size={14} />}
+                                            {topic}
+                                        </button>
+                                    )
+                                })}
+
+                                {/* Show "Add" option if custom topic */}
+                                {canAddCustomTopic && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setSelectedTopics(prev => [...prev, topicSearch.trim()])
+                                            setTopicSearch('')
+                                        }}
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/5 border border-emerald-500/30 border-dashed rounded-lg text-emerald-400/80 text-xs font-medium hover:bg-emerald-500/10 transition-all"
+                                    >
+                                        + Add "{topicSearch.trim()}"
+                                    </button>
+                                )}
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Error message */}
-                    {submitStatus === 'error' && (
-                        <p className="text-sm text-red-400 text-center">{message}</p>
-                    )}
-
-                    {/* Submit */}
-                    <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
-                    >
-                        {isSubmitting ? (
-                            <>
-                                <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                                Subscribing...
-                            </>
-                        ) : (
-                            'Subscribe — it takes 5 seconds'
+                        {/* Error message */}
+                        {submitStatus === 'error' && (
+                            <p className="text-sm text-red-400 text-center">{message}</p>
                         )}
-                    </button>
 
-                    {/* Privacy note */}
-                    <p className="text-[11px] text-gray-600 text-center">
-                        Unsubscribe anytime. Your email is safe with me.
-                    </p>
-                </form>
+                        {/* Submit */}
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="w-full py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+                        >
+                            {isSubmitting ? (
+                                <>
+                                    <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                                    Subscribing...
+                                </>
+                            ) : (
+                                'Subscribe — it takes 5 seconds'
+                            )}
+                        </button>
+
+                        {/* Privacy note */}
+                        <p className="text-[11px] text-gray-600 text-center">
+                            Unsubscribe anytime. Your email is safe with me.
+                        </p>
+                    </form>
+                </>
             )}
         </div>
     )
