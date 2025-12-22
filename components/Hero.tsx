@@ -1,10 +1,10 @@
 "use client"
 
-import { Bio, skills } from "@/utils/data"
+import { Bio } from "@/utils/data"
 import Link from "next/link"
 import { memo } from "react"
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa"
-import { HiArrowDown, HiCode, HiLightningBolt, HiSparkles } from "react-icons/hi"
+import { HiArrowDown, HiLightningBolt, HiSparkles } from "react-icons/hi"
 import { Navbar } from "./navbar"
 
 export const Hero = memo(() => {
@@ -12,10 +12,6 @@ export const Hero = memo(() => {
   const scrollToNext = () => {
     window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
   }
-
-  // Get top skills for display
-  const topSkills = skills.flatMap(s => s.skills).slice(0, 8)
-
   return (
     <section className="min-h-screen flex flex-col relative overflow-hidden bg-[#0a0a0a]">
       {/* Subtle grid background */}
@@ -43,13 +39,6 @@ export const Hero = memo(() => {
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-4">
               Omkar Chebale
             </h1>
-            <div className="h-8 md:h-10 overflow-hidden">
-              <p
-                className="text-xl md:text-2xl lg:text-3xl text-gray-400 font-light animate-fade-in"
-              >
-                Full-Stack Developer & AI/ML Engineer
-              </p>
-            </div>
           </div>
 
           {/* Stats Row */}
@@ -120,23 +109,7 @@ export const Hero = memo(() => {
             </a>
           </div>
 
-          {/* Tech Stack Pills */}
-          <div className="max-w-2xl mx-auto">
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <HiCode size={14} className="text-gray-600" />
-              <span className="text-xs text-gray-600 uppercase tracking-wider">Tech Stack</span>
-            </div>
-            <div className="flex flex-wrap justify-center gap-2">
-              {topSkills.map((skill) => (
-                <span
-                  key={skill}
-                  className="px-3 py-1.5 text-xs font-medium bg-gray-900/80 border border-gray-800 rounded-full text-gray-400 hover:text-white hover:border-gray-700 transition-colors"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
+
         </div>
       </div>
 
