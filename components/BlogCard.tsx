@@ -15,7 +15,7 @@ export function BlogCard({ post }: BlogCardProps) {
     return (
         <CardWrapper
             {...cardProps}
-            className="group block py-5 px-2 border-b border-white/5 hover:border-green-500 transition-colors"
+            className="group block py-5 px-5 border-b border-white/5 hover:border-green-500 transition-colors"
         >
             <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
@@ -36,7 +36,9 @@ export function BlogCard({ post }: BlogCardProps) {
 
                     {/* Tags as keyword pills + date */}
                     <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs text-gray-600">{post.createdAt}</span>
+                        <span className="text-xs text-gray-600">
+                            {new Date(post.createdAt).toLocaleDateString('en-GB').replace(/\//g, '-')}
+                        </span>
                         {post.tags.length > 0 && (
                             <div className="flex gap-1.5 flex-wrap">
                                 {post.tags.slice(0, 3).map((tag) => (

@@ -88,7 +88,7 @@ export default function BlogPage() {
                 </nav>
 
                 {/* Content - 2 Column Layout */}
-                <section className="py-20 px-6">
+                <section className="py-10 px-6">
                     <div className="max-w-6xl mx-auto">
                         <div className={`flex gap-12 ${showCurated ? 'lg:flex-row flex-col' : ''}`}>
                             {/* Main Content Column */}
@@ -96,7 +96,7 @@ export default function BlogPage() {
                                 {/* Header */}
                                 <header className="mb-12">
                                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                                        Blog
+                                        Blogs
                                     </h1>
                                     <p className="text-gray-400 text-sm">
                                         Thoughts on whatever I build, break, and learn in AI, engineering, and more.
