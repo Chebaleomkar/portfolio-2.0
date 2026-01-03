@@ -37,3 +37,19 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Python (ML folder)
+ml/venv/
+ml/__pycache__/
+ml/**/__pycache__/
+ml/**/*.pyc
+ml/**/*.pyo
+ml/**/*.pyd
+*.egg-info/
+.eggs/
+
+# ML generated files
+ml/data/*.json
+ml/data/*.pkl
+ml/data/*.npy
+ml/*.log

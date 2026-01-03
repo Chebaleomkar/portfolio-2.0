@@ -22,3 +22,12 @@ from .preprocessing import (
     markdown_to_plain_text,
     clean_text,
 )
+
+from .embeddings import (
+    generate_embedding,
+    generate_query_embedding,
+    generate_embeddings_batch,
+    embed_preprocessed_blogs,
+    compute_similarity,
+)
+

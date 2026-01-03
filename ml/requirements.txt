@@ -9,10 +9,10 @@ sentence-transformers==2.2.2
 torch>=2.0.0
 
 # Vector Database
-pinecone-client==3.0.0
+pinecone==5.0.1
 
 # Google AI (for embeddings)
-google-generativeai==0.3.2
+google-genai>=1.0.0
 
 # Text Processing
 markdown==3.5.1

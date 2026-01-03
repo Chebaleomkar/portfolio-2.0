@@ -30,9 +30,10 @@ def get_pinecone_api_key() -> str:
 
 def get_google_api_key() -> str:
     """Get Google AI API key for embeddings."""
-    key = os.getenv('GOOGLE_API_KEY')
+    # Check both possible key names
+    key = os.getenv('GOOGLE_API_KEY') or os.getenv('GEMINI_API_KEY')
     if not key:
-        raise ValueError("GOOGLE_API_KEY not found in environment variables")
+        raise ValueError("GOOGLE_API_KEY or GEMINI_API_KEY not found in environment variables")
     return key
 
 
@@ -44,5 +45,5 @@ PINECONE_ENVIRONMENT = os.getenv('PINECONE_ENVIRONMENT', 'gcp-starter')
 EMBEDDING_DIMENSION = 768  # Google's text-embedding model dimension
 
 # MongoDB configuration
-MONGODB_DATABASE = "portfolio"
+MONGODB_DATABASE = "portfolio-blogs"
 MONGODB_COLLECTION = "blogs"
