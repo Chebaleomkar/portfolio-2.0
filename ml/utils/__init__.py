@@ -31,3 +31,11 @@ from .embeddings import (
     compute_similarity,
 )
 
+from .vector_store import (
+    get_index,
+    upsert_blog_embedding,
+    upsert_blogs_batch,
+    find_similar_blogs,
+    find_similar_by_embedding,
+    get_index_stats,
+)
