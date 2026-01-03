@@ -10,6 +10,7 @@ import Blog from '@/models/Blog'
 import { Navbar } from '@/components/navbar'
 import { ShareButtons } from '@/components/ShareButtons'
 import { NewsletterForm } from '@/components/NewsletterForm'
+import { BlogRecommendations } from '@/components/BlogRecommendations'
 
 export const dynamic = 'force-dynamic'
 
@@ -314,6 +315,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                                 {post.content}
                             </ReactMarkdown>
                         </div>
+
+                        {/* Blog Recommendations - AI Powered */}
+                        <BlogRecommendations currentSlug={slug} />
                     </div>
                 </article>
             </main>
