@@ -1,0 +1,122 @@
+{
+  "my-first-real-n8n-workflow-why-it-took-12-hours-and-what-i-learned": [
+    {
+      "slug": "how-i-built-a-blog-system-into-my-portfolio-and-why-i-did-it",
+      "title": "How I Built a Blog System Into My Portfolio (And Why I Did It)",
+      "description": "How I built a simple blog system into my portfolio using a custom API, MongoDB, and markdown—so I can write and publish from anywhere.",
+      "score": 0.6614
+    },
+    {
+      "slug": "understanding-mcp-servers-tools-and-why-they-matter",
+      "title": "Understanding MCP: Servers, Tools, and Why They Matter",
+      "description": "Breaking down MCP (Model Context Protocol) through a simple analogy: tools are functions, MCP servers are toolboxes, and LLMs can invoke them through natural language without any UI interaction.",
+      "score": 0.5866
+    },
+    {
+      "slug": "ai-ml-and-deep-learning-clearing-the-confusion-once-and-for-all",
+      "title": "AI, ML, and Deep Learning: clearing the confusion once and for all",
+      "description": "Understanding AI, Machine Learning, and Deep Learning as a hierarchy rather than competing terms—from the broad AI umbrella to data-driven ML to neural-network-based deep learning.",
+      "score": 0.5481
+    }
+  ],
+  "how-i-built-a-blog-system-into-my-portfolio-and-why-i-did-it": [
+    {
+      "slug": "my-first-real-n8n-workflow-why-it-took-12-hours-and-what-i-learned",
+      "title": "My First Real n8n Workflow: Why It Took 12+ Hours (and What I Learned)",
+      "description": "My honest beginner experience with n8n, why my first simple workflow took 12+ hours, and what I learned about automation, triggers, and platform limitations.",
+      "score": 0.6614
+    },
+    {
+      "slug": "understanding-mcp-servers-tools-and-why-they-matter",
+      "title": "Understanding MCP: Servers, Tools, and Why They Matter",
+      "description": "Breaking down MCP (Model Context Protocol) through a simple analogy: tools are functions, MCP servers are toolboxes, and LLMs can invoke them through natural language without any UI interaction.",
+      "score": 0.6361
+    },
+    {
+      "slug": "rag-explained-the-5-steps-that-make-llms-smarter",
+      "title": "RAG Explained: The 5 Steps That Make LLMs Smarter",
+      "description": "A beginner-friendly breakdown of RAG's five core steps: from document preprocessing and chunking to embeddings, vector databases, and how LLMs use retrieved context to generate accurate answers.",
+      "score": 0.5539
+    }
+  ],
+  "understanding-mcp-servers-tools-and-why-they-matter": [
+    {
+      "slug": "how-i-built-a-blog-system-into-my-portfolio-and-why-i-did-it",
+      "title": "How I Built a Blog System Into My Portfolio (And Why I Did It)",
+      "description": "How I built a simple blog system into my portfolio using a custom API, MongoDB, and markdown—so I can write and publish from anywhere.",
+      "score": 0.6361
+    },
+    {
+      "slug": "ai-ml-and-deep-learning-clearing-the-confusion-once-and-for-all",
+      "title": "AI, ML, and Deep Learning: clearing the confusion once and for all",
+      "description": "Understanding AI, Machine Learning, and Deep Learning as a hierarchy rather than competing terms—from the broad AI umbrella to data-driven ML to neural-network-based deep learning.",
+      "score": 0.6078
+    },
+    {
+      "slug": "my-first-real-n8n-workflow-why-it-took-12-hours-and-what-i-learned",
+      "title": "My First Real n8n Workflow: Why It Took 12+ Hours (and What I Learned)",
+      "description": "My honest beginner experience with n8n, why my first simple workflow took 12+ hours, and what I learned about automation, triggers, and platform limitations.",
+      "score": 0.5866
+    }
+  ],
+  "rag-explained-the-5-steps-that-make-llms-smarter": [
+    {
+      "slug": "ai-ml-and-deep-learning-clearing-the-confusion-once-and-for-all",
+      "title": "AI, ML, and Deep Learning: clearing the confusion once and for all",
+      "description": "Understanding AI, Machine Learning, and Deep Learning as a hierarchy rather than competing terms—from the broad AI umbrella to data-driven ML to neural-network-based deep learning.",
+      "score": 0.638
+    },
+    {
+      "slug": "understanding-mcp-servers-tools-and-why-they-matter",
+      "title": "Understanding MCP: Servers, Tools, and Why They Matter",
+      "description": "Breaking down MCP (Model Context Protocol) through a simple analogy: tools are functions, MCP servers are toolboxes, and LLMs can invoke them through natural language without any UI interaction.",
+      "score": 0.5857
+    },
+    {
+      "slug": "logistic-regression-from-scratch-what-it-actually-does-without-skipping-the-thinking",
+      "title": "Logistic Regression From Scratch — What It Actually Does (Without Skipping the Thinking)",
+      "description": "Breaking down Logistic Regression from first principles—why it exists to express confidence in binary outcomes, how sigmoid transforms linear scores into probabilities, and a minimal from-scratch implementation.",
+      "score": 0.5801
+    }
+  ],
+  "ai-ml-and-deep-learning-clearing-the-confusion-once-and-for-all": [
+    {
+      "slug": "logistic-regression-from-scratch-what-it-actually-does-without-skipping-the-thinking",
+      "title": "Logistic Regression From Scratch — What It Actually Does (Without Skipping the Thinking)",
+      "description": "Breaking down Logistic Regression from first principles—why it exists to express confidence in binary outcomes, how sigmoid transforms linear scores into probabilities, and a minimal from-scratch implementation.",
+      "score": 0.6397
+    },
+    {
+      "slug": "rag-explained-the-5-steps-that-make-llms-smarter",
+      "title": "RAG Explained: The 5 Steps That Make LLMs Smarter",
+      "description": "A beginner-friendly breakdown of RAG's five core steps: from document preprocessing and chunking to embeddings, vector databases, and how LLMs use retrieved context to generate accurate answers.",
+      "score": 0.638
+    },
+    {
+      "slug": "understanding-mcp-servers-tools-and-why-they-matter",
+      "title": "Understanding MCP: Servers, Tools, and Why They Matter",
+      "description": "Breaking down MCP (Model Context Protocol) through a simple analogy: tools are functions, MCP servers are toolboxes, and LLMs can invoke them through natural language without any UI interaction.",
+      "score": 0.6078
+    }
+  ],
+  "logistic-regression-from-scratch-what-it-actually-does-without-skipping-the-thinking": [
+    {
+      "slug": "ai-ml-and-deep-learning-clearing-the-confusion-once-and-for-all",
+      "title": "AI, ML, and Deep Learning: clearing the confusion once and for all",
+      "description": "Understanding AI, Machine Learning, and Deep Learning as a hierarchy rather than competing terms—from the broad AI umbrella to data-driven ML to neural-network-based deep learning.",
+      "score": 0.6397
+    },
+    {
+      "slug": "rag-explained-the-5-steps-that-make-llms-smarter",
+      "title": "RAG Explained: The 5 Steps That Make LLMs Smarter",
+      "description": "A beginner-friendly breakdown of RAG's five core steps: from document preprocessing and chunking to embeddings, vector databases, and how LLMs use retrieved context to generate accurate answers.",
+      "score": 0.5801
+    },
+    {
+      "slug": "understanding-mcp-servers-tools-and-why-they-matter",
+      "title": "Understanding MCP: Servers, Tools, and Why They Matter",
+      "description": "Breaking down MCP (Model Context Protocol) through a simple analogy: tools are functions, MCP servers are toolboxes, and LLMs can invoke them through natural language without any UI interaction.",
+      "score": 0.54
+    }
+  ]
+}

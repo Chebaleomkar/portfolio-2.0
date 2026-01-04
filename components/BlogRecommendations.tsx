@@ -115,11 +115,6 @@ export function BlogRecommendations({ currentSlug }: BlogRecommendationsProps) {
                     </Link>
                 ))}
             </div>
-
-            {/* Footer Note */}
-            <p className="mt-6 text-xs text-gray-500 text-center">
-                🧠 Recommendations powered by AI embeddings
-            </p>
         </section>
     )
 }

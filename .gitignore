@@ -49,7 +49,7 @@ ml/**/*.pyd
 .eggs/
 
 # ML generated files
-ml/data/*.json
+
 ml/data/*.pkl
 ml/data/*.npy
 ml/*.log
