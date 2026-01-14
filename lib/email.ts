@@ -522,3 +522,249 @@ export async function calculateDashboardStats(SubscriberModel: any): Promise<Das
     }
 }
 
+// Curated Blog Notification Types
+interface CuratedBlogNotificationParams {
+    blog: {
+        title: string
+        slug: string
+        description: string
+        tags: string[]
+    }
+    subscriber: {
+        email: string
+        name?: string
+    }
+}
+
+interface BulkCuratedBlogNotificationParams {
+    blog: {
+        title: string
+        slug: string
+        description: string
+        tags: string[]
+    }
+    subscribers: {
+        email: string
+        name?: string
+    }[]
+}
+
+const BASE_URL = 'https://omkarchebale.vercel.app'
+
+// Dynamic subject line generator for curated blogs
+function generateCuratedBlogSubject(title: string): string {
+    const subjectTemplates = [
+        `🌟 Just Published: "${title}" — A Must Read!`,
+        `📖 Fresh from Omkar: ${title}`,
+        `✨ New Curated Post: ${title}`,
+        `🔥 Don't Miss This: ${title}`,
+        `💡 Just Dropped: ${title} — Check It Out!`,
+    ]
+    return subjectTemplates[Math.floor(Math.random() * subjectTemplates.length)]
+}
+
+// Send curated blog notification to a single subscriber
+export async function sendCuratedBlogNotification({
+    blog,
+    subscriber,
+}: CuratedBlogNotificationParams) {
+    const transporter = getTransporter()
+    const firstName = subscriber.name?.split(' ')[0] || 'there'
+    const blogUrl = `${BASE_URL}/blog/${blog.slug}`
+
+    const tagsHtml = blog.tags.length > 0
+        ? `<div style="margin-top: 16px;">
+             ${blog.tags.map(tag => `<span style="display: inline-block; margin: 2px 4px 2px 0; padding: 4px 10px; background: rgba(99, 102, 241, 0.1); color: #6366f1; border-radius: 20px; font-size: 11px; font-weight: 500;">#${tag}</span>`).join('')}
+           </div>`
+        : ''
+
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #0f0f23;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(180deg, #0f0f23 0%, #1a1a3e 100%); padding: 40px 20px;">
+        <tr>
+            <td align="center">
+                <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 560px;">
+                    
+                    <!-- Decorative Top -->
+                    <tr>
+                        <td style="text-align: center; padding-bottom: 24px;">
+                            <div style="display: inline-block; padding: 8px 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: white; font-weight: 600;">
+                                ✨ Curated for You
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Main Card -->
+                    <tr>
+                        <td style="background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
+                            
+                            <!-- Header Gradient -->
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); height: 8px;"></td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Content -->
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="padding: 40px 32px;">
+                                        
+                                        <!-- Greeting -->
+                                        <p style="margin: 0 0 24px 0; font-size: 16px; color: #374151; line-height: 1.6;">
+                                            Hey ${firstName} 👋
+                                        </p>
+                                        
+                                        <p style="margin: 0 0 28px 0; font-size: 15px; color: #6b7280; line-height: 1.7;">
+                                            I just published something I think you'll really enjoy. This one's special — a curated piece I put extra thought into.
+                                        </p>
+                                        
+                                        <!-- Blog Card -->
+                                        <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 16px; border-left: 4px solid #6366f1;">
+                                            <tr>
+                                                <td style="padding: 24px;">
+                                                    <h2 style="margin: 0 0 12px 0; font-size: 22px; font-weight: 700; color: #1a1a2e; line-height: 1.3;">
+                                                        ${blog.title}
+                                                    </h2>
+                                                    <p style="margin: 0; font-size: 14px; color: #64748b; line-height: 1.6;">
+                                                        ${blog.description || 'A new post worth your time.'}
+                                                    </p>
+                                                    ${tagsHtml}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <!-- CTA Button -->
+                                        <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 32px;">
+                                            <tr>
+                                                <td align="center">
+                                                    <a href="${blogUrl}" style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: #ffffff; text-decoration: none; border-radius: 12px; font-size: 15px; font-weight: 600; box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);">
+                                                        Read the Full Post →
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <!-- Sign off -->
+                                        <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 40px; border-top: 1px solid #e5e7eb;">
+                                            <tr>
+                                                <td style="padding-top: 24px;">
+                                                    <p style="margin: 0 0 4px 0; font-size: 14px; color: #6b7280;">
+                                                        Happy reading,
+                                                    </p>
+                                                    <p style="margin: 0; font-size: 16px; font-weight: 600; color: #1a1a2e;">
+                                                        Omkar ✌️
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 32px 20px; text-align: center;">
+                            <p style="margin: 0 0 12px 0; font-size: 12px; color: #64748b;">
+                                You're receiving this because you subscribed to my newsletter.
+                            </p>
+                            <p style="margin: 0; font-size: 12px; color: #475569;">
+                                <a href="${BASE_URL}" style="color: #10b981; text-decoration: none;">omkarchebale.vercel.app</a>
+                                &nbsp;•&nbsp;
+                                <a href="https://github.com/Chebaleomkar" style="color: #64748b; text-decoration: none;">GitHub</a>
+                                &nbsp;•&nbsp;
+                                <a href="https://twitter.com/chebalerushi" style="color: #64748b; text-decoration: none;">Twitter</a>
+                            </p>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+`
+
+    const textContent = `
+Hey ${firstName}!
+
+I just published something I think you'll really enjoy. This one's special — a curated piece I put extra thought into.
+
+📖 ${blog.title}
+
+${blog.description || 'A new post worth your time.'}
+
+${blog.tags.length > 0 ? `Tags: ${blog.tags.map(t => `#${t}`).join(' ')}` : ''}
+
+Read it here: ${blogUrl}
+
+Happy reading,
+Omkar ✌️
+
+---
+You're receiving this because you subscribed to my newsletter.
+https://omkarchebale.vercel.app
+`
+
+    const mailOptions = {
+        from: `"Omkar Chebale" <${process.env.GMAIL_USER}>`,
+        to: subscriber.email,
+        subject: generateCuratedBlogSubject(blog.title),
+        text: textContent,
+        html: htmlContent,
+    }
+
+    await transporter.sendMail(mailOptions)
+}
+
+// Send curated blog notification to all active subscribers
+export async function sendCuratedBlogToAllSubscribers({
+    blog,
+    subscribers,
+}: BulkCuratedBlogNotificationParams): Promise<{ sent: number; failed: number; errors: string[] }> {
+    const results = {
+        sent: 0,
+        failed: 0,
+        errors: [] as string[],
+    }
+
+    // Process in batches to avoid overwhelming the email server
+    const BATCH_SIZE = 10
+    const BATCH_DELAY = 1000 // 1 second between batches
+
+    for (let i = 0; i < subscribers.length; i += BATCH_SIZE) {
+        const batch = subscribers.slice(i, i + BATCH_SIZE)
+
+        const batchPromises = batch.map(async (subscriber) => {
+            try {
+                await sendCuratedBlogNotification({ blog, subscriber })
+                results.sent++
+            } catch (error) {
+                results.failed++
+                results.errors.push(`Failed to send to ${subscriber.email}: ${error instanceof Error ? error.message : 'Unknown error'}`)
+                console.error(`Failed to send curated blog notification to ${subscriber.email}:`, error)
+            }
+        })
+
+        await Promise.all(batchPromises)
+
+        // Add delay between batches (except for the last batch)
+        if (i + BATCH_SIZE < subscribers.length) {
+            await new Promise(resolve => setTimeout(resolve, BATCH_DELAY))
+        }
+    }
+
+    console.log(`Curated blog notification sent: ${results.sent} successful, ${results.failed} failed`)
+    return results
+}

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from '@/lib/mongodb'
 import Blog from '@/models/Blog'
+import Subscriber from '@/models/Subscriber'
+import { sendCuratedBlogToAllSubscribers } from '@/lib/email'
 
 const BLOG_PASSWORD = process.env.BLOG_PASSWORD
 const POSTS_PER_PAGE = 20
@@ -180,12 +182,50 @@ export async function POST(request: NextRequest) {
             published: true,
         })
 
+        // If the blog is starred/curated, send notification to all active subscribers
+        let emailResults = null
+        if (isStarred) {
+            try {
+                // Fetch all active subscribers
+                const activeSubscribers = await Subscriber.find({ isActive: true })
+                    .select('email name')
+                    .lean()
+
+                if (activeSubscribers.length > 0) {
+                    // Send curated blog notification to all subscribers
+                    emailResults = await sendCuratedBlogToAllSubscribers({
+                        blog: {
+                            title: newPost.title,
+                            slug: newPost.slug,
+                            description: newPost.description,
+                            tags: newPost.tags,
+                        },
+                        subscribers: activeSubscribers.map((s: any) => ({
+                            email: s.email,
+                            name: s.name,
+                        })),
+                    })
+
+                    console.log(`Curated blog notifications sent: ${emailResults.sent} successful, ${emailResults.failed} failed`)
+                }
+            } catch (emailError) {
+                console.error('Failed to send curated blog notifications:', emailError)
+                // Don't fail the blog creation if email sending fails
+            }
+        }
+
         return NextResponse.json(
             {
                 success: true,
-                message: 'Blog post created successfully',
+                message: isStarred
+                    ? `Blog post created and ${emailResults?.sent || 0} subscribers notified!`
+                    : 'Blog post created successfully',
                 slug: newPost.slug,
                 id: newPost._id,
+                emailNotifications: emailResults ? {
+                    sent: emailResults.sent,
+                    failed: emailResults.failed,
+                } : undefined,
             },
             { status: 201 }
         )
