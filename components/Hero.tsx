@@ -41,19 +41,6 @@ export const Hero = memo(() => {
             </h1>
           </div>
 
-          {/* Stats Row */}
-          <div className="flex justify-center gap-6 md:gap-12 mb-8">
-            <div className="text-center">
-              <p className="text-2xl md:text-3xl font-bold text-white">1.5+</p>
-              <p className="text-xs text-gray-500 uppercase tracking-wide">Years Exp</p>
-            </div>
-            <div className="w-px h-12 bg-gray-800" />
-            <div className="text-center">
-              <p className="text-2xl md:text-3xl font-bold text-white">72+</p>
-              <p className="text-xs text-gray-500 uppercase tracking-wide">Repos</p>
-            </div>
-          </div>
-
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
             <Link
