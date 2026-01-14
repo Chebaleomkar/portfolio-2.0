@@ -1,5 +1,5 @@
 import { connectDB } from '@/lib/mongodb'
-import { sendWelcomeEmail, sendWelcomeBackEmail } from '@/lib/email'
+import { sendWelcomeEmail, sendWelcomeBackEmail, sendNewSubscriberNotification, calculateDashboardStats } from '@/lib/email'
 import Subscriber from '@/models/Subscriber'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -54,6 +54,23 @@ export async function POST(request: NextRequest) {
                     // Don't fail the subscription if email fails
                 }
 
+                // Send admin notification for reactivation
+                try {
+                    const stats = await calculateDashboardStats(Subscriber)
+                    await sendNewSubscriberNotification({
+                        newSubscriber: {
+                            email: subscriberEmail,
+                            name: existingSubscriber.name,
+                            topics: existingSubscriber.topics,
+                        },
+                        stats,
+                        isReactivation: true,
+                    })
+                } catch (notificationError) {
+                    console.error('Failed to send admin notification:', notificationError)
+                    // Don't fail if admin notification fails
+                }
+
                 return NextResponse.json({
                     success: true,
                     message: 'Welcome back! Your subscription has been reactivated.',
@@ -84,6 +101,23 @@ export async function POST(request: NextRequest) {
         } catch (emailError) {
             console.error('Failed to send welcome email:', emailError)
             // Don't fail the subscription if email fails
+        }
+
+        // Send admin notification for new subscription
+        try {
+            const stats = await calculateDashboardStats(Subscriber)
+            await sendNewSubscriberNotification({
+                newSubscriber: {
+                    email: subscriberEmail,
+                    name: subscriberName,
+                    topics: subscriberTopics,
+                },
+                stats,
+                isReactivation: false,
+            })
+        } catch (notificationError) {
+            console.error('Failed to send admin notification:', notificationError)
+            // Don't fail if admin notification fails
         }
 
         return NextResponse.json({

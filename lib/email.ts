@@ -182,3 +182,343 @@ export async function sendWelcomeBackEmail({ email, name, topics }: WelcomeEmail
 
     await transporter.sendMail(mailOptions)
 }
+
+// Dashboard stats interface
+interface DashboardStats {
+    totalSubscribers: number
+    activeSubscribers: number
+    todaySubscribers: number
+    weekSubscribers: number
+    monthSubscribers: number
+    topTopics: { topic: string; count: number }[]
+    recentSubscribers: { name: string; email: string; subscribedAt: Date }[]
+    growthRate: number // Percentage growth this week vs last week
+}
+
+interface NewSubscriberNotificationParams {
+    newSubscriber: {
+        email: string
+        name?: string
+        topics: string[]
+    }
+    stats: DashboardStats
+    isReactivation?: boolean
+}
+
+export async function sendNewSubscriberNotification({
+    newSubscriber,
+    stats,
+    isReactivation = false,
+}: NewSubscriberNotificationParams) {
+    const transporter = getTransporter()
+    const adminEmail = process.env.GMAIL_USER
+
+    if (!adminEmail) {
+        console.error('GMAIL_USER not set, cannot send admin notification')
+        return
+    }
+
+    const subscriberName = newSubscriber.name || 'Anonymous'
+    const subscriberTopics = newSubscriber.topics.length > 0
+        ? newSubscriber.topics.join(', ')
+        : 'No specific topics'
+
+    const formatDate = (date: Date) => {
+        return new Date(date).toLocaleDateString('en-IN', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        })
+    }
+
+    const growthIndicator = stats.growthRate >= 0
+        ? `<span style="color: #10b981;">↑ ${stats.growthRate.toFixed(1)}%</span>`
+        : `<span style="color: #ef4444;">↓ ${Math.abs(stats.growthRate).toFixed(1)}%</span>`
+
+    const topTopicsHtml = stats.topTopics.slice(0, 5).map((t, idx) => `
+        <tr style="background: ${idx % 2 === 0 ? '#f8fafc' : '#ffffff'};">
+            <td style="padding: 8px 12px; font-size: 13px; color: #374151;">${t.topic}</td>
+            <td style="padding: 8px 12px; font-size: 13px; color: #6b7280; text-align: right;">${t.count} subscribers</td>
+        </tr>
+    `).join('')
+
+    const recentSubscribersHtml = stats.recentSubscribers.slice(0, 5).map((s, idx) => `
+        <tr style="background: ${idx % 2 === 0 ? '#f8fafc' : '#ffffff'};">
+            <td style="padding: 8px 12px; font-size: 13px; color: #374151;">${s.name || 'Anonymous'}</td>
+            <td style="padding: 8px 12px; font-size: 13px; color: #6b7280;">${s.email}</td>
+            <td style="padding: 8px 12px; font-size: 12px; color: #9ca3af; text-align: right;">${formatDate(s.subscribedAt)}</td>
+        </tr>
+    `).join('')
+
+    const actionType = isReactivation ? 'reactivated' : 'subscribed'
+    const emoji = isReactivation ? '🔄' : '🎉'
+
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <table width="100%" cellpadding="0" cellspacing="0" style="padding: 40px 20px;">
+        <tr>
+            <td align="center">
+                <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px;">
+                    
+                    <!-- Header Banner -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 16px 16px 0 0; padding: 32px 24px; text-align: center;">
+                            <p style="margin: 0 0 8px 0; font-size: 40px;">${emoji}</p>
+                            <h1 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 700; color: #ffffff;">
+                                New Subscriber Alert!
+                            </h1>
+                            <p style="margin: 0; font-size: 14px; color: #94a3b8;">
+                                Someone just ${actionType} to your newsletter
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- New Subscriber Card -->
+                    <tr>
+                        <td style="background: #ffffff; padding: 0 24px;">
+                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: -24px 0 24px 0; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);">
+                                <tr>
+                                    <td style="padding: 20px 24px;">
+                                        <p style="margin: 0 0 4px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.8);">New Subscriber</p>
+                                        <h2 style="margin: 0 0 12px 0; font-size: 22px; font-weight: 600; color: #ffffff;">${subscriberName}</h2>
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td style="padding-right: 8px;">
+                                                    <span style="display: inline-block; padding: 4px 10px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 12px; color: #ffffff;">📧 ${newSubscriber.email}</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <p style="margin: 12px 0 0 0; font-size: 13px; color: rgba(255,255,255,0.9);">
+                                            <strong>Interests:</strong> ${subscriberTopics}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Stats Dashboard -->
+                    <tr>
+                        <td style="background: #ffffff; padding: 0 24px 24px 24px;">
+                            <h3 style="margin: 0 0 16px 0; font-size: 16px; font-weight: 600; color: #1a1a2e; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px;">
+                                📊 Newsletter Dashboard
+                            </h3>
+                            
+                            <!-- Stats Grid -->
+                            <table width="100%" cellpadding="0" cellspacing="8">
+                                <tr>
+                                    <td style="width: 50%; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 12px; padding: 16px; text-align: center;">
+                                        <p style="margin: 0 0 4px 0; font-size: 28px; font-weight: 700; color: #ffffff;">${stats.totalSubscribers}</p>
+                                        <p style="margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.8);">Total Subscribers</p>
+                                    </td>
+                                    <td style="width: 50%; background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); border-radius: 12px; padding: 16px; text-align: center;">
+                                        <p style="margin: 0 0 4px 0; font-size: 28px; font-weight: 700; color: #ffffff;">${stats.activeSubscribers}</p>
+                                        <p style="margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.8);">Active Subscribers</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 50%; background: #f8fafc; border-radius: 12px; padding: 16px; text-align: center; border: 1px solid #e2e8f0;">
+                                        <p style="margin: 0 0 4px 0; font-size: 24px; font-weight: 700; color: #1a1a2e;">${stats.todaySubscribers}</p>
+                                        <p style="margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b;">Today</p>
+                                    </td>
+                                    <td style="width: 50%; background: #f8fafc; border-radius: 12px; padding: 16px; text-align: center; border: 1px solid #e2e8f0;">
+                                        <p style="margin: 0 0 4px 0; font-size: 24px; font-weight: 700; color: #1a1a2e;">${stats.weekSubscribers}</p>
+                                        <p style="margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b;">This Week</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 12px; padding: 16px; text-align: center;">
+                                        <table width="100%" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td style="text-align: left;">
+                                                    <p style="margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.8);">This Month</p>
+                                                    <p style="margin: 4px 0 0 0; font-size: 24px; font-weight: 700; color: #ffffff;">${stats.monthSubscribers}</p>
+                                                </td>
+                                                <td style="text-align: right;">
+                                                    <p style="margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.8);">Weekly Growth</p>
+                                                    <p style="margin: 4px 0 0 0; font-size: 20px; font-weight: 700; color: #ffffff;">${growthIndicator}</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Top Topics Section -->
+                    ${stats.topTopics.length > 0 ? `
+                    <tr>
+                        <td style="background: #ffffff; padding: 0 24px 24px 24px;">
+                            <h3 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #1a1a2e;">
+                                🔥 Top Interests
+                            </h3>
+                            <table width="100%" cellpadding="0" cellspacing="0" style="border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
+                                <thead>
+                                    <tr style="background: #1a1a2e;">
+                                        <th style="padding: 10px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #ffffff; text-align: left;">Topic</th>
+                                        <th style="padding: 10px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #ffffff; text-align: right;">Count</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${topTopicsHtml}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    ` : ''}
+                    
+                    <!-- Recent Subscribers Section -->
+                    ${stats.recentSubscribers.length > 0 ? `
+                    <tr>
+                        <td style="background: #ffffff; padding: 0 24px 24px 24px;">
+                            <h3 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #1a1a2e;">
+                                👥 Recent Subscribers
+                            </h3>
+                            <table width="100%" cellpadding="0" cellspacing="0" style="border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
+                                <thead>
+                                    <tr style="background: #1a1a2e;">
+                                        <th style="padding: 10px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #ffffff; text-align: left;">Name</th>
+                                        <th style="padding: 10px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #ffffff; text-align: left;">Email</th>
+                                        <th style="padding: 10px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #ffffff; text-align: right;">Joined</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${recentSubscribersHtml}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    ` : ''}
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background: #1a1a2e; border-radius: 0 0 16px 16px; padding: 24px; text-align: center;">
+                            <p style="margin: 0 0 8px 0; font-size: 12px; color: #94a3b8;">
+                                📬 Newsletter Admin Notification
+                            </p>
+                            <p style="margin: 0; font-size: 11px; color: #64748b;">
+                                Sent at ${formatDate(new Date())} • 
+                                <a href="https://omkarchebale.vercel.app" style="color: #10b981; text-decoration: none;">omkarchebale.vercel.app</a>
+                            </p>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+`
+
+    const textContent = `
+🎉 New Subscriber Alert!
+
+Someone just ${actionType} to your newsletter.
+
+NEW SUBSCRIBER:
+- Name: ${subscriberName}
+- Email: ${newSubscriber.email}
+- Interests: ${subscriberTopics}
+
+📊 DASHBOARD STATS:
+- Total Subscribers: ${stats.totalSubscribers}
+- Active Subscribers: ${stats.activeSubscribers}
+- Today: ${stats.todaySubscribers}
+- This Week: ${stats.weekSubscribers}
+- This Month: ${stats.monthSubscribers}
+- Weekly Growth: ${stats.growthRate >= 0 ? '+' : ''}${stats.growthRate.toFixed(1)}%
+
+TOP INTERESTS:
+${stats.topTopics.slice(0, 5).map(t => `- ${t.topic}: ${t.count} subscribers`).join('\n')}
+
+RECENT SUBSCRIBERS:
+${stats.recentSubscribers.slice(0, 5).map(s => `- ${s.name || 'Anonymous'} (${s.email})`).join('\n')}
+
+---
+Newsletter Admin Notification
+omkarchebale.vercel.app
+`
+
+    const mailOptions = {
+        from: `"Portfolio Newsletter" <${process.env.GMAIL_USER}>`,
+        to: adminEmail,
+        subject: `${emoji} New Subscriber: ${subscriberName} just ${actionType}!`,
+        text: textContent,
+        html: htmlContent,
+    }
+
+    await transporter.sendMail(mailOptions)
+}
+
+// Helper function to calculate dashboard stats
+export async function calculateDashboardStats(SubscriberModel: any): Promise<DashboardStats> {
+    const now = new Date()
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+    const lastWeekStart = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000)
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
+
+    // Get counts
+    const [
+        totalSubscribers,
+        activeSubscribers,
+        todaySubscribers,
+        weekSubscribers,
+        lastWeekSubscribers,
+        monthSubscribers,
+        topTopicsAgg,
+        recentSubscribers,
+    ] = await Promise.all([
+        SubscriberModel.countDocuments({}),
+        SubscriberModel.countDocuments({ isActive: true }),
+        SubscriberModel.countDocuments({ subscribedAt: { $gte: todayStart } }),
+        SubscriberModel.countDocuments({ subscribedAt: { $gte: weekStart } }),
+        SubscriberModel.countDocuments({
+            subscribedAt: { $gte: lastWeekStart, $lt: weekStart }
+        }),
+        SubscriberModel.countDocuments({ subscribedAt: { $gte: monthStart } }),
+        SubscriberModel.aggregate([
+            { $match: { isActive: true } },
+            { $unwind: '$topics' },
+            { $group: { _id: '$topics', count: { $sum: 1 } } },
+            { $sort: { count: -1 } },
+            { $limit: 10 },
+            { $project: { topic: '$_id', count: 1, _id: 0 } },
+        ]),
+        SubscriberModel.find({ isActive: true })
+            .sort({ subscribedAt: -1 })
+            .limit(5)
+            .select('name email subscribedAt'),
+    ])
+
+    // Calculate growth rate
+    const growthRate = lastWeekSubscribers > 0
+        ? ((weekSubscribers - lastWeekSubscribers) / lastWeekSubscribers) * 100
+        : weekSubscribers > 0 ? 100 : 0
+
+    return {
+        totalSubscribers,
+        activeSubscribers,
+        todaySubscribers,
+        weekSubscribers,
+        monthSubscribers,
+        topTopics: topTopicsAgg,
+        recentSubscribers: recentSubscribers.map((s: any) => ({
+            name: s.name,
+            email: s.email,
+            subscribedAt: s.subscribedAt,
+        })),
+        growthRate,
+    }
+}
+
