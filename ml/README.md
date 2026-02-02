@@ -17,7 +17,8 @@ ml/
 │   ├── recommendations.json     # Full export with metadata
 │   └── recommendations_lookup.json
 ├── scripts/
-│   ├── train.py                 # Main training pipeline ⭐
+│   ├── train.py                 # Full training pipeline
+│   ├── update.py                # Incremental update (new blogs only) ⭐
 │   ├── test_embeddings.py       # Test embedding generation
 │   └── test_pinecone.py         # Test Pinecone connection
 ├── utils/
@@ -84,7 +85,7 @@ This will:
 
 ## 📋 Training Commands
 
-### Basic Training
+### Full Training (All Blogs)
 ```bash
 python scripts/train.py
 ```
@@ -98,6 +99,30 @@ python scripts/train.py --force
 ```bash
 python scripts/train.py --top-k 5
 ```
+
+## 🔄 Incremental Updates (Recommended)
+
+Use the **incremental update** script when adding new blogs. This only generates embeddings for new blogs, saving time and API costs.
+
+### Update with New Blogs Only
+```bash
+python scripts/update.py
+```
+This will:
+1. ✅ Skip blogs that already have embeddings
+2. 🆕 Generate embeddings only for NEW blogs
+3. 🔄 Update recommendations for ALL blogs
+
+### Update a Specific Blog
+```bash
+python scripts/update.py --slug my-new-blog-slug
+```
+
+### Force Full Re-index
+```bash
+python scripts/update.py --force
+```
+
 
 ## 🔧 Utility Scripts
 

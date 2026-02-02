@@ -38,4 +38,6 @@ from .vector_store import (
     find_similar_blogs,
     find_similar_by_embedding,
     get_index_stats,
+    get_existing_slugs,
+    check_slug_exists,
 )
