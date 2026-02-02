@@ -15,53 +15,60 @@ export function BlogCard({ post }: BlogCardProps) {
     return (
         <CardWrapper
             {...cardProps}
-            className="group block py-5 px-5 border-b border-white/5 hover:border-green-500 transition-colors"
+            className="group block py-4 md:py-5 px-4 md:px-5 border-b border-white/5 hover:border-green-500/70 transition-all duration-200"
         >
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start justify-between gap-3 md:gap-4">
                 <div className="flex-1 min-w-0">
-                    {/* Title row */}
-                    <div className="flex items-center gap-2 mb-2">
+                    {/* Title row - allow wrapping on mobile */}
+                    <div className="flex items-start gap-2 mb-1.5 md:mb-2">
                         {post.isStarred && (
-                            <HiStar className="text-yellow-500 flex-shrink-0" size={14} />
+                            <HiStar className="text-yellow-500 flex-shrink-0 mt-0.5" size={14} />
                         )}
-                        <h2 className="text-base md:text-lg font-medium text-white group-hover:text-gray-300 transition-colors truncate">
+                        <h2 className="text-[15px] md:text-lg font-semibold text-white group-hover:text-green-400 transition-colors leading-snug line-clamp-2 md:truncate">
                             {post.title}
                         </h2>
                     </div>
 
-                    {/* Description - fixed to 1 line with ellipsis */}
-                    <p className="text-gray-500 text-sm mb-3 truncate">
+                    {/* Description - 2 lines on mobile, 1 line on desktop */}
+                    <p className="text-gray-400 text-sm mb-2.5 md:mb-3 line-clamp-2 md:truncate leading-relaxed">
                         {post.description}
                     </p>
 
-                    {/* Tags as keyword pills + date */}
-                    <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs text-gray-600">
-                            {new Date(post.createdAt).toLocaleDateString('en-GB').replace(/\//g, '-')}
+                    {/* Date + Tags - stacked on very small screens */}
+                    <div className="flex items-center gap-2 flex-wrap text-xs">
+                        <span className="text-gray-500 font-medium">
+                            {new Date(post.createdAt).toLocaleDateString('en-GB', {
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric'
+                            })}
                         </span>
                         {post.tags.length > 0 && (
-                            <div className="flex gap-1.5 flex-wrap">
-                                {post.tags.slice(0, 3).map((tag) => (
-                                    <span
-                                        key={tag}
-                                        className="px-2 py-0.5 text-[10px] font-medium bg-gray-800/80 border border-gray-700/50 rounded-full text-gray-400"
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
-                                {post.tags.length > 3 && (
-                                    <span className="px-2 py-0.5 text-[10px] font-medium bg-gray-800/50 rounded-full text-gray-500">
-                                        +{post.tags.length - 3}
-                                    </span>
-                                )}
-                            </div>
+                            <>
+                                <span className="text-gray-700 hidden sm:inline">•</span>
+                                <div className="flex gap-1.5 flex-wrap">
+                                    {post.tags.slice(0, 3).map((tag) => (
+                                        <span
+                                            key={tag}
+                                            className="px-2 py-0.5 text-[10px] font-medium bg-gray-800/60 border border-gray-700/40 rounded-full text-gray-400 hover:text-gray-300 transition-colors"
+                                        >
+                                            {tag}
+                                        </span>
+                                    ))}
+                                    {post.tags.length > 3 && (
+                                        <span className="px-2 py-0.5 text-[10px] font-medium bg-gray-800/40 rounded-full text-gray-500">
+                                            +{post.tags.length - 3}
+                                        </span>
+                                    )}
+                                </div>
+                            </>
                         )}
                     </div>
                 </div>
 
                 <HiArrowRight
-                    size={16}
-                    className="text-gray-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-1 flex-shrink-0"
+                    size={18}
+                    className="text-gray-600 group-hover:text-green-400 group-hover:translate-x-1 transition-all duration-200 mt-0.5 flex-shrink-0"
                 />
             </div>
         </CardWrapper>

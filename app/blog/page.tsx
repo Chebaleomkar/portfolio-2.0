@@ -93,12 +93,12 @@ export default function BlogPage() {
                         <div className={`flex gap-12 ${showCurated ? 'lg:flex-row flex-col' : ''}`}>
                             {/* Main Content Column */}
                             <div className={showCurated ? 'flex-1 lg:max-w-[65%]' : 'max-w-3xl mx-auto w-full'}>
-                                {/* Header */}
-                                <header className="mb-12">
-                                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                                {/* Header - Compact on mobile */}
+                                <header className="mb-8 md:mb-12">
+                                    <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 md:mb-4">
                                         Blogs
                                     </h1>
-                                    <p className="text-gray-400 text-sm">
+                                    <p className="text-gray-400 text-sm leading-relaxed max-w-md">
                                         Thoughts on whatever I build, break, and learn in AI, engineering, and more.
                                     </p>
                                 </header>
