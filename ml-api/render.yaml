@@ -1,0 +1,22 @@
+# Render Blueprint for ML API
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: portfolio-ml-api
+    runtime: python
+    region: oregon
+    plan: free
+    rootDir: ml-api
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: PINECONE_API_KEY
+        sync: false
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: API_SECRET
+        generateValue: true
+    healthCheckPath: /health

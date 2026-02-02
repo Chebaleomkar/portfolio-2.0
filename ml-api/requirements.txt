@@ -1,0 +1,9 @@
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-dotenv==1.0.0
+pymongo==4.6.1
+pinecone==3.0.0
+google-genai==0.3.0
+markdown==3.5.2
+beautifulsoup4==4.12.3
+pydantic==2.5.3
