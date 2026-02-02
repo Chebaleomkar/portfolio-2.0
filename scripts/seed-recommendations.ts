@@ -1,21 +1,16 @@
 /**
  * Seed Script: Insert blog recommendations into MongoDB
  * 
- * Usage: node --env-file=.env --import=tsx scripts/seed-recommendations.ts
- * Or:    set MONGODB_URI=your_uri && npx tsx scripts/seed-recommendations.ts
+ * Usage: npx tsx scripts/seed-recommendations.ts
  */
 
 import mongoose from 'mongoose'
 import fs from 'fs'
 import path from 'path'
+import dotenv from 'dotenv'
 
-// Try to load dotenv if available, otherwise use environment variables directly
-try {
-    const dotenv = await import('dotenv')
-    dotenv.config({ path: path.resolve(process.cwd(), '.env') })
-} catch {
-    console.log('📝 dotenv not found, using environment variables directly')
-}
+// Load environment variables
+dotenv.config({ path: path.resolve(process.cwd(), '.env') })
 
 // Interface for recommendation item
 interface RecommendationItem {
