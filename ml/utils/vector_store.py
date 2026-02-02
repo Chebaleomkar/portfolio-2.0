@@ -237,6 +237,51 @@ def get_index_stats() -> Dict[str, Any]:
     }
 
 
+def get_existing_slugs() -> List[str]:
+    """
+    Get all existing blog slugs from Pinecone index.
+    Used for incremental updates to skip already-indexed blogs.
+    
+    Returns:
+        List of slugs (vector IDs) already in the index
+    """
+    index = get_index()
+    
+    # Get all vector IDs using list operation
+    # Pinecone's list returns paginated results
+    existing_slugs = []
+    
+    try:
+        # Use list with pagination to get all IDs
+        for ids_batch in index.list():
+            existing_slugs.extend(ids_batch)
+    except Exception as e:
+        # Fallback: If list doesn't work, check stats
+        print(f"Warning: Could not list vectors: {e}")
+        return []
+    
+    return existing_slugs
+
+
+def check_slug_exists(slug: str) -> bool:
+    """
+    Check if a specific slug exists in Pinecone.
+    
+    Args:
+        slug: The blog slug to check
+    
+    Returns:
+        True if exists, False otherwise
+    """
+    index = get_index()
+    
+    try:
+        result = index.fetch(ids=[slug])
+        return slug in result.vectors
+    except Exception:
+        return False
+
+
 def delete_all_vectors() -> bool:
     """Delete all vectors from the index. Use with caution!"""
     index = get_index()
