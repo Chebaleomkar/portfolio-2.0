@@ -2,15 +2,20 @@
  * Seed Script: Insert blog recommendations into MongoDB
  * 
  * Usage: npx tsx scripts/seed-recommendations.ts
+ * 
+ * Make sure MONGODB_URI is set in your environment or .env file
  */
 
 import mongoose from 'mongoose'
 import fs from 'fs'
 import path from 'path'
-import dotenv from 'dotenv'
 
-// Load environment variables
-dotenv.config({ path: path.resolve(process.cwd(), '.env') })
+// Try to load dotenv if available
+try {
+    require('dotenv').config({ path: path.resolve(process.cwd(), '.env') })
+} catch {
+    // dotenv not installed, use environment variables directly
+}
 
 // Interface for recommendation item
 interface RecommendationItem {
@@ -61,7 +66,7 @@ async function seedRecommendations() {
 
     if (!MONGODB_URI) {
         console.error('❌ MONGODB_URI environment variable is not set')
-        console.error('   Set it before running: set MONGODB_URI=mongodb://...')
+        console.error('   Run with: npx cross-env MONGODB_URI=mongodb://... npx tsx scripts/seed-recommendations.ts')
         process.exit(1)
     }
 
