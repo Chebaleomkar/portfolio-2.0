@@ -6,9 +6,13 @@
  * Make sure MONGODB_URI is set in your environment or .env file
  */
 
+import dns from 'dns'
 import mongoose from 'mongoose'
 import fs from 'fs'
 import path from 'path'
+
+// Force Google DNS to fix SRV lookup issues
+dns.setServers(['8.8.8.8', '8.8.4.4'])
 
 // Try to load dotenv if available
 try {
@@ -73,7 +77,12 @@ async function seedRecommendations() {
     try {
         // Connect to MongoDB
         console.log('🔗 Connecting to MongoDB...')
-        await mongoose.connect(MONGODB_URI)
+        console.log('   Using Google DNS (8.8.8.8) for SRV lookup...')
+
+        await mongoose.connect(MONGODB_URI, {
+            serverSelectionTimeoutMS: 15000,
+            family: 4, // Force IPv4
+        })
         console.log('✅ Connected to MongoDB')
 
         // Read the recommendations lookup JSON
