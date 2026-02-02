@@ -214,6 +214,43 @@ export async function POST(request: NextRequest) {
             }
         }
 
+        // Trigger ML API to generate embedding and update recommendations
+        let mlApiResult = null
+        const ML_API_URL = process.env.ML_API_URL
+        const ML_API_SECRET = process.env.ML_API_SECRET
+
+        if (ML_API_URL && ML_API_SECRET) {
+            try {
+                const mlResponse = await fetch(`${ML_API_URL}/embed-blog`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Secret': ML_API_SECRET,
+                    },
+                    body: JSON.stringify({
+                        slug: newPost.slug,
+                        title: newPost.title,
+                        description: newPost.description || '',
+                        content: content,
+                        tags: newPost.tags || [],
+                        is_starred: newPost.isStarred || false,
+                    }),
+                })
+
+                if (mlResponse.ok) {
+                    mlApiResult = await mlResponse.json()
+                    console.log(`ML API: Blog embedded, ${mlApiResult.recommendations_updated} recommendations updated`)
+                } else {
+                    console.error('ML API error:', await mlResponse.text())
+                }
+            } catch (mlError) {
+                console.error('Failed to call ML API:', mlError)
+                // Don't fail blog creation if ML API call fails
+            }
+        } else {
+            console.log('ML API not configured, skipping embedding generation')
+        }
+
         return NextResponse.json(
             {
                 success: true,
@@ -225,6 +262,10 @@ export async function POST(request: NextRequest) {
                 emailNotifications: emailResults ? {
                     sent: emailResults.sent,
                     failed: emailResults.failed,
+                } : undefined,
+                mlApi: mlApiResult ? {
+                    embedded: true,
+                    recommendationsUpdated: mlApiResult.recommendations_updated,
                 } : undefined,
             },
             { status: 201 }

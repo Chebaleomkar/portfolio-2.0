@@ -1,22 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import fs from 'fs'
-import path from 'path'
+import { connectDB } from '@/lib/mongodb'
+import Recommendation from '@/models/Recommendation'
 
-interface Recommendation {
-    slug: string
-    title: string
-    description: string
-    score: number
-}
-
-interface RecommendationsData {
-    generated_at: string
-    total_blogs: number
-    pinecone_index: string
-    recommendations: Record<string, Recommendation[]>
-}
-
-// GET /api/recommendations/[slug] - Get blog recommendations
+// GET /api/recommendations/[slug] - Get blog recommendations from MongoDB
 export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ slug: string }> }
@@ -24,35 +10,27 @@ export async function GET(
     try {
         const { slug } = await params
 
-        // Read recommendations from the JSON file
-        const dataPath = path.join(process.cwd(), 'ml', 'data', 'recommendations.json')
+        await connectDB()
 
-        // Check if file exists
-        if (!fs.existsSync(dataPath)) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: 'Recommendations not generated yet. Run the training pipeline first.',
-                    recommendations: []
-                },
-                { status: 404 }
-            )
+        // Find recommendations for this blog slug
+        const doc = await Recommendation.findOne({ blogSlug: slug }).lean()
+
+        if (!doc) {
+            // Return empty recommendations if not found
+            return NextResponse.json({
+                success: true,
+                slug,
+                recommendations: [],
+                message: 'No recommendations found for this blog'
+            })
         }
 
-        // Read and parse the JSON file
-        const fileContent = fs.readFileSync(dataPath, 'utf-8')
-        const data: RecommendationsData = JSON.parse(fileContent)
-
-        // Get recommendations for the specific slug
-        const recommendations = data.recommendations[slug] || []
-
-        // Return success response
+        // Return recommendations
         return NextResponse.json({
             success: true,
             slug,
-            recommendations,
-            generated_at: data.generated_at,
-            total_blogs: data.total_blogs
+            recommendations: doc.recommendations,
+            updatedAt: doc.updatedAt
         })
     } catch (error) {
         console.error('Error fetching recommendations:', error)
