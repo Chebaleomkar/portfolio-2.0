@@ -10,6 +10,7 @@ interface SearchBarProps {
     placeholder?: string
     debounceMs?: number
     curatedPosts?: BlogPost[]
+    defaultValue?: string
 }
 
 export function SearchBar({
@@ -17,8 +18,9 @@ export function SearchBar({
     placeholder = 'Search posts...',
     debounceMs = 300,
     curatedPosts = [],
+    defaultValue = '',
 }: SearchBarProps) {
-    const [query, setQuery] = useState('')
+    const [query, setQuery] = useState(defaultValue)
     const [isFocused, setIsFocused] = useState(false)
     const [showSuggestions, setShowSuggestions] = useState(false)
     const inputRef = useRef<HTMLInputElement>(null)
