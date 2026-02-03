@@ -41,19 +41,30 @@ export async function GET(request: NextRequest) {
             query.isStarred = true
         }
 
-        // Get total count for pagination
-        const totalPosts = await Blog.countDocuments(query)
+        // Run all queries in parallel for better performance
+        const [totalPosts, posts, starred] = await Promise.all([
+            // Count query
+            Blog.countDocuments(query),
+            // Main posts query
+            Blog.find(query)
+                .sort({ createdAt: -1 })
+                .skip((page - 1) * POSTS_PER_PAGE)
+                .limit(POSTS_PER_PAGE)
+                .select('-__v -content')
+                .lean(),
+            // Curated posts query (only on first page, no search)
+            page === 1 && !search && !starredOnly
+                ? Blog.find({ published: true, isStarred: true })
+                    .sort({ createdAt: -1 })
+                    .limit(5)
+                    .select('-__v -content')
+                    .lean()
+                : Promise.resolve([])
+        ])
+
         const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE)
 
-        // Get paginated posts (by date)
-        const posts = await Blog.find(query)
-            .sort({ createdAt: -1 })
-            .skip((page - 1) * POSTS_PER_PAGE)
-            .limit(POSTS_PER_PAGE)
-            .select('-__v -content')
-            .lean()
-
-        const formattedPosts = posts.map((post) => ({
+        const formatPost = (post: any) => ({
             _id: post._id.toString(),
             slug: post.slug,
             title: post.title,
@@ -62,30 +73,12 @@ export async function GET(request: NextRequest) {
             external: post.external || undefined,
             isStarred: post.isStarred,
             createdAt: post.createdAt.toISOString().split('T')[0],
-        }))
+        })
 
-        // Get starred/curated posts only on first page and when not searching
-        let curatedPosts: typeof formattedPosts = []
-        if (page === 1 && !search && !starredOnly) {
-            const starred = await Blog.find({ published: true, isStarred: true })
-                .sort({ createdAt: -1 })
-                .limit(5)
-                .select('-__v -content')
-                .lean()
+        const formattedPosts = posts.map(formatPost)
+        const curatedPosts = starred.map(formatPost)
 
-            curatedPosts = starred.map((post) => ({
-                _id: post._id.toString(),
-                slug: post.slug,
-                title: post.title,
-                description: post.description,
-                tags: post.tags,
-                external: post.external || undefined,
-                isStarred: post.isStarred,
-                createdAt: post.createdAt.toISOString().split('T')[0],
-            }))
-        }
-
-        return NextResponse.json({
+        const response = NextResponse.json({
             success: true,
             posts: formattedPosts,
             curatedPosts,
@@ -98,6 +91,17 @@ export async function GET(request: NextRequest) {
                 hasPrevPage: page > 1,
             },
         })
+
+        // Add cache headers - Cache for 60s on CDN, 30s stale-while-revalidate
+        // Skip cache for search queries to ensure fresh results
+        if (!search) {
+            response.headers.set(
+                'Cache-Control',
+                'public, s-maxage=60, stale-while-revalidate=30'
+            )
+        }
+
+        return response
     } catch (error) {
         console.error('Error fetching posts:', error)
         return NextResponse.json(
