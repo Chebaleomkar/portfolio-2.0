@@ -29,7 +29,6 @@ const PREDEFINED_TOPICS = [
     'SystemDesign',
     'CloudComputing',
     'Tech',
-    'Automation',
     'DataScience',
     'Database'
 ]
