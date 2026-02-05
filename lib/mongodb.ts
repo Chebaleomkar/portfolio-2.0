@@ -29,6 +29,7 @@ export async function connectDB() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      family: 4, // Favor IPv4 for DNS resolution to avoid SRV lookup issues
     }
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
