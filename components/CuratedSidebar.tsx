@@ -131,12 +131,12 @@ function CuratedPostCard({ post, onClose }: { post: BlogPost; onClose?: () => vo
 
             {/* Title */}
             <h3 className="text-white font-medium text-sm leading-snug mb-1.5 
-                     group-hover:text-amber-50 transition-colors line-clamp-2">
+                     group-hover:text-amber-50 transition-colors line-clamp-2 lg:line-clamp-none">
                 {post.title}
             </h3>
 
             {/* Description */}
-            <p className="text-gray-500 text-xs leading-relaxed line-clamp-2 mb-3">
+            <p className="text-gray-500 text-xs leading-relaxed line-clamp-2 lg:line-clamp-none mb-3">
                 {post.description}
             </p>
 

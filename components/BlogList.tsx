@@ -59,9 +59,9 @@ export function BlogList({ initialPosts, curatedPosts, pagination }: BlogListPro
 
     return (
         <>
-            <div className={`flex gap-12 ${showCurated ? 'lg:flex-row flex-col' : ''}`}>
+            <div className={`flex gap-8 lg:gap-14 ${showCurated ? 'lg:flex-row flex-col' : 'flex-col'}`}>
                 {/* Main Content Column */}
-                <div className={showCurated ? 'flex-1 lg:max-w-[65%]' : 'max-w-3xl mx-auto w-full'}>
+                <div className={showCurated ? 'flex-1' : 'max-w-3xl mx-auto w-full'}>
                     {/* Header - Compact on mobile */}
                     <header className="mb-8 md:mb-12">
                         <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 md:mb-4">

@@ -24,13 +24,13 @@ export function BlogCard({ post }: BlogCardProps) {
                         {post.isStarred && (
                             <HiStar className="text-yellow-500 flex-shrink-0 mt-0.5" size={14} />
                         )}
-                        <h2 className="text-[15px] md:text-lg font-semibold text-white group-hover:text-green-400 transition-colors leading-snug line-clamp-2 md:truncate">
+                        <h2 className="text-[15px] md:text-xl font-bold text-white group-hover:text-green-400 transition-colors leading-snug">
                             {post.title}
                         </h2>
                     </div>
 
-                    {/* Description - 2 lines on mobile, 1 line on desktop */}
-                    <p className="text-gray-400 text-sm mb-2.5 md:mb-3 line-clamp-2 md:truncate leading-relaxed">
+                    {/* Description - wrapping on all screens */}
+                    <p className="text-gray-400 text-sm mb-2.5 md:mb-4 leading-relaxed line-clamp-2 md:line-clamp-none">
                         {post.description}
                     </p>
 
