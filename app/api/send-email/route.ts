@@ -16,11 +16,12 @@ export async function POST(request: Request) {
         // Create a Nodemailer transporter using Gmail
         const transporter = nodemailer.createTransport({
             service: 'gmail',
+            family: 4,
             auth: {
                 user: process.env.GMAIL_USER, // Your Gmail email
                 pass: process.env.GMAIL_APP_PASSWORD, // Your Google App Password
             },
-        });
+        } as any);
 
         // Define the email options
         const mailOptions = {

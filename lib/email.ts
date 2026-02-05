@@ -4,11 +4,12 @@ import nodemailer from 'nodemailer'
 const getTransporter = () => {
     return nodemailer.createTransport({
         service: 'gmail',
+        family: 4, // Force IPv4 for stable connection on local networks
         auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_APP_PASSWORD,
         },
-    })
+    } as any) // Type cast as any because service: 'gmail' types are strict in some versions
 }
 
 interface WelcomeEmailParams {
