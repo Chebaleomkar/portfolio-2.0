@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse, after } from 'next/server'
 import { connectDB } from '@/lib/mongodb'
 import Blog from '@/models/Blog'
 import Subscriber from '@/models/Subscriber'
@@ -186,91 +186,86 @@ export async function POST(request: NextRequest) {
             published: true,
         })
 
-        // If the blog is starred/curated, send notification to all active subscribers
-        let emailResults = null
-        if (isStarred) {
-            try {
-                // Fetch all active subscribers
-                const activeSubscribers = await Subscriber.find({ isActive: true })
-                    .select('email name')
-                    .lean()
+        // Use after() to run background tasks without blocking the response
+        after(async () => {
+            // 1. Send notifications if starred
+            if (isStarred) {
+                try {
+                    // Fetch all active subscribers
+                    const activeSubscribers = await Subscriber.find({ isActive: true })
+                        .select('email name')
+                        .lean()
 
-                if (activeSubscribers.length > 0) {
-                    // Send curated blog notification to all subscribers
-                    emailResults = await sendCuratedBlogToAllSubscribers({
-                        blog: {
-                            title: newPost.title,
-                            slug: newPost.slug,
-                            description: newPost.description,
-                            tags: newPost.tags,
+                    if (activeSubscribers.length > 0) {
+                        // Send curated blog notification to all subscribers
+                        const emailResults = await sendCuratedBlogToAllSubscribers({
+                            blog: {
+                                title: newPost.title,
+                                slug: newPost.slug,
+                                description: newPost.description,
+                                tags: newPost.tags,
+                            },
+                            subscribers: activeSubscribers.map((s: any) => ({
+                                email: s.email,
+                                name: s.name,
+                            })),
+                        })
+
+                        console.log(`Curated blog notifications sent: ${emailResults.sent} successful, ${emailResults.failed} failed`)
+                    }
+                } catch (emailError) {
+                    console.error('Failed to send curated blog notifications:', emailError)
+                }
+            }
+
+            // 2. Trigger ML API
+            const ML_API_URL = process.env.ML_API_URL
+            const ML_API_SECRET = process.env.ML_API_SECRET
+
+            if (ML_API_URL && ML_API_SECRET) {
+                try {
+                    const mlResponse = await fetch(`${ML_API_URL}/embed-blog`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-API-Secret': ML_API_SECRET,
                         },
-                        subscribers: activeSubscribers.map((s: any) => ({
-                            email: s.email,
-                            name: s.name,
-                        })),
+                        body: JSON.stringify({
+                            slug: newPost.slug,
+                            title: newPost.title,
+                            description: newPost.description || '',
+                            content: content,
+                            tags: newPost.tags || [],
+                            is_starred: newPost.isStarred || false,
+                        }),
                     })
 
-                    console.log(`Curated blog notifications sent: ${emailResults.sent} successful, ${emailResults.failed} failed`)
+                    if (mlResponse.ok) {
+                        const mlApiResult = await mlResponse.json()
+                        console.log(`ML API: Blog embedded, ${mlApiResult.recommendations_updated} recommendations updated`)
+                    } else {
+                        console.error('ML API error:', await mlResponse.text())
+                    }
+                } catch (mlError) {
+                    console.error('Failed to call ML API:', mlError)
                 }
-            } catch (emailError) {
-                console.error('Failed to send curated blog notifications:', emailError)
-                // Don't fail the blog creation if email sending fails
+            } else {
+                console.log('ML API not configured, skipping embedding generation')
             }
-        }
-
-        // Trigger ML API to generate embedding and update recommendations
-        let mlApiResult = null
-        const ML_API_URL = process.env.ML_API_URL
-        const ML_API_SECRET = process.env.ML_API_SECRET
-
-        if (ML_API_URL && ML_API_SECRET) {
-            try {
-                const mlResponse = await fetch(`${ML_API_URL}/embed-blog`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-API-Secret': ML_API_SECRET,
-                    },
-                    body: JSON.stringify({
-                        slug: newPost.slug,
-                        title: newPost.title,
-                        description: newPost.description || '',
-                        content: content,
-                        tags: newPost.tags || [],
-                        is_starred: newPost.isStarred || false,
-                    }),
-                })
-
-                if (mlResponse.ok) {
-                    mlApiResult = await mlResponse.json()
-                    console.log(`ML API: Blog embedded, ${mlApiResult.recommendations_updated} recommendations updated`)
-                } else {
-                    console.error('ML API error:', await mlResponse.text())
-                }
-            } catch (mlError) {
-                console.error('Failed to call ML API:', mlError)
-                // Don't fail blog creation if ML API call fails
-            }
-        } else {
-            console.log('ML API not configured, skipping embedding generation')
-        }
+        })
 
         return NextResponse.json(
             {
                 success: true,
                 message: isStarred
-                    ? `Blog post created and ${emailResults?.sent || 0} subscribers notified!`
+                    ? 'Blog post created. Notifications are being sent in the background.'
                     : 'Blog post created successfully',
                 slug: newPost.slug,
                 id: newPost._id,
-                emailNotifications: emailResults ? {
-                    sent: emailResults.sent,
-                    failed: emailResults.failed,
-                } : undefined,
-                mlApi: mlApiResult ? {
-                    embedded: true,
-                    recommendationsUpdated: mlApiResult.recommendations_updated,
-                } : undefined,
+                backgroundTasks: {
+                    emailNotifications: isStarred ? 'processing' : 'skipped',
+                    mlApi: 'processing'
+                }
             },
             { status: 201 }
         )
