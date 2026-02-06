@@ -33,8 +33,6 @@ export async function PATCH(
 
         // Find the blog
         const blog = await Blog.findOne({ slug })
-        console.log('Blog found:', blog ? blog.title : 'NOT FOUND')
-
         if (!blog) {
             return NextResponse.json(
                 { success: false, error: `Blog not found with slug: ${slug}` },
@@ -45,18 +43,35 @@ export async function PATCH(
         // Build updates object
         const updates: Record<string, unknown> = {}
 
-        // Handle isStarred
-        const isStarred = searchParams.get('isStarred')
-        if (isStarred !== null) {
-            updates.isStarred = isStarred === 'true'
-            console.log('Setting isStarred to:', updates.isStarred)
+        // Parse body if available
+        let body: any = {}
+        try {
+            const bodyText = await request.text()
+            if (bodyText) {
+                body = JSON.parse(bodyText)
+            }
+        } catch (e) {
+            // Ignore body parsing errors
+        }
+
+        // Handle isStarred (Query params take precedence, then body)
+        const isStarredParam = searchParams.get('isStarred')
+        const isStarredBody = body.isStarred
+
+        if (isStarredParam !== null) {
+            updates.isStarred = isStarredParam === 'true'
+        } else if (isStarredBody !== undefined) {
+            updates.isStarred = Boolean(isStarredBody)
         }
 
         // Handle published
-        const published = searchParams.get('published')
-        if (published !== null) {
-            updates.published = published === 'true'
-            console.log('Setting published to:', updates.published)
+        const publishedParam = searchParams.get('published')
+        const publishedBody = body.published
+
+        if (publishedParam !== null) {
+            updates.published = publishedParam === 'true'
+        } else if (publishedBody !== undefined) {
+            updates.published = Boolean(publishedBody)
         }
 
         // If no valid updates provided
@@ -69,8 +84,6 @@ export async function PATCH(
 
         // Automatically set updatedAt
         updates.updatedAt = new Date()
-
-        console.log('Updating blog with:', updates)
 
         // Update the blog
         const updatedBlog = await Blog.findOneAndUpdate(
@@ -85,8 +98,6 @@ export async function PATCH(
                 { status: 500 }
             )
         }
-
-        console.log('Blog updated successfully:', updatedBlog.isStarred)
 
         return NextResponse.json({
             success: true,
@@ -126,6 +137,36 @@ export async function GET(
         const isAdmin = password === process.env.BLOG_PASSWORD
 
         await connectDB()
+
+        // If admin and update params are present, perform update (Upgrade GET to effectively PATCH for convenience)
+        if (isAdmin && (searchParams.has('isStarred') || searchParams.has('published'))) {
+            console.log('Update intent detected in GET request')
+
+            const updates: Record<string, unknown> = {}
+            if (searchParams.has('isStarred')) {
+                updates.isStarred = searchParams.get('isStarred') === 'true'
+            }
+            if (searchParams.has('published')) {
+                updates.published = searchParams.get('published') === 'true'
+            }
+
+            updates.updatedAt = new Date()
+
+            const updatedBlog = await Blog.findOneAndUpdate(
+                { slug },
+                { $set: updates },
+                { new: true }
+            )
+
+            if (updatedBlog) {
+                return NextResponse.json({
+                    success: true,
+                    message: `Blog "${updatedBlog.title}" updated successfully (via GET)`,
+                    updates,
+                    blog: updatedBlog,
+                })
+            }
+        }
 
         // If admin, show all blogs including unpublished
         const query = isAdmin ? { slug } : { slug, published: true }
