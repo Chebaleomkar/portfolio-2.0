@@ -34,9 +34,9 @@ export function BlogCard({ post }: BlogCardProps) {
                         {post.description}
                     </p>
 
-                    {/* Date + Tags - stacked on very small screens */}
-                    <div className="flex items-center gap-2 flex-wrap text-xs">
-                        <span className="text-gray-500 font-medium">
+                    {/* Date + Tags - Scrollable tags container */}
+                    <div className="flex items-center gap-2 text-xs w-full overflow-hidden">
+                        <span className="text-gray-500 font-medium whitespace-nowrap flex-shrink-0">
                             {new Date(post.createdAt).toLocaleDateString('en-GB', {
                                 day: '2-digit',
                                 month: 'short',
@@ -45,21 +45,18 @@ export function BlogCard({ post }: BlogCardProps) {
                         </span>
                         {post.tags.length > 0 && (
                             <>
-                                <span className="text-gray-700 hidden sm:inline">•</span>
-                                <div className="flex gap-1.5 flex-wrap">
-                                    {post.tags.slice(0, 3).map((tag) => (
-                                        <span
-                                            key={tag}
-                                            className="px-2 py-0.5 text-[10px] font-medium bg-gray-800/60 border border-gray-700/40 rounded-full text-gray-400 hover:text-gray-300 transition-colors"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                    {post.tags.length > 3 && (
-                                        <span className="px-2 py-0.5 text-[10px] font-medium bg-gray-800/40 rounded-full text-gray-500">
-                                            +{post.tags.length - 3}
-                                        </span>
-                                    )}
+                                <span className="text-gray-700 hidden sm:inline flex-shrink-0">•</span>
+                                <div className="flex-1 min-w-0 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                                    <div className="flex gap-1.5 flex-nowrap pr-4">
+                                        {post.tags.map((tag) => (
+                                            <span
+                                                key={tag}
+                                                className="px-2 py-0.5 text-[10px] font-medium bg-gray-800/60 border border-gray-700/40 rounded-full text-gray-400 hover:text-gray-300 transition-colors whitespace-nowrap flex-shrink-0"
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
                             </>
                         )}
