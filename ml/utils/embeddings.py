@@ -44,7 +44,8 @@ def generate_embedding(text: str) -> List[float]:
         model="gemini-embedding-001",
         contents=text,
         config=types.EmbedContentConfig(
-            task_type="RETRIEVAL_DOCUMENT"
+            task_type="RETRIEVAL_DOCUMENT",
+            output_dimensionality=EMBEDDING_DIMENSION,  # Match Pinecone index (768)
         )
     )
     
@@ -68,7 +69,8 @@ def generate_query_embedding(text: str) -> List[float]:
         model="gemini-embedding-001",
         contents=text,
         config=types.EmbedContentConfig(
-            task_type="RETRIEVAL_QUERY"
+            task_type="RETRIEVAL_QUERY",
+            output_dimensionality=EMBEDDING_DIMENSION,  # Match Pinecone index (768)
         )
     )
     

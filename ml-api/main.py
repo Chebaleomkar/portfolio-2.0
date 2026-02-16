@@ -170,7 +170,10 @@ def generate_embedding(text: str) -> List[float]:
     result = client.models.embed_content(
         model="gemini-embedding-001",
         contents=text,
-        config={"task_type": "RETRIEVAL_DOCUMENT"}
+        config={
+            "task_type": "RETRIEVAL_DOCUMENT",
+            "output_dimensionality": EMBEDDING_DIMENSION,# 768
+        }
     )
     
     return list(result.embeddings[0].values)
