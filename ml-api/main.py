@@ -168,7 +168,7 @@ def generate_embedding(text: str) -> List[float]:
         text = text[:8000]
     
     result = client.models.embed_content(
-        model="text-embedding-004",
+        model="gemini-embedding-001",
         contents=text,
         config={"task_type": "RETRIEVAL_DOCUMENT"}
     )
@@ -464,17 +464,113 @@ async def update_all_recommendations(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.post("/rerun-failed-embeddings")
+async def rerun_failed_embeddings(
+    x_api_secret: str = Header(None, alias="X-API-Secret")
+):
+    """
+    Re-embed all blogs that are missing embeddings in Pinecone.
+    Fetches all published blogs from MongoDB, checks which ones
+    don't have vectors in Pinecone, re-generates their embeddings,
+    and updates all recommendations.
+    """
+    if x_api_secret != API_SECRET:
+        raise HTTPException(status_code=401, detail="Invalid API secret")
+
+    try:
+        # 1. Get all published blogs from MongoDB
+        all_blogs = get_all_blogs_from_mongo()
+        all_mongo_slugs = {blog["slug"] for blog in all_blogs}
+
+        # 2. Get all slugs that already have embeddings in Pinecone
+        existing_slugs = set(get_all_slugs_from_pinecone())
+
+        # 3. Find missing slugs
+        missing_slugs = all_mongo_slugs - existing_slugs
+
+        if not missing_slugs:
+            return {
+                "success": True,
+                "message": "All blogs already have embeddings. No re-run needed.",
+                "total_blogs": len(all_mongo_slugs),
+                "existing_embeddings": len(existing_slugs),
+                "reprocessed": 0,
+                "failed": []
+            }
+
+        print(f"Found {len(missing_slugs)} blogs missing embeddings: {missing_slugs}")
+
+        # 4. Re-embed only the missing blogs
+        reprocessed = []
+        failed = []
+
+        for blog in all_blogs:
+            if blog["slug"] not in missing_slugs:
+                continue
+
+            slug = blog["slug"]
+            try:
+                blog_input = BlogInput(
+                    slug=slug,
+                    title=blog.get("title", ""),
+                    description=blog.get("description", ""),
+                    content=blog.get("content", ""),
+                    tags=blog.get("tags", []),
+                    is_starred=blog.get("isStarred", False)
+                )
+                # Embed but skip per-blog recommendation update (we'll do it all at once)
+                embed_and_update_single_blog(blog_input, update_all_recs=False)
+                reprocessed.append(slug)
+                print(f"  ✅ Re-embedded: {slug}")
+
+                # Small delay for rate limiting
+                time.sleep(1)
+
+            except Exception as e:
+                print(f"  ❌ Failed to re-embed {slug}: {e}")
+                failed.append({"slug": slug, "error": str(e)})
+
+        # 5. Recompute ALL recommendations now that embeddings are complete
+        print("Recomputing all recommendations...")
+        all_slugs = get_all_slugs_from_pinecone()
+        recs_updated = 0
+        for slug in all_slugs:
+            similar = find_similar_blogs(slug, top_k=3)
+            update_recommendations_in_mongo(slug, similar)
+            recs_updated += 1
+
+        return {
+            "success": True,
+            "message": f"Re-embedded {len(reprocessed)} blogs and updated {recs_updated} recommendations",
+            "total_blogs": len(all_mongo_slugs),
+            "existing_embeddings": len(existing_slugs),
+            "reprocessed": reprocessed,
+            "failed": failed,
+            "recommendations_updated": recs_updated
+        }
+
+    except Exception as e:
+        print(f"Error in rerun-failed-embeddings: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/stats")
 async def get_stats():
     """Get statistics about the recommendation system."""
     try:
         index = get_pinecone_index()
         stats = index.describe_index_stats()
-        
+
         db = get_mongo_db()
         blog_count = db.blogs.count_documents({"published": True})
         rec_count = db.recommendations.count_documents({})
-        
+
+        # Also show which blogs are missing embeddings
+        all_blogs = list(db.blogs.find({"published": True}, {"slug": 1}))
+        all_mongo_slugs = {blog["slug"] for blog in all_blogs}
+        existing_slugs = set(get_all_slugs_from_pinecone())
+        missing_slugs = list(all_mongo_slugs - existing_slugs)
+
         return {
             "pinecone": {
                 "index_name": PINECONE_INDEX_NAME,
@@ -484,6 +580,10 @@ async def get_stats():
             "mongodb": {
                 "published_blogs": blog_count,
                 "recommendation_entries": rec_count
+            },
+            "missing_embeddings": {
+                "count": len(missing_slugs),
+                "slugs": missing_slugs
             }
         }
     except Exception as e:

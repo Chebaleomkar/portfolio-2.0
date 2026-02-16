@@ -41,7 +41,7 @@ def generate_embedding(text: str) -> List[float]:
     client = get_client()
     
     result = client.models.embed_content(
-        model="text-embedding-004",
+        model="gemini-embedding-001",
         contents=text,
         config=types.EmbedContentConfig(
             task_type="RETRIEVAL_DOCUMENT"
@@ -65,7 +65,7 @@ def generate_query_embedding(text: str) -> List[float]:
     client = get_client()
     
     result = client.models.embed_content(
-        model="text-embedding-004",
+        model="gemini-embedding-001",
         contents=text,
         config=types.EmbedContentConfig(
             task_type="RETRIEVAL_QUERY"
