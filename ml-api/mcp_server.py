@@ -453,17 +453,21 @@ async def rerun_failed_embeddings() -> str:
 # ============================================================
 
 def main():
+    # Auto-detect deployment environment (Render sets PORT env var)
+    render_port = os.getenv("PORT")
+    is_deployed = render_port is not None
+
     parser = argparse.ArgumentParser(description="MCP Server for Portfolio Blog System")
     parser.add_argument(
         "--transport",
         choices=["stdio", "streamable-http"],
-        default="stdio",
+        default="streamable-http" if is_deployed else "stdio",
         help="Transport to use (stdio for local, streamable-http for remote)",
     )
     parser.add_argument(
         "--port",
         type=int,
-        default=8001,
+        default=int(render_port) if render_port else 8001,
         help="Port for HTTP transport",
     )
     parser.add_argument(
@@ -484,7 +488,8 @@ def main():
     _log("=" * 60)
     _log("Portfolio Blog MCP Server")
     _log("=" * 60)
-    _log(f"Transport: {args.transport}")
+    _log(f"Transport:   {args.transport}")
+    _log(f"Deployed:    {is_deployed}")
     _log(f"Next.js URL: {config.nextjs_url}")
     _log(f"ML API URL:  {config.ml_api_url}")
     _log(f"Tools:       {len(mcp._tool_manager._tools)} registered")
