@@ -557,6 +557,60 @@ async def rerun_failed_embeddings(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.post("/search")
+async def semantic_search(
+    request: dict,
+    x_api_secret: str = Header(None, alias="X-API-Secret")
+):
+    """
+    Semantic search - find blogs similar to ANY text query.
+    Generates an embedding from the query text and searches Pinecone.
+    
+    Body:
+        query: str - The text to search for
+        top_k: int - Number of results (default: 3)
+    """
+    if x_api_secret != API_SECRET:
+        raise HTTPException(status_code=401, detail="Invalid API secret")
+    
+    query_text = request.get("query", "")
+    top_k = request.get("top_k", 3)
+    
+    if not query_text:
+        raise HTTPException(status_code=400, detail="Query is required")
+    
+    # Process the query like we process blogs
+    processed_query = clean_text(query_text)
+    
+    # Generate embedding for the query
+    query_embedding = generate_embedding(processed_query)
+    
+    # Search Pinecone
+    index = get_pinecone_index()
+    results = index.query(
+        vector=query_embedding,
+        top_k=top_k,
+        include_metadata=True
+    )
+    
+    # Format results
+    search_results = []
+    for match in results.matches:
+        search_results.append({
+            "slug": match.id,
+            "title": match.metadata.get("title", ""),
+            "description": match.metadata.get("description", ""),
+            "tags": match.metadata.get("tags", []),
+            "score": round(float(match.score), 4)
+        })
+    
+    return {
+        "query": query_text,
+        "results": search_results,
+        "count": len(search_results)
+    }
+
+
 @app.get("/stats")
 async def get_stats():
     """Get statistics about the recommendation system."""
