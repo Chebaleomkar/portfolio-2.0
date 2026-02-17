@@ -1,7 +1,8 @@
-# Render Blueprint for ML API
+# Render Blueprint for ML API + MCP Server
 # https://render.com/docs/blueprint-spec
 
 services:
+  # 1. ML API (FastAPI) - existing service
   - type: web
     name: portfolio-ml-api
     runtime: python
@@ -20,3 +21,22 @@ services:
       - key: API_SECRET
         generateValue: true
     healthCheckPath: /health
+
+  # 2. MCP Server (FastMCP over streamable-http) - remote AI tool access
+  - type: web
+    name: portfolio-mcp-server
+    runtime: python
+    region: oregon
+    plan: free
+    rootDir: ml-api
+    buildCommand: pip install -r requirements.txt
+    startCommand: python mcp_server.py
+    envVars:
+      - key: NEXTJS_URL
+        value: https://omkarchebale.vercel.app
+      - key: NEXTJS_PASSWORD
+        sync: false
+      - key: ML_API_URL
+        value: https://portfolio-2-0-13qd.onrender.com
+      - key: ML_API_SECRET
+        sync: false
