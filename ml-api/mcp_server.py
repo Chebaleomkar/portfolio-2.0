@@ -41,6 +41,7 @@ from dataclasses import dataclass
 import httpx
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
+from mcp.server.fastmcp.server import TransportSecuritySettings
 
 
 # ============================================================
@@ -77,11 +78,28 @@ config = get_config()
 # Create FastMCP Server
 # ============================================================
 
+# Build transport security settings
+# When deployed on Render, allow the external hostname so requests don't get
+# rejected with 421 Misdirected Request (DNS rebinding protection)
+render_hostname = os.getenv("RENDER_EXTERNAL_HOSTNAME", "")
+if render_hostname:
+    # Deployed: allow the Render domain + localhost for health checks
+    transport_security = TransportSecuritySettings(
+        enable_dns_rebinding_protection=True,
+        allowed_hosts=[render_hostname, "localhost", "127.0.0.1"],
+    )
+else:
+    # Local dev: no restrictions needed
+    transport_security = TransportSecuritySettings(
+        enable_dns_rebinding_protection=False,
+    )
+
 mcp = FastMCP(
     "portfolio-blog-mcp",
     instructions="""You are a helpful assistant for managing a portfolio blog system.
     You can search blogs, list blogs, create new ones, and manage the ML recommendation system.
     Always use the health_check tool first to verify the ML API is running before using ML-related tools.""",
+    transport_security=transport_security,
 )
 
 
