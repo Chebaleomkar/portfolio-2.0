@@ -102,7 +102,7 @@ export const Footer = () => {
               </Link>
 
               <nav className="space-y-3 mb-8">
-                <Link href="/blog" className="block text-gray-400 hover:text-white transition-colors">
+                <Link href="/blogs" className="block text-gray-400 hover:text-white transition-colors">
                   Blog
                 </Link>
                 <Link href="/skills" className="block text-gray-400 hover:text-white transition-colors">

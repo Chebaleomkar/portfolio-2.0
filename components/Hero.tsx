@@ -44,7 +44,7 @@ export const Hero = memo(() => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
             <Link
-              href="/blog"
+              href="/blogs"
               className="w-full sm:w-auto px-6 py-3 bg-white text-black font-medium rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
             >
               <HiSparkles size={18} />

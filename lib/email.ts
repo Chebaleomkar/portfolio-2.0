@@ -571,7 +571,7 @@ export async function sendCuratedBlogNotification({
 }: CuratedBlogNotificationParams) {
     const transporter = getTransporter()
     const firstName = subscriber.name?.split(' ')[0] || 'there'
-    const blogUrl = `${BASE_URL}/blog/${blog.slug}`
+    const blogUrl = `${BASE_URL}/blogs/${blog.slug}`
 
     const tagsHtml = blog.tags.length > 0
         ? `<div style="margin-top: 16px;">

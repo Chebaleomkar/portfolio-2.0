@@ -33,7 +33,7 @@ export default function BlogPreviewPage() {
             <nav className="pt-8 px-6">
                 <div className="max-w-3xl mx-auto flex items-center justify-between">
                     <Link
-                        href="/blog"
+                        href="/blogs"
                         className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm"
                     >
                         <HiArrowLeft size={16} />

@@ -75,7 +75,7 @@ export function BlogRecommendations({ currentSlug }: BlogRecommendationsProps) {
                 {recommendations.map((rec, index) => (
                     <Link
                         key={rec.slug}
-                        href={`/blog/${rec.slug}`}
+                        href={`/blogs/${rec.slug}`}
                         className="group block"
                     >
                         <article className="relative p-[1px] rounded-xl bg-gradient-to-r from-emerald-500/20 via-emerald-500/10 to-transparent transition-all duration-500">

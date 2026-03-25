@@ -10,7 +10,7 @@ export function BlogCard({ post }: BlogCardProps) {
     const CardWrapper = post.external ? 'a' : Link
     const cardProps = post.external
         ? { href: post.external, target: '_blank', rel: 'noopener noreferrer' }
-        : { href: `/blog/${post.slug}` }
+        : { href: `/blogs/${post.slug}` }
 
     return (
         <CardWrapper
