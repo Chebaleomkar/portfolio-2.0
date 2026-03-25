@@ -5,6 +5,9 @@ import Link from 'next/link'
 import { HiArrowLeft, HiEye, HiPencil } from 'react-icons/hi'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+import 'katex/dist/katex.min.css'
 import { Navbar } from '@/components/navbar'
 
 export default function BlogPreviewPage() {
@@ -102,7 +105,8 @@ Paste your markdown here..."
                         {/* Content - Rendered Markdown */}
                         <div className="prose prose-invert prose-lg max-w-none">
                             <ReactMarkdown
-                                remarkPlugins={[remarkGfm]}
+                                remarkPlugins={[remarkGfm, remarkMath]}
+                                rehypePlugins={[rehypeKatex]}
                                 components={{
                                     h1: ({ children }) => (
                                         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">{children}</h1>

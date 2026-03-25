@@ -4,6 +4,9 @@ import { Metadata } from 'next'
 import { HiArrowLeft, HiStar } from 'react-icons/hi'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+import 'katex/dist/katex.min.css'
 import { getBlogPostBySlug } from '@/lib/blog'
 import { connectDB } from '@/lib/mongodb'
 import Blog from '@/models/Blog'
@@ -243,7 +246,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         {/* Content - Rendered Markdown */}
                         <div className="prose prose-invert prose-lg max-w-none">
                             <ReactMarkdown
-                                remarkPlugins={[remarkGfm]}
+                                remarkPlugins={[remarkGfm, remarkMath]}
+                                rehypePlugins={[rehypeKatex]}
                                 components={{
                                     h1: ({ children }) => (
                                         <h1 className="text-3xl font-bold text-white mt-10 mb-4">{children}</h1>
@@ -331,3 +335,4 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </>
     )
 }
+
