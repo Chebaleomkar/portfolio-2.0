@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     }
 
     const baseUrl = 'https://omkarchebale.vercel.app'
-    const blogUrl = `${baseUrl}/blog/${slug}`
+    const blogUrl = `${baseUrl}/blogs/${slug}`
     const publishDate = post.createdAt?.toISOString() || new Date().toISOString()
     const modifiedDate = post.updatedAt?.toISOString() || publishDate
 
@@ -169,7 +169,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         dateModified: post.createdAt,
         mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': `https://omkarchebale.vercel.app/blog/${slug}`,
+            '@id': `https://omkarchebale.vercel.app/blogs/${slug}`,
         },
         keywords: post.tags?.join(', '),
         articleSection: 'Technology',
@@ -177,6 +177,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         isAccessibleForFree: true,
         wordCount: post.content?.split(/\s+/).length || 0,
     }
+
+    // Aggressively deduplicate title: remove any leading # H1 as we already render post.title
+    const cleanedContent = post.content?.replace(/^#\s+.+(\n|$)/, '').trim() || ''
 
     return (
         <>
@@ -190,7 +193,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <nav className="pt-8 px-6">
                     <div className="max-w-3xl mx-auto">
                         <Link
-                            href="/blog"
+                            href="/blogs"
                             className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm"
                         >
                             <HiArrowLeft size={16} />
@@ -246,8 +249,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         {/* Content - Rendered Markdown */}
                         <div className="prose prose-invert prose-lg max-w-none">
                             <ReactMarkdown
-                                remarkPlugins={[remarkGfm, remarkMath]}
-                                rehypePlugins={[rehypeKatex]}
+                                remarkPlugins={[[remarkMath, { singleDollarTextMath: true }], remarkGfm]}
+                                rehypePlugins={[[rehypeKatex, { strict: false, trust: true }]]}
                                 components={{
                                     h1: ({ children }) => (
                                         <h1 className="text-3xl font-bold text-white mt-10 mb-4">{children}</h1>
@@ -316,7 +319,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                                     ),
                                 }}
                             >
-                                {post.content}
+                                {cleanedContent}
                             </ReactMarkdown>
                         </div>
 
