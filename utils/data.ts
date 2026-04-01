@@ -86,26 +86,53 @@ export const skills = [
   },
 ];
 
-export const experiences = [
+export interface Experience {
+  role: string
+  company: string
+  companyUrl?: string
+  date: string
+  color: string // tailwind color name: "emerald", "orange", "gray", etc.
+  highlights: { text: string; bold?: string }[]
+}
 
+export const experiences: Experience[] = [
   {
-    id: 0,
-    img: "https://avatars.githubusercontent.com/u/152776938?v=4",
-    role: " Fullstack Engineering Intern",
-    company: "Recursive Zero Pvt. Ltd.",
-    date: "jan 2024 - present",
-    desc: "Working on the frontend of the web application using ASTROJS",
-    skills: [
-      "JavaScript",
-      "TypeScript",
-      "Node Js",
-      "Astro Js",
-      "Tailwind UI",
-      "React Js",
-      "Node Js",
+    role: "AI Engineer Intern",
+    company: "AI Planet",
+    date: "Apr 2026 - Present",
+    color: "emerald",
+    highlights: [
+      { text: "Building {bold} and autonomous workflows to solve complex challenges", bold: "agentic AI systems" },
+      { text: "Developing and optimizing {bold} for improved information retrieval and accuracy", bold: "RAG pipelines" },
+      { text: "Implementing state-of-the-Art {bold} for production-grade applications", bold: "LLM techniques" },
     ],
   },
-
+  {
+    role: "AI Engineer Intern",
+    company: "Xclusive Interiors Pvt. Ltd.",
+    date: "Dec 2024 - Feb 2026",
+    color: "orange",
+    highlights: [
+      { text: "Building {bold} for internal business workflows", bold: "AI-driven automation" },
+      { text: "Designing LLM-powered systems with focus on {bold}", bold: "reliability, cost, and latency" },
+      { text: "Collaborating cross-functionally to translate product requirements into deployable AI solutions" },
+    ],
+  },
+  {
+    role: "Full-Stack Engineer (Lead)",
+    company: "RecursiveZero Pvt. Ltd.",
+    companyUrl: "https://recursivezero.com/about/",
+    date: "Jan 2024 - Jul 2025 · 1 yr 7 mos",
+    color: "gray",
+    highlights: [
+      { text: "Architected and shipped a {bold} end-to-end", bold: "multi-tenant B2B e-commerce platform" },
+      { text: "Designed {bold} for buyers, sellers, and admins", bold: "secure authentication and RBAC" },
+      { text: "Built high-throughput backend services for {bold}", bold: "catalogs, orders, and inventory" },
+      { text: "Improved API and query performance by {bold} through indexing and query optimization", bold: "around 40 percent" },
+      { text: "Served as {bold} from system design to production deployment", bold: "technical owner" },
+      { text: "Mentored junior engineers, reviewed PRs and set engineering standards" },
+    ],
+  },
 ];
 
 export const education = [
