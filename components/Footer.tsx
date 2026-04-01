@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form"
 import toast, { Toaster } from "react-hot-toast"
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa"
 import * as z from "zod"
-import { NewsletterForm } from "./NewsletterForm"
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -47,6 +46,10 @@ export const Footer = () => {
   return (
     <footer className="relative bg-[#030303] overflow-hidden">
       <Toaster position="top-center" />
+
+      {/* Subtle top border glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
+
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 max-w-5xl py-16">
         {/* Two Column Layout */}
@@ -55,7 +58,7 @@ export const Footer = () => {
           <div>
             <h3 className="text-sm uppercase tracking-widest text-gray-500 mb-4">Get in touch</h3>
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
-              Let's work together
+              Let&apos;s work together
             </h2>
 
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -63,25 +66,33 @@ export const Footer = () => {
                 type="email"
                 placeholder="your@email.com"
                 {...form.register("email")}
-                className="w-full px-4 py-3 bg-transparent border border-white/10 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-white/30 transition-colors text-sm"
+                className="w-full px-4 py-3 bg-transparent border border-white/10 rounded-lg text-white
+                           placeholder:text-gray-600 focus:outline-none focus:border-emerald-500/30
+                           focus:ring-1 focus:ring-emerald-500/20 transition-all text-sm"
               />
               <input
                 type="text"
                 id="contact-subject"
                 placeholder="Subject"
                 {...form.register("subject")}
-                className="w-full px-4 py-3 bg-transparent border border-white/10 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-white/30 transition-colors text-sm"
+                className="w-full px-4 py-3 bg-transparent border border-white/10 rounded-lg text-white
+                           placeholder:text-gray-600 focus:outline-none focus:border-emerald-500/30
+                           focus:ring-1 focus:ring-emerald-500/20 transition-all text-sm"
               />
               <textarea
                 placeholder="Your message..."
                 rows={4}
                 {...form.register("message")}
-                className="w-full px-4 py-3 bg-transparent border border-white/10 rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:border-white/30 transition-colors resize-none text-sm"
+                className="w-full px-4 py-3 bg-transparent border border-white/10 rounded-lg text-white
+                           placeholder:text-gray-600 focus:outline-none focus:border-emerald-500/30
+                           focus:ring-1 focus:ring-emerald-500/20 transition-all resize-none text-sm"
               />
               <button
                 type="submit"
                 disabled={isSubmitting || isSubmitted}
-                className="w-full py-3 bg-white text-black font-medium rounded-lg hover:bg-gray-200 transition-colors duration-300 disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
+                className="w-full py-3 bg-white text-black font-medium rounded-lg hover:bg-gray-200
+                           transition-colors duration-300 disabled:opacity-50
+                           flex items-center justify-center gap-2 text-sm"
               >
                 {isSubmitting ? (
                   <><Loader2 className="h-4 w-4 animate-spin" /> Sending...</>
@@ -98,17 +109,18 @@ export const Footer = () => {
           <div className="flex flex-col justify-between">
             <div>
               <Link href="/" className="text-2xl font-bold text-white mb-8 block">
-                {Bio.name.trim().split(' ')[0]}
+                {Bio.name.trim().split(" ")[0]}
+                <span className="text-emerald-400">.</span>
               </Link>
 
               <nav className="space-y-3 mb-8">
-                <Link href="/blogs" className="block text-gray-400 hover:text-white transition-colors">
+                <Link href="/blogs" className="block text-gray-400 hover:text-white transition-colors text-sm">
                   Blog
                 </Link>
-                <Link href="/skills" className="block text-gray-400 hover:text-white transition-colors">
+                <Link href="/skills" className="block text-gray-400 hover:text-white transition-colors text-sm">
                   Skills
                 </Link>
-                <Link href="/about" className="block text-gray-400 hover:text-white transition-colors">
+                <Link href="/about" className="block text-gray-400 hover:text-white transition-colors text-sm">
                   About
                 </Link>
               </nav>
@@ -116,13 +128,16 @@ export const Footer = () => {
 
             {/* Social Links */}
             <div className="flex items-center gap-4">
-              <a href={Bio.github} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors">
+              <a href={Bio.github} target="_blank" rel="noopener noreferrer"
+                 className="text-gray-500 hover:text-white transition-colors">
                 <FaGithub size={20} />
               </a>
-              <a href={Bio.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors">
+              <a href={Bio.linkedin} target="_blank" rel="noopener noreferrer"
+                 className="text-gray-500 hover:text-white transition-colors">
                 <FaLinkedin size={20} />
               </a>
-              <a href={Bio.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors">
+              <a href={Bio.twitter} target="_blank" rel="noopener noreferrer"
+                 className="text-gray-500 hover:text-white transition-colors">
                 <FaTwitter size={20} />
               </a>
             </div>
