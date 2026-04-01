@@ -7,6 +7,7 @@ import { BlogList } from '@/components/BlogList'
 import { BlogListSkeleton } from '@/components/BlogSkeleton'
 import { getBlogPosts } from '@/lib/blog-actions'
 import type { Metadata } from 'next'
+import type { SearchSortBy } from '@/types/blog'
 
 export const metadata: Metadata = {
     title: 'Blogs | Omkar Chebale',
@@ -28,14 +29,17 @@ async function BlogContent({ searchParams }: BlogPageProps) {
     const params = await searchParams
     const page = typeof params.page === 'string' ? Math.max(1, parseInt(params.page)) : 1
     const search = typeof params.search === 'string' ? params.search.trim() : ''
+    const tags = typeof params.tags === 'string' ? params.tags.split(',').filter(Boolean) : []
+    const sortBy = (typeof params.sort === 'string' ? params.sort : 'newest') as SearchSortBy
 
-    const { posts, curatedPosts, pagination } = await getBlogPosts(page, search)
+    const { posts, curatedPosts, pagination, availableTags } = await getBlogPosts(page, search, false, tags, sortBy)
 
     return (
         <BlogList
             initialPosts={posts}
             curatedPosts={curatedPosts}
             pagination={pagination}
+            availableTags={availableTags}
         />
     )
 }
