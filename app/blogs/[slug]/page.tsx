@@ -14,6 +14,7 @@ import { Navbar } from '@/components/navbar'
 import { ShareButtons } from '@/components/ShareButtons'
 import { NewsletterForm } from '@/components/NewsletterForm'
 import { BlogRecommendations } from '@/components/BlogRecommendations'
+import { ReadingProgress } from '@/components/ReadingProgress'
 
 export const dynamic = 'force-dynamic'
 
@@ -188,9 +189,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
 
+            <ReadingProgress />
+
             <main className="min-h-screen bg-[#0a0a0a]">
                 <Navbar />
-                <nav className="pt-8 px-6">
+                <nav className="pt-24 px-6">
                     <div className="max-w-3xl mx-auto">
                         <Link
                             href="/blogs"

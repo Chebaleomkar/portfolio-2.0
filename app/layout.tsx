@@ -404,6 +404,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
+      <head>
+        <link rel="alternate" type="application/rss+xml" title="Omkar Chebale - Blog" href="/feed.xml" />
+      </head>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
