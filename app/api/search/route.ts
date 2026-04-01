@@ -126,15 +126,15 @@ async function tryTextSearch(
     try {
         const filter = { ...baseFilter, $text: { $search: query } }
 
-        const sortOption =
+        const sortOption: any =
             sortBy === 'relevance'
-                ? { score: { $meta: 'textScore' as const } }
+                ? { score: { $meta: 'textScore' } }
                 : sortBy === 'oldest'
-                    ? { createdAt: 1 as const }
-                    : { createdAt: -1 as const }
+                    ? { createdAt: 1 }
+                    : { createdAt: -1 }
 
         const [results, total] = await Promise.all([
-            Blog.find(filter, { score: { $meta: 'textScore' as const } })
+            Blog.find(filter, { score: { $meta: 'textScore' } })
                 .sort(sortOption)
                 .skip((page - 1) * limit)
                 .limit(limit)
