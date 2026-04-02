@@ -10,12 +10,30 @@ import type { Metadata } from 'next'
 import type { SearchSortBy } from '@/types/blog'
 
 export const metadata: Metadata = {
-    title: 'Blogs | Omkar Chebale',
-    description: 'Thoughts on AI, ML, and software engineering. Read about what I build, break, and learn.',
+    title: 'Blog — AI, ML & Software Engineering | Omkar Chebale',
+    description: 'Thoughts on AI, ML, LLMs, RAG systems, and software engineering. Read about what I build, break, and learn — from LangChain pipelines to full-stack React apps.',
+    keywords: [
+        'AI blog', 'ML blog', 'LLM tutorials', 'RAG systems', 'software engineering blog',
+        'Omkar Chebale blog', 'LangChain tutorials', 'Next.js blog', 'Python ML',
+        'full-stack development', 'AI engineer blog',
+    ],
     openGraph: {
-        title: 'Blogs | Omkar Chebale',
-        description: 'Thoughts on AI, ML, and software engineering.',
+        title: 'Blog — AI, ML & Software Engineering | Omkar Chebale',
+        description: 'Thoughts on AI, ML, LLMs, and software engineering. What I build, break, and learn.',
         type: 'website',
+        url: 'https://omkarchebale.vercel.app/blogs',
+        images: [{ url: 'https://omkarchebale.vercel.app/og-blog.png', width: 1200, height: 630 }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Blog — AI, ML & Software Engineering | Omkar Chebale',
+        description: 'Thoughts on AI, ML, LLMs, and software engineering.',
+        creator: '@chebalerushi',
+        images: ['https://omkarchebale.vercel.app/og-blog.png'],
+    },
+    alternates: {
+        canonical: 'https://omkarchebale.vercel.app/blogs',
+        types: { 'application/rss+xml': 'https://omkarchebale.vercel.app/feed.xml' },
     },
 }
 
@@ -44,9 +62,45 @@ async function BlogContent({ searchParams }: BlogPageProps) {
     )
 }
 
+const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+        {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: 'https://omkarchebale.vercel.app',
+        },
+        {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Blog',
+            item: 'https://omkarchebale.vercel.app/blogs',
+        },
+    ],
+}
+
+const collectionJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Blog — AI, ML & Software Engineering',
+    description: 'Technical blog posts on AI, ML, LLMs, and software engineering by Omkar Chebale.',
+    url: 'https://omkarchebale.vercel.app/blogs',
+    isPartOf: {
+        '@type': 'WebSite',
+        name: 'Omkar Chebale',
+        url: 'https://omkarchebale.vercel.app',
+    },
+}
+
 export default async function BlogPage({ searchParams }: BlogPageProps) {
     return (
         <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbJsonLd, collectionJsonLd]) }}
+            />
             <main className="min-h-screen bg-[#0a0a0a]">
                 <Navbar />
                 <nav className="pt-24 px-6">

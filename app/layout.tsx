@@ -406,6 +406,8 @@ export default function RootLayout({
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <link rel="alternate" type="application/rss+xml" title="Omkar Chebale - Blog" href="/feed.xml" />
+        <link rel="author" href="/llms.txt" />
+        <meta name="llms.txt" content="https://omkarchebale.vercel.app/llms.txt" />
       </head>
       <body className={inter.className}>
         <ThemeProvider
