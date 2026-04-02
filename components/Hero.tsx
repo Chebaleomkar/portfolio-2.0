@@ -66,7 +66,7 @@ export const Hero = memo(() => {
             <div className="h-8 md:h-10 flex items-center justify-center">
               <TypeAnimation
                 sequence={[
-                  "AI Engineer", 2500,
+                  "AI Engineer Intern", 2500,
                   "Full-Stack Developer", 2500,
                   "Building Intelligent Systems", 2500,
                 ]}

@@ -123,7 +123,7 @@ export const experiences: Experience[] = [
     company: "RecursiveZero Pvt. Ltd.",
     companyUrl: "https://recursivezero.com/about/",
     date: "Jan 2024 - Jul 2025 · 1 yr 7 mos",
-    color: "gray",
+    color: "red",
     highlights: [
       { text: "Architected and shipped a {bold} end-to-end", bold: "multi-tenant B2B e-commerce platform" },
       { text: "Designed {bold} for buyers, sellers, and admins", bold: "secure authentication and RBAC" },
