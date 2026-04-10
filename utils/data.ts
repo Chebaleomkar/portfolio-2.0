@@ -4,11 +4,11 @@ import { ClientReview } from "@/components/ClientReviews";
 export const Bio = {
   name: "Omkar Chebale ",
   roles: [
-    "AI Engineer",
+    "AI/ML Engineer",
     "Full-Stack Developer",
   ],
   description:
-    "Omkar Chebale is a dedicated AI Engineer and Full-Stack Developer specializing in building intelligent systems, machine learning models, and scalable web applications.",
+    "Omkar Chebale is an AI/ML Engineer building production-grade LLM systems, RAG pipelines, and scalable web applications. Specializing in LangChain, Python, Next.js, and intelligent automation.",
   github: "https://github.com/Chebaleomkar",
   resume:
     "https://drive.google.com/file/d/1_xD17Kg6MS0T0ahDAxltGXSxsccutMxr/view?usp=drive_link",

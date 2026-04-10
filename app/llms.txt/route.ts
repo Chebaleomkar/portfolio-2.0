@@ -20,12 +20,12 @@ export async function GET() {
         })
         .join('\n')
 
-    const content = `# Omkar Chebale — AI Engineer & Full-Stack Developer
+    const content = `# Omkar Chebale — AI/ML Engineer & Full-Stack Developer
 
 > Personal portfolio and technical blog at ${SITE_URL}
 
 ## About
-Omkar Chebale is an AI Engineer and Full-Stack Developer building production-grade LLM systems, RAG pipelines, and scalable web applications. Currently at AI Planet.
+Omkar Chebale is an AI/ML Engineer and Full-Stack Developer building production-grade LLM systems, RAG pipelines, and scalable web applications. Currently at AI Planet.
 
 ## Pages
 - [Home](${SITE_URL}/): Portfolio landing — services, skills, featured work, testimonials

@@ -39,7 +39,7 @@ export default function AboutPage() {
                                 {Bio.name.trim()}
                             </h1>
                             <p className="text-gray-400 text-lg leading-relaxed max-w-2xl">
-                                AI Engineer and Full-Stack Developer building production-grade LLM systems,
+                                AI/ML Engineer and Full-Stack Developer building production-grade LLM systems,
                                 RAG pipelines, and scalable web applications. Currently at AI Planet —
                                 previously shipped AI automation at Xclusive Interiors and led engineering
                                 at RecursiveZero.

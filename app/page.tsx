@@ -11,9 +11,9 @@ const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Omkar Chebale — AI Engineer & Full-Stack Developer',
+    name: 'Omkar Chebale — AI/ML Engineer',
     url: BASE_URL,
-    description: 'Portfolio and technical blog of Omkar Chebale, an AI Engineer building production-grade LLM systems, RAG pipelines, and scalable web applications.',
+    description: 'Omkar Chebale is an AI/ML Engineer building production-grade LLM systems, RAG pipelines, and scalable web applications.',
     potentialAction: {
       '@type': 'SearchAction',
       target: {
@@ -28,7 +28,7 @@ const jsonLd = [
     '@type': 'Person',
     name: 'Omkar Chebale',
     url: BASE_URL,
-    jobTitle: 'AI Engineer & Full-Stack Developer',
+    jobTitle: 'AI/ML Engineer & Full-Stack Developer',
     worksFor: {
       '@type': 'Organization',
       name: 'AI Planet',

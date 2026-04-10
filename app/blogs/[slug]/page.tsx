@@ -52,8 +52,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
         keywords: [
             ...(post.tags || []),
             'Omkar Chebale',
-            'AI Engineer',
-            'Full Stack Developer',
+            'AI/ML Engineer',
+            'Full-Stack Developer',
             'Tech Blog',
             'Software Engineering',
         ],
@@ -179,7 +179,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             '@type': 'Person',
             name: 'Omkar Chebale',
             url: 'https://omkarchebale.vercel.app/about',
-            jobTitle: 'AI Engineer & Full Stack Developer',
+            jobTitle: 'AI/ML Engineer & Full-Stack Developer',
             sameAs: [
                 'https://github.com/Chebaleomkar',
                 'https://linkedin.com/in/omkar-chebale-8b251726b',

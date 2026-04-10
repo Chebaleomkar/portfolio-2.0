@@ -35,14 +35,14 @@ export async function GET() {
 
 ## Identity
 - **Name:** Omkar Chebale
-- **Role:** AI Engineer & Full-Stack Developer
+- **Role:** AI/ML Engineer & Full-Stack Developer
 - **Location:** India
 - **Currently at:** AI Planet
 - **Website:** ${SITE_URL}
 - **Email:** omkarchebale0@gmail.com
 
 ## Professional Summary
-AI Engineer and Full-Stack Developer building production-grade LLM systems, RAG pipelines, and scalable web applications. Experienced with LangChain, LangGraph, Pinecone, MongoDB, Next.js, and Python ML ecosystems. Previously shipped AI automation at Xclusive Interiors and led engineering at RecursiveZero.
+AI/ML Engineer and Full-Stack Developer building production-grade LLM systems, RAG pipelines, and scalable web applications. Experienced with LangChain, LangGraph, Pinecone, MongoDB, Next.js, and Python ML ecosystems. Previously shipped AI automation at Xclusive Interiors and led engineering at RecursiveZero.
 
 ## Site Structure
 

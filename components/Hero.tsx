@@ -62,23 +62,9 @@ export const Hero = memo(() => {
               {Bio.name.trim()}
             </h1>
 
-            {/* Typing animation for roles */}
-            <div className="h-8 md:h-10 flex items-center justify-center">
-              <TypeAnimation
-                sequence={[
-                  "AI Engineer Intern", 2500,
-                  "Full-Stack Developer", 2500,
-                  "Building Intelligent Systems", 2500,
-                ]}
-                wrapper="span"
-                speed={40}
-                deletionSpeed={60}
-                repeat={Infinity}
-                className="text-lg md:text-xl text-emerald-400 font-medium"
-              />
-            </div>
 
             {/* Brief description */}
+            <h2 className="sr-only">AI/ML Engineer specializing in LLM systems, RAG pipelines, and full-stack development</h2>
             <p className="text-gray-500 text-sm md:text-base max-w-lg mx-auto mt-5 leading-relaxed">
               Building production-grade AI systems, scalable web apps, and
               automation that makes businesses move faster.
