@@ -97,7 +97,7 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
-    role: "AI Engineer Intern",
+    role: "AI Engineer",
     company: "AI Planet",
     date: "Apr 2026 - Present",
     color: "emerald",
@@ -119,7 +119,7 @@ export const experiences: Experience[] = [
     ],
   },
   {
-    role: "Full-Stack Engineer (Lead)",
+    role: "Full-Stack Engineer ",
     company: "RecursiveZero Pvt. Ltd.",
     companyUrl: "https://recursivezero.com/about/",
     date: "Jan 2024 - Jul 2025 · 1 yr 7 mos",
