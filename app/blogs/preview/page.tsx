@@ -173,6 +173,30 @@ Paste your markdown here..."
                                     hr: () => (
                                         <hr className="border-gray-800 my-8" />
                                     ),
+                                    table: ({ children }) => (
+                                        <div className="my-6 overflow-x-auto rounded-lg border border-white/10">
+                                            <table className="w-full border-collapse text-sm">
+                                                {children}
+                                            </table>
+                                        </div>
+                                    ),
+                                    thead: ({ children }) => (
+                                        <thead className="bg-white/[0.04]">{children}</thead>
+                                    ),
+                                    tbody: ({ children }) => (
+                                        <tbody className="divide-y divide-white/5">{children}</tbody>
+                                    ),
+                                    tr: ({ children }) => (
+                                        <tr className="hover:bg-white/[0.02] transition-colors">{children}</tr>
+                                    ),
+                                    th: ({ children }) => (
+                                        <th className="px-4 py-3 text-left font-semibold text-white border-b border-white/10">
+                                            {children}
+                                        </th>
+                                    ),
+                                    td: ({ children }) => (
+                                        <td className="px-4 py-3 text-gray-300 align-top">{children}</td>
+                                    ),
                                 }}
                             >
                                 {content || '*No content to preview*'}
